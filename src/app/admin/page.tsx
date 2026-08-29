@@ -172,12 +172,13 @@ export default function AdminDashboardPage() {
               <h1 className="text-xl font-black font-heading text-[#064E3B]">
                 MB CABS EASY CONTROL PANEL
               </h1>
-              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
                 {syncStatus}
               </span>
             </div>
             <p className="text-xs text-slate-500">
-              Simple 1-click pricing and booking manager with permanent disk storage
+              Simple 1-click pricing and booking manager with permanent cloud storage
             </p>
           </div>
 
@@ -205,19 +206,19 @@ export default function AdminDashboardPage() {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-2 overflow-x-auto border-t border-slate-100 pt-2 pb-2">
           <button
             onClick={() => setActiveTab('prices')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'prices'
                 ? 'bg-[#155E38] text-white shadow-md'
                 : 'text-slate-700 hover:bg-slate-100'
             }`}
           >
             <DollarSign className="w-4 h-4" />
-            <span>1. Change Prices ({pricingMode === 'SEASON' ? 'Season Active' : 'Off-Season Active'})</span>
+            <span>1. Pricing Mode ({pricingMode === 'SEASON' ? '🔥 Season Mode' : '🟢 Off-Season Mode'})</span>
           </button>
 
           <button
             onClick={() => setActiveTab('bookings')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'bookings'
                 ? 'bg-[#155E38] text-white shadow-md'
                 : 'text-slate-700 hover:bg-slate-100'
@@ -229,7 +230,7 @@ export default function AdminDashboardPage() {
 
           <button
             onClick={() => setActiveTab('forest')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'forest'
                 ? 'bg-[#155E38] text-white shadow-md'
                 : 'text-slate-700 hover:bg-slate-100'
@@ -241,7 +242,7 @@ export default function AdminDashboardPage() {
 
           <button
             onClick={() => setActiveTab('phone')}
-            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap ${
               activeTab === 'phone'
                 ? 'bg-[#155E38] text-white shadow-md'
                 : 'text-slate-700 hover:bg-slate-100'
@@ -274,31 +275,35 @@ export default function AdminDashboardPage() {
                 Which pricing should show on the website right now?
               </h2>
               <p className="text-xs text-slate-500 mt-1 mb-6">
-                Click one button below. It instantly switches prices across all pages without any code or technical steps.
+                Click one button below. It instantly switches prices across all pages on every customer laptop & mobile.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <button
                   type="button"
-                  onClick={() => togglePricingMode('OFF_SEASON')}
+                  onClick={() => {
+                    togglePricingMode('OFF_SEASON');
+                    setSaveSuccessMsg('🟢 Switched to Off-Season Mode! All prices updated live.');
+                    setTimeout(() => setSaveSuccessMsg(null), 3000);
+                  }}
                   className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between ${
                     pricingMode === 'OFF_SEASON'
-                      ? 'border-[#155E38] bg-emerald-50 shadow-md'
+                      ? 'border-[#155E38] bg-emerald-50 shadow-md ring-2 ring-emerald-500/20'
                       : 'border-slate-200 bg-white hover:bg-slate-50'
                   }`}
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-black text-[#064E3B]">🟢 Off-Season Pricing</span>
+                      <span className="text-lg font-black text-[#064E3B]">🟢 Off-Season Mode</span>
                       {pricingMode === 'OFF_SEASON' && (
-                        <span className="bg-[#155E38] text-white text-[10px] font-black px-2 py-0.5 rounded-full">
-                          ACTIVE NOW
+                        <span className="bg-[#155E38] text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+                          ACTIVE ON SITE
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 mt-1">Normal standard rates (e.g. ₹2,500 for Local Tour)</p>
+                    <p className="text-xs text-slate-600 mt-1">Shows standard brochure rates (e.g. ₹2,500 for Local Tour)</p>
                   </div>
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-bold ${
                     pricingMode === 'OFF_SEASON' ? 'border-[#155E38] bg-[#155E38] text-white' : 'border-slate-300'
                   }`}>
                     {pricingMode === 'OFF_SEASON' && '✓'}
@@ -307,25 +312,29 @@ export default function AdminDashboardPage() {
 
                 <button
                   type="button"
-                  onClick={() => togglePricingMode('SEASON')}
+                  onClick={() => {
+                    togglePricingMode('SEASON');
+                    setSaveSuccessMsg('🔥 Switched to Peak Season Mode! All prices updated live.');
+                    setTimeout(() => setSaveSuccessMsg(null), 3000);
+                  }}
                   className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between ${
                     pricingMode === 'SEASON'
-                      ? 'border-amber-500 bg-amber-50 shadow-md'
+                      ? 'border-amber-500 bg-amber-50 shadow-md ring-2 ring-amber-500/20'
                       : 'border-slate-200 bg-white hover:bg-slate-50'
                   }`}
                 >
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-lg font-black text-amber-900">🔥 Peak Season Pricing</span>
+                      <span className="text-lg font-black text-amber-900">🔥 Peak Season Mode</span>
                       {pricingMode === 'SEASON' && (
-                        <span className="bg-amber-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">
-                          ACTIVE NOW
+                        <span className="bg-amber-600 text-white text-[10px] font-black px-2.5 py-0.5 rounded-full">
+                          ACTIVE ON SITE
                         </span>
                       )}
                     </div>
-                    <p className="text-xs text-slate-600 mt-1">Holiday peak rates (e.g. ₹3,000 for Local Tour)</p>
+                    <p className="text-xs text-slate-600 mt-1">Shows peak holiday rates (e.g. ₹3,000 for Local Tour)</p>
                   </div>
-                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center font-bold ${
                     pricingMode === 'SEASON' ? 'border-amber-500 bg-amber-500 text-white' : 'border-slate-300'
                   }`}>
                     {pricingMode === 'SEASON' && '✓'}
@@ -338,7 +347,7 @@ export default function AdminDashboardPage() {
             <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
               <div>
                 <span className="text-[11px] uppercase font-black text-slate-400 block mb-1">
-                  STEP 2: EDIT AMOUNTS (RUPEES)
+                  STEP 2: CUSTOMIZE FARE AMOUNTS (RUPEES)
                 </span>
                 <h3 className="text-xl font-black font-heading text-[#064E3B]">
                   Type new amounts for each package and click "Save Price"
@@ -599,7 +608,7 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSaveSuccessMsg('Phone and office settings saved permanently to disk!');
+                    setSaveSuccessMsg('Phone and office settings saved permanently!');
                     setTimeout(() => setSaveSuccessMsg(null), 3000);
                   }}
                   className="bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow flex items-center gap-1.5"

@@ -19,7 +19,7 @@ export const BookingModal: React.FC = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [travelDate, setTravelDate] = useState('');
-  const [passengers, setPassengers] = useState(2);
+  const [passengers, setPassengers] = useState<number | ''>(2);
   const [selectedPackageSlug, setSelectedPackageSlug] = useState('local-tour');
   const [vehicleType, setVehicleType] = useState<'Sedan' | 'SUV'>('Sedan');
   const [pickup, setPickup] = useState('Kodaikanal Bus Stand / Hotel');
@@ -55,12 +55,14 @@ export const BookingModal: React.FC = () => {
       return;
     }
 
+    const finalPassengers = typeof passengers === 'number' && passengers > 0 ? passengers : 2;
+
     const booking = addBooking({
       customerName: name,
       phone,
       email: '',
       travelDate,
-      passengers,
+      passengers: finalPassengers,
       packageSlug: currentPkg.slug,
       packageName: currentPkg.name,
       vehicleType,
@@ -84,7 +86,7 @@ export const BookingModal: React.FC = () => {
     packageName: currentPkg.name,
     vehicleType,
     travelDate,
-    passengers,
+    passengers: typeof passengers === 'number' && passengers > 0 ? passengers : 2,
     pickup,
     drop,
     stayRequired,
@@ -238,7 +240,20 @@ export const BookingModal: React.FC = () => {
                     min="1"
                     max="15"
                     value={passengers}
-                    onChange={(e) => setPassengers(parseInt(e.target.value) || 1)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === '') {
+                        setPassengers('');
+                      } else {
+                        const parsed = parseInt(val, 10);
+                        setPassengers(isNaN(parsed) ? '' : parsed);
+                      }
+                    }}
+                    onBlur={() => {
+                      if (passengers === '' || passengers < 1) {
+                        setPassengers(1);
+                      }
+                    }}
                     className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
                   />
                 </div>

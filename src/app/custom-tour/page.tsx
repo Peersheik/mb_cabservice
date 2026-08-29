@@ -9,8 +9,8 @@ import confetti from 'canvas-confetti';
 export default function CustomTourPage() {
   const { settings, addBooking, pricingMode } = useApp();
 
-  const [days, setDays] = useState(2);
-  const [people, setPeople] = useState(4);
+  const [days, setDays] = useState<number | ''>(2);
+  const [people, setPeople] = useState<number | ''>(4);
   const [travelDate, setTravelDate] = useState('');
   const [vehicle, setVehicle] = useState<'Sedan' | 'SUV'>('SUV');
   const [pickupCity, setPickupCity] = useState('Madurai Airport / Station');
@@ -52,6 +52,9 @@ export default function CustomTourPage() {
     }
   };
 
+  const finalDays = typeof days === 'number' && days > 0 ? days : 1;
+  const finalPeople = typeof people === 'number' && people > 0 ? people : 2;
+
   const handleCustomSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !phone || !travelDate) {
@@ -64,9 +67,9 @@ export default function CustomTourPage() {
       phone,
       email: '',
       travelDate,
-      passengers: people,
+      passengers: finalPeople,
       packageSlug: 'custom-tour',
-      packageName: `Custom ${days}-Day Tour (${selectedSpots.length} Spots)`,
+      packageName: `Custom ${finalDays}-Day Tour (${selectedSpots.length} Spots)`,
       vehicleType: vehicle,
       pickupLocation: pickupCity,
       dropLocation: 'Kodaikanal / Return',
@@ -84,10 +87,10 @@ export default function CustomTourPage() {
 
   const customWhatsAppUrl = generateWhatsAppBookingUrl({
     phone: settings.phone1,
-    packageName: `Custom ${days}-Day Tour (${selectedSpots.join(', ')})`,
+    packageName: `Custom ${finalDays}-Day Tour (${selectedSpots.join(', ')})`,
     vehicleType: vehicle,
     travelDate,
-    passengers: people,
+    passengers: finalPeople,
     pickup: pickupCity,
     drop: 'Kodaikanal / Return',
     stayRequired,
@@ -128,7 +131,20 @@ export default function CustomTourPage() {
                     min="1"
                     max="10"
                     value={days}
-                    onChange={(e) => setDays(parseInt(e.target.value) || 1)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === '') {
+                        setDays('');
+                      } else {
+                        const parsed = parseInt(val, 10);
+                        setDays(isNaN(parsed) ? '' : parsed);
+                      }
+                    }}
+                    onBlur={() => {
+                      if (days === '' || days < 1) {
+                        setDays(1);
+                      }
+                    }}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold"
                   />
                 </div>
@@ -142,7 +158,20 @@ export default function CustomTourPage() {
                     min="1"
                     max="20"
                     value={people}
-                    onChange={(e) => setPeople(parseInt(e.target.value) || 1)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (val === '') {
+                        setPeople('');
+                      } else {
+                        const parsed = parseInt(val, 10);
+                        setPeople(isNaN(parsed) ? '' : parsed);
+                      }
+                    }}
+                    onBlur={() => {
+                      if (people === '' || people < 1) {
+                        setPeople(1);
+                      }
+                    }}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold"
                   />
                 </div>

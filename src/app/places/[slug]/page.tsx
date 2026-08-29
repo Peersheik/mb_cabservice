@@ -1,15 +1,18 @@
 'use client';
 
 import React from 'react';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin, Clock, ArrowRight, ChevronRight, CheckCircle2, Sparkles, Phone, MessageCircle } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { generateWhatsAppBookingUrl } from '@/lib/utils';
 
-export default function PlaceDetailPage({ params }: { params: { slug: string } }) {
+export default function PlaceDetailPage() {
+  const routerParams = useParams();
+  const slug = typeof routerParams?.slug === 'string' ? routerParams.slug : Array.isArray(routerParams?.slug) ? routerParams.slug[0] : '';
   const { touristPlaces, packages, openBookingModal, settings } = useApp();
 
-  const place = touristPlaces.find((p) => p.slug === params.slug);
+  const place = touristPlaces.find((p) => p.slug === slug);
 
   if (!place) {
     return (

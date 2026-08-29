@@ -1,16 +1,18 @@
 'use client';
 
 import React from 'react';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { MapPin, Clock, ShieldAlert, Sparkles, ArrowRight, Phone, MessageCircle, ChevronRight, Check } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { formatCurrency, generateWhatsAppBookingUrl } from '@/lib/utils';
 
-export default function PackageDetailPage({ params }: { params: { slug: string } }) {
+export default function PackageDetailPage() {
+  const routerParams = useParams();
+  const slug = typeof routerParams?.slug === 'string' ? routerParams.slug : Array.isArray(routerParams?.slug) ? routerParams.slug[0] : '';
   const { packages, pricingMode, openBookingModal, settings } = useApp();
 
-  const pkg = packages.find((p) => p.slug === params.slug);
+  const pkg = packages.find((p) => p.slug === slug);
 
   if (!pkg) {
     return (

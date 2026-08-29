@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   DollarSign,
@@ -46,31 +46,48 @@ export default function AdminDashboardPage() {
   // Simple state for updating package prices easily
   const [priceForm, setPriceForm] = useState<{
     [pkgId: string]: {
-      sedanOff: number;
-      sedanSeason: number;
-      suvOff: number;
-      suvSeason: number;
+      sedanOff: number | '';
+      sedanSeason: number | '';
+      suvOff: number | '';
+      suvSeason: number | '';
     };
-  }>(() => {
-    const init: any = {};
-    packages.forEach((p) => {
-      init[p.id] = {
-        sedanOff: p.pricing.sedan.offSeason,
-        sedanSeason: p.pricing.sedan.season || p.pricing.sedan.offSeason + 500,
-        suvOff: p.pricing.suv.offSeason,
-        suvSeason: p.pricing.suv.season || p.pricing.suv.offSeason + 500
-      };
-    });
-    return init;
-  });
+  }>({});
+
+  useEffect(() => {
+    if (packages.length > 0) {
+      setPriceForm((prev) => {
+        const next = { ...prev };
+        packages.forEach((p) => {
+          if (!next[p.id]) {
+            next[p.id] = {
+              sedanOff: p.pricing.sedan.offSeason,
+              sedanSeason: p.pricing.sedan.season ?? p.pricing.sedan.offSeason + 500,
+              suvOff: p.pricing.suv.offSeason,
+              suvSeason: p.pricing.suv.season ?? p.pricing.suv.offSeason + 500
+            };
+          }
+        });
+        return next;
+      });
+    }
+  }, [packages]);
 
   const handlePriceChange = (pkgId: string, field: 'sedanOff' | 'sedanSeason' | 'suvOff' | 'suvSeason', value: string) => {
-    const num = parseInt(value) || 0;
+    let parsed: number | '' = '';
+    if (value !== '') {
+      const num = parseInt(value, 10);
+      parsed = isNaN(num) ? '' : num;
+    }
     setPriceForm((prev) => ({
       ...prev,
       [pkgId]: {
-        ...prev[pkgId],
-        [field]: num
+        ...(prev[pkgId] || {
+          sedanOff: '',
+          sedanSeason: '',
+          suvOff: '',
+          suvSeason: ''
+        }),
+        [field]: parsed
       }
     }));
   };
@@ -78,7 +95,12 @@ export default function AdminDashboardPage() {
   const handleSavePackagePrice = (pkgId: string) => {
     const vals = priceForm[pkgId];
     if (vals) {
-      quickUpdatePackagePrices(pkgId, vals.sedanOff, vals.sedanSeason, vals.suvOff, vals.suvSeason);
+      const sOff = typeof vals.sedanOff === 'number' ? vals.sedanOff : 0;
+      const sSeason = typeof vals.sedanSeason === 'number' ? vals.sedanSeason : 0;
+      const suvOff = typeof vals.suvOff === 'number' ? vals.suvOff : 0;
+      const suvSeason = typeof vals.suvSeason === 'number' ? vals.suvSeason : 0;
+
+      quickUpdatePackagePrices(pkgId, sOff, sSeason, suvOff, suvSeason);
       setSaveSuccessMsg(`Prices saved permanently for this package!`);
       setTimeout(() => setSaveSuccessMsg(null), 3000);
     }
@@ -356,11 +378,12 @@ export default function AdminDashboardPage() {
 
               <div className="space-y-6">
                 {packages.map((pkg) => {
-                  const formVals = priceForm[pkg.id] || {
-                    sedanOff: pkg.pricing.sedan.offSeason,
-                    sedanSeason: pkg.pricing.sedan.season || 3000,
-                    suvOff: pkg.pricing.suv.offSeason,
-                    suvSeason: pkg.pricing.suv.season || 4000
+                  const entry = priceForm[pkg.id];
+                  const formVals = {
+                    sedanOff: entry?.sedanOff ?? pkg.pricing.sedan.offSeason,
+                    sedanSeason: entry?.sedanSeason ?? (pkg.pricing.sedan.season ?? 3000),
+                    suvOff: entry?.suvOff ?? pkg.pricing.suv.offSeason,
+                    suvSeason: entry?.suvSeason ?? (pkg.pricing.suv.season ?? 4000)
                   };
 
                   return (

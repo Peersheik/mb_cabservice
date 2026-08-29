@@ -81,37 +81,42 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     stayId?: string;
   }>({ isOpen: false });
 
-  useEffect(() => {
-    try {
-      const savedTheme = localStorage.getItem(LS_KEY_THEME) as 'light' | 'dark' | null;
-      if (savedTheme === 'light' || savedTheme === 'dark') {
-        setColorTheme(savedTheme);
+  // Apply theme class and data-theme attribute on document root
+  const applyThemeToDOM = (theme: 'light' | 'dark') => {
+    if (typeof document !== 'undefined') {
+      const root = document.documentElement;
+      root.setAttribute('data-theme', theme);
+      if (theme === 'dark') {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
       }
-    } catch (e) {}
-  }, []);
+    }
+  };
 
   const toggleColorTheme = () => {
-    setColorTheme((prev) => {
-      const next = prev === 'light' ? 'dark' : 'light';
-      try {
-        localStorage.setItem(LS_KEY_THEME, next);
-      } catch (e) {}
-      return next;
-    });
+    const next: 'light' | 'dark' = colorTheme === 'light' ? 'dark' : 'light';
+    setColorTheme(next);
+    applyThemeToDOM(next);
+    const updatedSettings: SiteSettings = { ...settings, colorTheme: next };
+    setSettings(updatedSettings);
+    updateAndBroadcast({ settings: updatedSettings });
   };
 
   const fetchLatestState = useCallback(() => {
     fetch('/api/db', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
-        if (data.settings) setSettings(data.settings);
+        if (data.settings) {
+          setSettings(data.settings);
+          if (data.settings.colorTheme === 'light' || data.settings.colorTheme === 'dark') {
+            setColorTheme(data.settings.colorTheme);
+            applyThemeToDOM(data.settings.colorTheme);
+          }
+        }
         if (data.packages && Array.isArray(data.packages)) setPackages(data.packages);
         if (data.bookings && Array.isArray(data.bookings)) setBookings(data.bookings);
         if (data.stays && Array.isArray(data.stays)) setStays(data.stays);
-
-        try {
-          localStorage.setItem(LS_KEY_DATA, JSON.stringify(data));
-        } catch (e) {}
       })
       .catch((err) => {
         console.warn('Sync fallback', err);
@@ -119,18 +124,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   useEffect(() => {
-    try {
-      const savedLocal = localStorage.getItem(LS_KEY_DATA);
-      if (savedLocal) {
-        const parsed = JSON.parse(savedLocal);
-        if (parsed.settings) setSettings(parsed.settings);
-        if (parsed.packages) setPackages(parsed.packages);
-        if (parsed.bookings) setBookings(parsed.bookings);
-      }
-      const savedAuth = localStorage.getItem(LS_KEY_AUTH);
-      if (savedAuth === 'true') setIsAdminAuthenticated(true);
-    } catch (e) {}
-
     fetchLatestState();
     const interval = setInterval(fetchLatestState, 10000);
     return () => clearInterval(interval);
@@ -142,21 +135,15 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     bookings?: BookingRecord[];
   }) => {
     setSyncStatus('Updating...');
-    if (payload.settings) setSettings(payload.settings);
+    if (payload.settings) {
+      setSettings(payload.settings);
+      if (payload.settings.colorTheme) {
+        setColorTheme(payload.settings.colorTheme);
+        applyThemeToDOM(payload.settings.colorTheme);
+      }
+    }
     if (payload.packages) setPackages(payload.packages);
     if (payload.bookings) setBookings(payload.bookings);
-
-    try {
-      const currentFull = {
-        packages: payload.packages || packages,
-        settings: payload.settings || settings,
-        bookings: payload.bookings || bookings,
-        stays,
-        touristPlaces,
-        reviews
-      };
-      localStorage.setItem(LS_KEY_DATA, JSON.stringify(currentFull));
-    } catch (e) {}
 
     try {
       await fetch('/api/db', {

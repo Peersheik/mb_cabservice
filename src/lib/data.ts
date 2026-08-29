@@ -112,6 +112,7 @@ export interface BookingRecord {
 
 export interface SiteSettings {
   pricingMode: 'OFF_SEASON' | 'SEASON';
+  colorTheme?: 'light' | 'dark';
   companyName: string;
   brandTagline: string;
   phone1: string;
@@ -590,6 +591,7 @@ export const INITIAL_REVIEWS: ReviewData[] = [
 
 export const INITIAL_SITE_SETTINGS: SiteSettings = {
   pricingMode: 'OFF_SEASON',
+  colorTheme: 'light',
   companyName: 'MB CABS HOLIDAYS & MB TRAVELS',
   brandTagline: 'Your Local Travel Partner in Kodaikanal',
   phone1: '+91 9942472778',

@@ -185,8 +185,8 @@ export default function CustomTourPage() {
                     onChange={(e) => setVehicle(e.target.value as 'Sedan' | 'SUV')}
                     className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-semibold bg-white"
                   >
-                    <option value="Sedan">Sedan (Dzire / Etios - 4 Pax)</option>
-                    <option value="SUV">SUV (Innova / Ertiga - 7 Pax)</option>
+                    <option value="Sedan">Sedan (Etios - 4 Pax)</option>
+                    <option value="SUV">SUV (Kia Carens - 7 Pax)</option>
                   </select>
                 </div>
               </div>

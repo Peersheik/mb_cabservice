@@ -15,7 +15,7 @@ export const CabJourneySection: React.FC = () => {
     },
     {
       title: 'Spotless Clean Cabs',
-      desc: 'Comfortable Sedans (Dzire, Etios) and spacious 7-seater SUVs (Innova, Ertiga) maintained in peak hill condition.'
+      desc: 'Comfortable Sedans (Etios) and spacious 7-seater SUVs (Kia Carens) maintained in peak hill condition.'
     },
     {
       title: 'No-Rush Sightseeing',

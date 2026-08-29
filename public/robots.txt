@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://kodaimbcabsholidays.com/sitemap.xml
+Sitemap: https://mbcabs.vercel.app/sitemap.xml

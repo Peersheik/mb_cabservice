@@ -24,6 +24,8 @@ interface AppContextType {
   settings: SiteSettings;
   pricingMode: 'OFF_SEASON' | 'SEASON';
   togglePricingMode: (mode: 'OFF_SEASON' | 'SEASON') => void;
+  colorTheme: 'light' | 'dark';
+  toggleColorTheme: () => void;
   updatePackagePrice: (
     id: string,
     vehicle: 'sedan' | 'suv',
@@ -59,6 +61,7 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 const LS_KEY_DATA = 'mb_cabs_global_state_v3';
 const LS_KEY_AUTH = 'mb_cabs_admin_auth_v3';
+const LS_KEY_THEME = 'mb_cabs_color_theme_v3';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [packages, setPackages] = useState<PackageData[]>(INITIAL_PACKAGES);
@@ -69,6 +72,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [settings, setSettings] = useState<SiteSettings>(INITIAL_SITE_SETTINGS);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
   const [syncStatus, setSyncStatus] = useState<string>('Live Sync Active');
+  const [colorTheme, setColorTheme] = useState<'light' | 'dark'>('light');
+
   const [activeBookingModal, setActiveBookingModal] = useState<{
     isOpen: boolean;
     packageSlug?: string;
@@ -76,25 +81,34 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     stayId?: string;
   }>({ isOpen: false });
 
-  // 1. Fetch server state immediately & poll periodically so any device gets updates in real-time
+  useEffect(() => {
+    try {
+      const savedTheme = localStorage.getItem(LS_KEY_THEME) as 'light' | 'dark' | null;
+      if (savedTheme === 'light' || savedTheme === 'dark') {
+        setColorTheme(savedTheme);
+      }
+    } catch (e) {}
+  }, []);
+
+  const toggleColorTheme = () => {
+    setColorTheme((prev) => {
+      const next = prev === 'light' ? 'dark' : 'light';
+      try {
+        localStorage.setItem(LS_KEY_THEME, next);
+      } catch (e) {}
+      return next;
+    });
+  };
+
   const fetchLatestState = useCallback(() => {
     fetch('/api/db', { cache: 'no-store' })
       .then((res) => res.json())
       .then((data) => {
-        if (data.settings) {
-          setSettings(data.settings);
-        }
-        if (data.packages && Array.isArray(data.packages)) {
-          setPackages(data.packages);
-        }
-        if (data.bookings && Array.isArray(data.bookings)) {
-          setBookings(data.bookings);
-        }
-        if (data.stays && Array.isArray(data.stays)) {
-          setStays(data.stays);
-        }
+        if (data.settings) setSettings(data.settings);
+        if (data.packages && Array.isArray(data.packages)) setPackages(data.packages);
+        if (data.bookings && Array.isArray(data.bookings)) setBookings(data.bookings);
+        if (data.stays && Array.isArray(data.stays)) setStays(data.stays);
 
-        // Cache locally for offline/fallback
         try {
           localStorage.setItem(LS_KEY_DATA, JSON.stringify(data));
         } catch (e) {}
@@ -105,7 +119,6 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   useEffect(() => {
-    // Initial local hydration
     try {
       const savedLocal = localStorage.getItem(LS_KEY_DATA);
       if (savedLocal) {
@@ -119,30 +132,19 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     } catch (e) {}
 
     fetchLatestState();
-
-    // Re-sync every 10 seconds so customer site automatically updates when admin changes mode on their phone/laptop
     const interval = setInterval(fetchLatestState, 10000);
     return () => clearInterval(interval);
   }, [fetchLatestState]);
 
-  // Master update and broadcast function
   const updateAndBroadcast = async (payload: {
     packages?: PackageData[];
     settings?: SiteSettings;
     bookings?: BookingRecord[];
   }) => {
     setSyncStatus('Updating...');
-
-    // Optimistic UI state update
-    if (payload.settings) {
-      setSettings(payload.settings);
-    }
-    if (payload.packages) {
-      setPackages(payload.packages);
-    }
-    if (payload.bookings) {
-      setBookings(payload.bookings);
-    }
+    if (payload.settings) setSettings(payload.settings);
+    if (payload.packages) setPackages(payload.packages);
+    if (payload.bookings) setBookings(payload.bookings);
 
     try {
       const currentFull = {
@@ -299,6 +301,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         settings,
         pricingMode: settings.pricingMode,
         togglePricingMode,
+        colorTheme,
+        toggleColorTheme,
         updatePackagePrice,
         updatePackageStatus,
         quickUpdatePackagePrices,

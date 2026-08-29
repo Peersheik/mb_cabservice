@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Phone, MessageCircle, Menu, X, Car, Sparkles, MapPin, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { Phone, MessageCircle, Menu, X, Car, Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { generateWhatsAppBookingUrl } from '@/lib/utils';
 
@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 30) {
+      if (window.scrollY > 20) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -39,9 +39,9 @@ export const Navbar: React.FC = () => {
 
   const navLinks = [
     { label: 'Home', href: '/' },
-    { label: '5 Tour Packages', href: '/#packages' },
-    { label: 'Sightseeing Places', href: '/places' },
-    { label: 'Stays & Cottages', href: '/stays' },
+    { label: '5 Packages', href: '/#packages' },
+    { label: 'Sightseeing', href: '/places' },
+    { label: 'Stays', href: '/stays' },
     { label: 'Custom Tour', href: '/custom-tour' },
     { label: 'Travel Guide', href: '/kodaikanal-tourism' },
     { label: 'Contact', href: '/contact' }
@@ -50,87 +50,96 @@ export const Navbar: React.FC = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        {/* Sleek Glassmorphic Floating Header */}
         <div
-          className={`transition-all duration-300 ${
+          className={`transition-all duration-300 border-b ${
             isScrolled
-              ? 'bg-black/85 backdrop-blur-xl py-3 border-b border-white/10 shadow-2xl'
-              : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-4'
+              ? 'bg-slate-950/90 backdrop-blur-xl border-white/10 shadow-2xl py-3'
+              : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent border-transparent py-4'
           }`}
         >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            {/* Logo */}
-            <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-[#155E38] flex items-center justify-center text-white shadow-lg shadow-emerald-950/40 group-hover:scale-105 transition-transform flex-shrink-0">
-                <Car className="w-5 h-5 text-white" />
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
+            
+            {/* 1. BRAND LOGO (Left Aligned, Clean Hierarchy) */}
+            <Link href="/" className="flex items-center gap-3 flex-shrink-0 group">
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-400 to-[#155E38] flex items-center justify-center text-slate-950 shadow-md group-hover:scale-105 transition-transform flex-shrink-0">
+                <Car className="w-5 h-5" />
               </div>
-              <div>
-                <div className="font-black text-lg sm:text-xl font-heading text-white leading-none flex items-center gap-1.5 drop-shadow">
-                  <span>MB CABS</span>
+              <div className="flex flex-col">
+                <div className="flex items-center gap-1.5 leading-none">
+                  <span className="font-black text-lg sm:text-xl font-heading text-white tracking-tight">MB CABS</span>
                   <span className="text-emerald-400 font-bold text-xs sm:text-sm tracking-widest uppercase">HOLIDAYS</span>
                 </div>
-                <p className="text-[10px] tracking-wider uppercase font-semibold text-emerald-300 mt-0.5">
+                <span className="text-[10px] tracking-wider uppercase font-semibold text-slate-300 mt-1">
                   MB Travels • Kodaikanal
-                </p>
+                </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/15 shadow-inner">
+            {/* 2. MAIN NAV LINKS (Center Aligned, Balanced Spacing) */}
+            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`text-xs xl:text-sm font-bold tracking-tight px-3.5 py-1.5 rounded-full transition-all ${
+                    className={`text-xs xl:text-sm font-bold tracking-tight transition-colors py-1 relative whitespace-nowrap ${
                       isActive
-                        ? 'bg-emerald-500 text-slate-950 shadow-md font-black'
-                        : 'text-slate-200 hover:text-white hover:bg-white/10'
+                        ? 'text-emerald-400 font-black'
+                        : 'text-slate-200 hover:text-white'
                     }`}
                   >
                     {link.label}
+                    {isActive && (
+                      <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-emerald-400 rounded-full shadow-sm" />
+                    )}
                   </Link>
                 );
               })}
             </nav>
 
-            {/* Right Action CTA Buttons */}
-            <div className="hidden sm:flex items-center gap-3">
-              {/* Season Pill */}
-              <div className={`text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 rounded-full backdrop-blur-md border flex items-center gap-1.5 ${
-                pricingMode === 'SEASON'
-                  ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
-                  : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
-              }`}>
-                <span className={`w-1.5 h-1.5 rounded-full ${pricingMode === 'SEASON' ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'}`} />
-                {pricingMode === 'SEASON' ? 'Season Rates' : 'Off-Season Rates'}
+            {/* 3. RIGHT CONTROLS & CTA (Evenly Spaced, Vertically Centered) */}
+            <div className="hidden sm:flex items-center gap-3 flex-shrink-0">
+              {/* Dynamic Season Status Tag */}
+              <div
+                className={`text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 rounded-full border flex items-center gap-1.5 whitespace-nowrap ${
+                  pricingMode === 'SEASON'
+                    ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
+                    : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
+                }`}
+              >
+                <span
+                  className={`w-1.5 h-1.5 rounded-full ${
+                    pricingMode === 'SEASON' ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'
+                  }`}
+                />
+                <span>{pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'}</span>
               </div>
 
-              {/* Call Driver Button */}
+              {/* Call Direct */}
               <a
                 href={`tel:${settings.phone1}`}
-                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-all"
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-all flex-shrink-0"
                 title="Call MB Cabs"
               >
                 <Phone className="w-4 h-4 text-emerald-300" />
               </a>
 
-              {/* Book Cab Trigger */}
+              {/* Book Cab Pill Button */}
               <button
                 onClick={() => openBookingModal()}
-                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs sm:text-sm font-black px-5 py-2.5 rounded-full shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all flex items-center gap-1.5 active:scale-95"
+                className="bg-emerald-400 hover:bg-emerald-300 text-slate-950 text-xs sm:text-sm font-black px-5 py-2 rounded-full shadow-lg shadow-emerald-950/50 hover:shadow-emerald-400/30 transition-all flex items-center gap-1.5 active:scale-95 whitespace-nowrap"
               >
-                <Sparkles className="w-4 h-4 text-slate-950" />
+                <Sparkles className="w-3.5 h-3.5" />
                 <span>Book Cab</span>
               </button>
             </div>
 
-            {/* Mobile Hamburger Button */}
+            {/* Mobile Hamburger Controls */}
             <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={() => openBookingModal()}
-                className="bg-emerald-500 text-slate-950 text-xs font-black px-3.5 py-1.5 rounded-full shadow"
+                className="bg-emerald-400 text-slate-950 text-xs font-black px-3.5 py-1.5 rounded-full shadow"
               >
                 Book
               </button>
@@ -139,13 +148,13 @@ export const Navbar: React.FC = () => {
                 className="p-2 rounded-xl border border-white/20 text-white bg-black/40 backdrop-blur-md"
                 aria-label="Toggle Menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+                {mobileMenuOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Mobile Full Screen Menu */}
+        {/* Mobile Slide-down Full Menu */}
         {mobileMenuOpen && (
           <div className="lg:hidden fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 text-white pt-20 animate-in fade-in duration-200">
             <button
@@ -168,7 +177,7 @@ export const Navbar: React.FC = () => {
                     className="block py-2.5 text-lg font-black text-white hover:text-emerald-400 border-b border-white/5 flex items-center justify-between"
                   >
                     <span>{link.label}</span>
-                    <ArrowUpRight className="w-4 h-4 text-emerald-400 opacity-60" />
+                    <span className="text-xs text-emerald-400 font-bold">→</span>
                   </Link>
                 ))}
               </div>

@@ -1,26 +1,78 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --brand-emerald-dark: #0B3B24;
+    --brand-forest-green: #155E38;
+    --brand-pine-leaf: #1E7E45;
+    --brand-sage: #E8F5E9;
+    --brand-mint-subtle: #F0FDF4;
+    --text-primary-green: #064E3B;
+    --text-body: #1F2937;
+    --card-bg-pure-white: #FFFFFF;
+    --page-bg: #FFFFFF;
+  }
+
+  body {
+    background-color: #FFFFFF;
+    color: #1F2937;
+    font-family: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-outfit), sans-serif;
+    color: #064E3B; /* Rich deep green for all headings */
+    letter-spacing: -0.02em;
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Crisp Clean White Shadows & Cards */
+.white-card {
+  background: #FFFFFF;
+  border: 1px solid #E5E7EB;
+  box-shadow: 0 4px 20px -2px rgba(6, 78, 59, 0.06);
+}
+
+.white-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.white-card-hover:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 30px -4px rgba(6, 78, 59, 0.12);
+  border-color: #86EFAC;
+}
+
+/* Smooth Green Buttons */
+.btn-green-primary {
+  background-color: #155E38;
+  color: #FFFFFF;
+  font-weight: 700;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+}
+
+.btn-green-primary:hover {
+  background-color: #0B3B24;
+  box-shadow: 0 4px 14px 0 rgba(21, 94, 56, 0.39);
+}
+
+/* Custom Clean Scrollbar */
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F9FAFB;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #A7F3D0;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #155E38;
 }

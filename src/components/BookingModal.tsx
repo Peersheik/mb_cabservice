@@ -1,0 +1,315 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import { X, Car, MessageCircle, CheckCircle2, ShieldAlert, Sparkles } from 'lucide-react';
+import { useApp } from '@/lib/context';
+import { formatCurrency, generateWhatsAppBookingUrl } from '@/lib/utils';
+import confetti from 'canvas-confetti';
+
+export const BookingModal: React.FC = () => {
+  const {
+    activeBookingModal,
+    closeBookingModal,
+    packages,
+    pricingMode,
+    settings,
+    addBooking
+  } = useApp();
+
+  const [name, setName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [travelDate, setTravelDate] = useState('');
+  const [passengers, setPassengers] = useState(2);
+  const [selectedPackageSlug, setSelectedPackageSlug] = useState('local-tour');
+  const [vehicleType, setVehicleType] = useState<'Sedan' | 'SUV'>('Sedan');
+  const [pickup, setPickup] = useState('Kodaikanal Bus Stand / Hotel');
+  const [drop, setDrop] = useState('Kodaikanal Lake / Hotel');
+  const [stayRequired, setStayRequired] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submittedBookingId, setSubmittedBookingId] = useState('');
+
+  useEffect(() => {
+    if (activeBookingModal.packageSlug) {
+      setSelectedPackageSlug(activeBookingModal.packageSlug);
+    }
+    if (activeBookingModal.vehicleType) {
+      setVehicleType(activeBookingModal.vehicleType);
+    }
+    if (activeBookingModal.isOpen) {
+      setIsSubmitted(false);
+    }
+  }, [activeBookingModal]);
+
+  if (!activeBookingModal.isOpen) return null;
+
+  const currentPkg = packages.find((p) => p.slug === selectedPackageSlug) || packages[0];
+  const isForestTourUnavailable = currentPkg.status === 'TEMPORARILY_UNAVAILABLE';
+
+  const priceObj = currentPkg.pricing[vehicleType.toLowerCase() as 'sedan' | 'suv'];
+  const activePrice = pricingMode === 'SEASON' && priceObj.season !== null ? priceObj.season : priceObj.offSeason;
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone || !travelDate) {
+      alert('Please enter your name, contact number, and travel date.');
+      return;
+    }
+
+    const booking = addBooking({
+      customerName: name,
+      phone,
+      email: '',
+      travelDate,
+      passengers,
+      packageSlug: currentPkg.slug,
+      packageName: currentPkg.name,
+      vehicleType,
+      pickupLocation: pickup,
+      dropLocation: drop,
+      stayRequired,
+      calculatedPrice: activePrice,
+      pricingMode
+    });
+
+    setSubmittedBookingId(booking.id);
+    setIsSubmitted(true);
+
+    try {
+      confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+    } catch (e) {}
+  };
+
+  const whatsappUrl = generateWhatsAppBookingUrl({
+    phone: settings.phone1,
+    packageName: currentPkg.name,
+    vehicleType,
+    travelDate,
+    passengers,
+    pickup,
+    drop,
+    stayRequired,
+    customerName: name
+  });
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-in fade-in duration-200">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-xl w-full max-h-[92vh] overflow-y-auto relative border border-slate-200">
+        <button
+          onClick={closeBookingModal}
+          className="absolute top-4 right-4 z-10 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 flex items-center justify-center text-slate-700 transition-colors"
+        >
+          <X className="w-5 h-5" />
+        </button>
+
+        {!isSubmitted ? (
+          <div className="p-6 sm:p-8">
+            <div className="mb-6">
+              <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#155E38] text-[11px] font-black tracking-wider uppercase px-3 py-1 rounded-full mb-2 border border-emerald-200">
+                MB CABS HOLIDAYS • DIRECT BOOKING
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-black font-heading text-[#064E3B]">
+                Book Your Kodaikanal Trip
+              </h2>
+              <p className="text-slate-600 text-xs sm:text-sm mt-1">
+                Fixed brochure pricing with experienced local hill drivers.
+              </p>
+            </div>
+
+            {/* Price Banner */}
+            <div className="bg-[#155E38] text-white p-4 rounded-2xl mb-6 flex items-center justify-between shadow-md">
+              <div>
+                <span className="text-[11px] uppercase tracking-wider text-emerald-200 font-bold block">
+                  {currentPkg.name} ({currentPkg.placesCount} Scenic Places)
+                </span>
+                <div className="text-2xl font-black mt-0.5 flex items-baseline gap-2">
+                  <span>{formatCurrency(activePrice)}</span>
+                  <span className="text-xs font-normal text-emerald-200">
+                    / {vehicleType} ({pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'})
+                  </span>
+                </div>
+              </div>
+              <div className="text-right text-xs text-emerald-200">
+                <span className="bg-emerald-800/80 px-2.5 py-1 rounded-lg">Fuel & Driver Included</span>
+              </div>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Select Tour Package
+                  </label>
+                  <select
+                    value={selectedPackageSlug}
+                    onChange={(e) => setSelectedPackageSlug(e.target.value)}
+                    className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  >
+                    {packages
+                      .filter((p) => p.status !== 'HIDDEN')
+                      .map((p) => (
+                        <option key={p.slug} value={p.slug}>
+                          {p.name} ({p.placesCount} spots)
+                        </option>
+                      ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Vehicle Type
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setVehicleType('Sedan')}
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        vehicleType === 'Sedan'
+                          ? 'bg-[#155E38] text-white border-[#155E38] shadow'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Car className="w-3.5 h-3.5" /> Sedan (4 Pax)
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setVehicleType('SUV')}
+                      className={`py-2 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                        vehicleType === 'SUV'
+                          ? 'bg-[#155E38] text-white border-[#155E38] shadow'
+                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                      }`}
+                    >
+                      <Car className="w-3.5 h-3.5" /> SUV (7 Pax)
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Your Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="e.g. Ramesh Kumar"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    WhatsApp / Phone Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="+91 98765 43210"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Travel Date *
+                  </label>
+                  <input
+                    type="date"
+                    required
+                    value={travelDate}
+                    onChange={(e) => setTravelDate(e.target.value)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    No. of Passengers
+                  </label>
+                  <input
+                    type="number"
+                    min="1"
+                    max="15"
+                    value={passengers}
+                    onChange={(e) => setPassengers(parseInt(e.target.value) || 1)}
+                    className="w-full px-3 py-2 rounded-xl border border-slate-300 text-slate-900 text-sm font-medium focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center gap-3">
+                <input
+                  type="checkbox"
+                  id="modalStayCheck"
+                  checked={stayRequired}
+                  onChange={(e) => setStayRequired(e.target.checked)}
+                  className="w-4 h-4 text-emerald-600 rounded"
+                />
+                <label htmlFor="modalStayCheck" className="text-xs text-slate-800 font-bold cursor-pointer">
+                  Need scenic Cottage / Resort / Homestay booking assistance in Kodaikanal
+                </label>
+              </div>
+
+              <div className="pt-3 flex flex-col sm:flex-row gap-3">
+                <button
+                  type="submit"
+                  disabled={isForestTourUnavailable}
+                  className="flex-1 bg-[#155E38] hover:bg-[#0B3B24] disabled:bg-slate-400 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm"
+                >
+                  <CheckCircle2 className="w-4 h-4 text-emerald-200" />
+                  <span>{isForestTourUnavailable ? 'Currently Unavailable' : 'Request Booking'}</span>
+                </button>
+
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3.5 px-5 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-sm"
+                >
+                  <MessageCircle className="w-4 h-4" />
+                  Instant WhatsApp
+                </a>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <div className="p-8 text-center space-y-4">
+            <div className="w-16 h-16 bg-emerald-100 text-emerald-700 rounded-full flex items-center justify-center mx-auto">
+              <CheckCircle2 className="w-10 h-10 text-emerald-600" />
+            </div>
+            <h3 className="text-2xl font-black text-[#064E3B]">
+              Booking Request Received!
+            </h3>
+            <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto">
+              Thank you, <strong>{name}</strong>. Reference ID: <span className="font-bold text-[#155E38] bg-emerald-50 px-2 py-0.5 rounded">{submittedBookingId}</span>. MB Cabs driver coordination team will call/WhatsApp you shortly.
+            </p>
+
+            <div className="pt-3 flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow"
+              >
+                <MessageCircle className="w-4 h-4" /> Chat on WhatsApp
+              </a>
+              <button
+                onClick={closeBookingModal}
+                className="bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold py-3 px-5 rounded-xl text-sm"
+              >
+                Close
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};

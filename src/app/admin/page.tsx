@@ -1,0 +1,617 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import {
+  DollarSign,
+  Package,
+  CalendarCheck,
+  Megaphone,
+  Phone,
+  CheckCircle2,
+  Lock,
+  LogOut,
+  Save,
+  ArrowRight,
+  ShieldAlert,
+  Sparkles,
+  RefreshCw
+} from 'lucide-react';
+import { useApp } from '@/lib/context';
+import { formatCurrency } from '@/lib/utils';
+
+export default function AdminDashboardPage() {
+  const {
+    isAdminAuthenticated,
+    loginAdmin,
+    logoutAdmin,
+    pricingMode,
+    togglePricingMode,
+    packages,
+    updatePackageStatus,
+    quickUpdatePackagePrices,
+    bookings,
+    updateBookingStatus,
+    settings,
+    updateSettings,
+    syncStatus
+  } = useApp();
+
+  const [usernameInput, setUsernameInput] = useState('');
+  const [passwordInput, setPasswordInput] = useState('');
+  const [authError, setAuthError] = useState('');
+  const [activeTab, setActiveTab] = useState<'prices' | 'bookings' | 'forest' | 'phone'>('prices');
+  const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
+
+  // Simple state for updating package prices easily
+  const [priceForm, setPriceForm] = useState<{
+    [pkgId: string]: {
+      sedanOff: number;
+      sedanSeason: number;
+      suvOff: number;
+      suvSeason: number;
+    };
+  }>(() => {
+    const init: any = {};
+    packages.forEach((p) => {
+      init[p.id] = {
+        sedanOff: p.pricing.sedan.offSeason,
+        sedanSeason: p.pricing.sedan.season || p.pricing.sedan.offSeason + 500,
+        suvOff: p.pricing.suv.offSeason,
+        suvSeason: p.pricing.suv.season || p.pricing.suv.offSeason + 500
+      };
+    });
+    return init;
+  });
+
+  const handlePriceChange = (pkgId: string, field: 'sedanOff' | 'sedanSeason' | 'suvOff' | 'suvSeason', value: string) => {
+    const num = parseInt(value) || 0;
+    setPriceForm((prev) => ({
+      ...prev,
+      [pkgId]: {
+        ...prev[pkgId],
+        [field]: num
+      }
+    }));
+  };
+
+  const handleSavePackagePrice = (pkgId: string) => {
+    const vals = priceForm[pkgId];
+    if (vals) {
+      quickUpdatePackagePrices(pkgId, vals.sedanOff, vals.sedanSeason, vals.suvOff, vals.suvSeason);
+      setSaveSuccessMsg(`Prices saved permanently for this package!`);
+      setTimeout(() => setSaveSuccessMsg(null), 3000);
+    }
+  };
+
+  // Simple Login screen
+  if (!isAdminAuthenticated) {
+    const handleLogin = (e: React.FormEvent) => {
+      e.preventDefault();
+      const success = loginAdmin(usernameInput, passwordInput);
+      if (!success) {
+        setAuthError('Incorrect username or password. (Username: mbcabservice)');
+      }
+    };
+
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+        <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-10 max-w-md w-full border border-slate-200">
+          <div className="text-center mb-8">
+            <div className="w-14 h-14 rounded-2xl bg-[#155E38] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
+              <Lock className="w-7 h-7" />
+            </div>
+            <h1 className="text-2xl font-black font-heading text-[#064E3B]">
+              MB Cabs Easy Admin
+            </h1>
+            <p className="text-xs text-slate-500 mt-1">
+              Simple manager for Prices, Bookings & Emergency Notices
+            </p>
+          </div>
+
+          {authError && (
+            <div className="mb-4 bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3 rounded-xl">
+              {authError}
+            </div>
+          )}
+
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                Username
+              </label>
+              <input
+                type="text"
+                required
+                placeholder="mbcabservice"
+                value={usernameInput}
+                onChange={(e) => setUsernameInput(e.target.value)}
+                className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                placeholder="••••••••"
+                value={passwordInput}
+                onChange={(e) => setPasswordInput(e.target.value)}
+                className="w-full px-3.5 py-3 rounded-xl border border-slate-300 text-sm font-semibold focus:ring-2 focus:ring-emerald-600 focus:outline-none"
+              />
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold py-3.5 px-4 rounded-xl shadow transition-all text-sm"
+            >
+              Log In to Easy Admin
+            </button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <Link href="/" className="text-xs text-emerald-800 font-bold hover:underline">
+              ← Return to Customer Website
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
+      {/* Super Simple Top Header */}
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <div className="flex items-center gap-2">
+              <h1 className="text-xl font-black font-heading text-[#064E3B]">
+                MB CABS EASY CONTROL PANEL
+              </h1>
+              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full">
+                {syncStatus}
+              </span>
+            </div>
+            <p className="text-xs text-slate-500">
+              Simple 1-click pricing and booking manager with permanent disk storage
+            </p>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <Link
+              href="/"
+              target="_blank"
+              className="text-xs font-bold text-[#155E38] bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-3.5 py-2 rounded-xl transition-colors flex items-center gap-1"
+            >
+              <span>View Customer Website</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+
+            <button
+              onClick={logoutAdmin}
+              className="text-xs font-bold text-rose-700 bg-rose-50 hover:bg-rose-100 px-3 py-2 rounded-xl transition-colors flex items-center gap-1"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Logout</span>
+            </button>
+          </div>
+        </div>
+
+        {/* 4 Simple Clean Tabs */}
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 flex gap-2 overflow-x-auto border-t border-slate-100 pt-2 pb-2">
+          <button
+            onClick={() => setActiveTab('prices')}
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              activeTab === 'prices'
+                ? 'bg-[#155E38] text-white shadow-md'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <DollarSign className="w-4 h-4" />
+            <span>1. Change Prices ({pricingMode === 'SEASON' ? 'Season Active' : 'Off-Season Active'})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('bookings')}
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              activeTab === 'bookings'
+                ? 'bg-[#155E38] text-white shadow-md'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <CalendarCheck className="w-4 h-4" />
+            <span>2. Customer Bookings ({bookings.length})</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('forest')}
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              activeTab === 'forest'
+                ? 'bg-[#155E38] text-white shadow-md'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <ShieldAlert className="w-4 h-4" />
+            <span>3. Forest Tour & Package Availability</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('phone')}
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 ${
+              activeTab === 'phone'
+                ? 'bg-[#155E38] text-white shadow-md'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <Phone className="w-4 h-4" />
+            <span>4. Phone & WhatsApp Number</span>
+          </button>
+        </div>
+      </header>
+
+      {/* Main Form Container */}
+      <main className="max-w-6xl mx-auto px-4 sm:px-6 pt-8 space-y-8">
+        {saveSuccessMsg && (
+          <div className="bg-emerald-100 border border-emerald-300 text-emerald-900 p-4 rounded-2xl text-xs sm:text-sm font-bold flex items-center gap-2 shadow-sm animate-in fade-in">
+            <CheckCircle2 className="w-5 h-5 text-emerald-700 flex-shrink-0" />
+            <span>{saveSuccessMsg}</span>
+          </div>
+        )}
+
+        {/* TAB 1: SIMPLE ATTRACTIVE PRICE UPDATER */}
+        {activeTab === 'prices' && (
+          <div className="space-y-6">
+            {/* Step 1: Big Switch for Off-Season vs Season */}
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md">
+              <span className="text-[11px] uppercase font-black text-slate-400 block mb-1">
+                STEP 1: CHOOSE ACTIVE PRICING SEASON
+              </span>
+              <h2 className="text-2xl font-black font-heading text-[#064E3B]">
+                Which pricing should show on the website right now?
+              </h2>
+              <p className="text-xs text-slate-500 mt-1 mb-6">
+                Click one button below. It instantly switches prices across all pages without any code or technical steps.
+              </p>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <button
+                  type="button"
+                  onClick={() => togglePricingMode('OFF_SEASON')}
+                  className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between ${
+                    pricingMode === 'OFF_SEASON'
+                      ? 'border-[#155E38] bg-emerald-50 shadow-md'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-black text-[#064E3B]">🟢 Off-Season Pricing</span>
+                      {pricingMode === 'OFF_SEASON' && (
+                        <span className="bg-[#155E38] text-white text-[10px] font-black px-2 py-0.5 rounded-full">
+                          ACTIVE NOW
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-600 mt-1">Normal standard rates (e.g. ₹2,500 for Local Tour)</p>
+                  </div>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                    pricingMode === 'OFF_SEASON' ? 'border-[#155E38] bg-[#155E38] text-white' : 'border-slate-300'
+                  }`}>
+                    {pricingMode === 'OFF_SEASON' && '✓'}
+                  </div>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => togglePricingMode('SEASON')}
+                  className={`p-5 rounded-2xl border-2 text-left transition-all flex items-center justify-between ${
+                    pricingMode === 'SEASON'
+                      ? 'border-amber-500 bg-amber-50 shadow-md'
+                      : 'border-slate-200 bg-white hover:bg-slate-50'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg font-black text-amber-900">🔥 Peak Season Pricing</span>
+                      {pricingMode === 'SEASON' && (
+                        <span className="bg-amber-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full">
+                          ACTIVE NOW
+                        </span>
+                      )}
+                    </div>
+                    <p className="text-xs text-slate-600 mt-1">Holiday peak rates (e.g. ₹3,000 for Local Tour)</p>
+                  </div>
+                  <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                    pricingMode === 'SEASON' ? 'border-amber-500 bg-amber-500 text-white' : 'border-slate-300'
+                  }`}>
+                    {pricingMode === 'SEASON' && '✓'}
+                  </div>
+                </button>
+              </div>
+            </div>
+
+            {/* Step 2: Clear Card by Card Price Inputs */}
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
+              <div>
+                <span className="text-[11px] uppercase font-black text-slate-400 block mb-1">
+                  STEP 2: EDIT AMOUNTS (RUPEES)
+                </span>
+                <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                  Type new amounts for each package and click "Save Price"
+                </h3>
+              </div>
+
+              <div className="space-y-6">
+                {packages.map((pkg) => {
+                  const formVals = priceForm[pkg.id] || {
+                    sedanOff: pkg.pricing.sedan.offSeason,
+                    sedanSeason: pkg.pricing.sedan.season || 3000,
+                    suvOff: pkg.pricing.suv.offSeason,
+                    suvSeason: pkg.pricing.suv.season || 4000
+                  };
+
+                  return (
+                    <div
+                      key={pkg.id}
+                      className="p-5 rounded-2xl border border-slate-200 bg-slate-50/70 hover:bg-white transition-all space-y-4 shadow-sm"
+                    >
+                      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+                        <div>
+                          <strong className="text-base font-black text-[#064E3B]">{pkg.name}</strong>
+                          <span className="text-xs text-slate-500 block">{pkg.subtitle} ({pkg.placesCount} spots)</span>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => handleSavePackagePrice(pkg.id)}
+                          className="bg-[#155E38] hover:bg-[#0B3B24] text-white text-xs font-bold px-4 py-2 rounded-xl flex items-center justify-center gap-1.5 shadow transition-all self-start sm:self-auto"
+                        >
+                          <Save className="w-3.5 h-3.5" />
+                          <span>Save {pkg.name} Price</span>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
+                        {/* Sedan Off-Season */}
+                        <div className="bg-white p-3 rounded-xl border border-slate-200">
+                          <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            Sedan (Off-Season ₹)
+                          </label>
+                          <input
+                            type="number"
+                            value={formVals.sedanOff}
+                            onChange={(e) => handlePriceChange(pkg.id, 'sedanOff', e.target.value)}
+                            className="w-full text-base font-black text-[#064E3B] px-2.5 py-1.5 border border-slate-300 rounded-lg"
+                          />
+                        </div>
+
+                        {/* Sedan Season */}
+                        <div className="bg-amber-50/50 p-3 rounded-xl border border-amber-200">
+                          <label className="block text-[11px] font-bold text-amber-900 mb-1">
+                            Sedan (Season ₹)
+                          </label>
+                          <input
+                            type="number"
+                            value={formVals.sedanSeason}
+                            onChange={(e) => handlePriceChange(pkg.id, 'sedanSeason', e.target.value)}
+                            className="w-full text-base font-black text-amber-900 px-2.5 py-1.5 border border-amber-300 rounded-lg"
+                          />
+                        </div>
+
+                        {/* SUV Off-Season */}
+                        <div className="bg-white p-3 rounded-xl border border-slate-200">
+                          <label className="block text-[11px] font-bold text-slate-600 mb-1">
+                            SUV 7-Seater (Off-Season ₹)
+                          </label>
+                          <input
+                            type="number"
+                            value={formVals.suvOff}
+                            onChange={(e) => handlePriceChange(pkg.id, 'suvOff', e.target.value)}
+                            className="w-full text-base font-black text-[#064E3B] px-2.5 py-1.5 border border-slate-300 rounded-lg"
+                          />
+                        </div>
+
+                        {/* SUV Season */}
+                        <div className="bg-amber-50/50 p-3 rounded-xl border border-amber-200">
+                          <label className="block text-[11px] font-bold text-amber-900 mb-1">
+                            SUV 7-Seater (Season ₹)
+                          </label>
+                          <input
+                            type="number"
+                            value={formVals.suvSeason}
+                            onChange={(e) => handlePriceChange(pkg.id, 'suvSeason', e.target.value)}
+                            className="w-full text-base font-black text-amber-900 px-2.5 py-1.5 border border-amber-300 rounded-lg"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 2: CUSTOMER BOOKINGS & LEADS */}
+        {activeTab === 'bookings' && (
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                  Customer Enquiries & Trips
+                </h3>
+                <p className="text-xs text-slate-500">
+                  Every request submitted from the website is stored permanently here.
+                </p>
+              </div>
+            </div>
+
+            {bookings.length === 0 ? (
+              <div className="text-center py-12 text-slate-400 text-xs">
+                No customer bookings submitted yet. Test by clicking "Book Cab" on the website.
+              </div>
+            ) : (
+              <div className="space-y-4">
+                {bookings.map((b) => (
+                  <div
+                    key={b.id}
+                    className="p-5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="font-mono text-xs font-bold text-[#155E38] bg-emerald-100 px-2 py-0.5 rounded">
+                          {b.id}
+                        </span>
+                        <strong className="text-sm font-bold text-slate-900">{b.customerName}</strong>
+                        <a href={`tel:${b.phone}`} className="text-xs font-bold text-emerald-700 hover:underline">
+                          📞 {b.phone}
+                        </a>
+                      </div>
+                      <p className="text-xs text-slate-700">
+                        <strong>{b.packageName}</strong> • {b.vehicleType} • Travel Date: <strong>{b.travelDate}</strong> ({b.passengers} Pax)
+                      </p>
+                      {b.pickupLocation && (
+                        <p className="text-[11px] text-slate-500">
+                          Pickup: {b.pickupLocation} | Drop: {b.dropLocation}
+                        </p>
+                      )}
+                      {b.specialRequests && (
+                        <p className="text-[11px] text-slate-600 italic">Notes: {b.specialRequests}</p>
+                      )}
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                      <select
+                        value={b.status}
+                        onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
+                        className="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600"
+                      >
+                        <option value="NEW">🟢 NEW</option>
+                        <option value="CONTACTED">📞 CONTACTED</option>
+                        <option value="CONFIRMED">✓ CONFIRMED</option>
+                        <option value="COMPLETED">COMPLETED</option>
+                        <option value="CANCELLED">CANCELLED</option>
+                      </select>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* TAB 3: FOREST TOUR & AVAILABILITY */}
+        {activeTab === 'forest' && (
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
+            <div>
+              <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                Package Availability & Forest Rules
+              </h3>
+              <p className="text-xs text-slate-500">
+                Turn packages ON/OFF or mark as "Permission Required" (like Berijam Lake).
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              {packages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="p-5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                >
+                  <div>
+                    <strong className="text-sm font-black text-slate-900">{pkg.name}</strong>
+                    <p className="text-xs text-slate-500">{pkg.subtitle}</p>
+                  </div>
+
+                  <select
+                    value={pkg.status}
+                    onChange={(e) => {
+                      updatePackageStatus(pkg.id, e.target.value as any);
+                      setSaveSuccessMsg(`Status updated for ${pkg.name}!`);
+                      setTimeout(() => setSaveSuccessMsg(null), 2500);
+                    }}
+                    className="px-4 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800"
+                  >
+                    <option value="ACTIVE">🟢 AVAILABLE & ACTIVE</option>
+                    <option value="PERMISSION_REQUIRED">⚠️ PERMISSION REQUIRED (Forest Tour)</option>
+                    <option value="TEMPORARILY_UNAVAILABLE">🔴 TEMPORARILY UNAVAILABLE</option>
+                    <option value="HIDDEN">HIDDEN FROM WEBSITE</option>
+                  </select>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* TAB 4: PHONE & WHATSAPP SETTINGS */}
+        {activeTab === 'phone' && (
+          <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6 max-w-2xl">
+            <div>
+              <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                Phone & WhatsApp Numbers
+              </h3>
+              <p className="text-xs text-slate-500">
+                All "Call" and "WhatsApp" buttons on the website send messages directly to these numbers.
+              </p>
+            </div>
+
+            <div className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Primary WhatsApp & Calling Number
+                </label>
+                <input
+                  type="text"
+                  value={settings.phone1}
+                  onChange={(e) => updateSettings({ phone1: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-[#064E3B]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Secondary Calling Number
+                </label>
+                <input
+                  type="text"
+                  value={settings.phone2}
+                  onChange={(e) => updateSettings({ phone2: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-[#064E3B]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Office Address in Kodaikanal
+                </label>
+                <textarea
+                  rows={2}
+                  value={settings.address}
+                  onChange={(e) => updateSettings({ address: e.target.value })}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs"
+                />
+              </div>
+
+              <div className="pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSaveSuccessMsg('Phone and office settings saved permanently to disk!');
+                    setTimeout(() => setSaveSuccessMsg(null), 3000);
+                  }}
+                  className="bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow flex items-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Save Phone Settings</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}

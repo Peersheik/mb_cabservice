@@ -1,75 +1,132 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import { Sparkles, ArrowRight, Car, MapPin, Calendar, CheckCircle2, Shield, Phone, MessageCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Sparkles, ArrowRight, Car, MapPin, Calendar, CheckCircle2, Phone, MessageCircle, ShieldCheck, Compass } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { formatCurrency, generateWhatsAppBookingUrl } from '@/lib/utils';
 
 export const HeroSection: React.FC = () => {
   const { packages, pricingMode, settings, openBookingModal } = useApp();
 
-  // Quick Booking Form state inside hero
-  const [selectedPkgSlug, setSelectedPkgSlug] = useState('local-tour');
-  const [selectedVehicle, setSelectedVehicle] = useState<'Sedan' | 'SUV'>('Sedan');
-  const [travelDate, setTravelDate] = useState('');
-  const [passengerCount, setPassengerCount] = useState('2');
+  // Interactive Background Carousel & Mouse Parallax
+  const [activeBgIndex, setActiveBgIndex] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  const currentPkg = packages.find((p) => p.slug === selectedPkgSlug) || packages[0];
-  const priceObj = currentPkg.pricing[selectedVehicle.toLowerCase() as 'sedan' | 'suv'];
-  const calculatedFare =
-    pricingMode === 'SEASON' && priceObj.season !== null ? priceObj.season : priceObj.offSeason;
+  // 4 Panoramic Kodaikanal Natural Views
+  const heroBackgrounds = [
+    {
+      title: "Pillar Rocks & Mist Valleys",
+      url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2200&auto=format&fit=crop"
+    },
+    {
+      title: "Ancient Shola Woods & Guna Cave",
+      url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2200&auto=format&fit=crop"
+    },
+    {
+      title: "Poombarai Terraced Step Farms",
+      url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2200&auto=format&fit=crop"
+    },
+    {
+      title: "Mannavanur Lake & Pine Grasslands",
+      url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2200&auto=format&fit=crop"
+    }
+  ];
 
-  const handleQuickBook = (e: React.FormEvent) => {
-    e.preventDefault();
-    openBookingModal({
-      packageSlug: selectedPkgSlug,
-      vehicleType: selectedVehicle
+  // Auto-cycle background panorama every 8 seconds
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setActiveBgIndex((prev) => (prev + 1) % heroBackgrounds.length);
+    }, 8000);
+    return () => clearInterval(timer);
+  }, [heroBackgrounds.length]);
+
+  // Subtle Interactive Mouse Pan Effect
+  const handleMouseMove = (e: React.MouseEvent) => {
+    const { clientX, clientY } = e;
+    const { innerWidth, innerHeight } = window;
+    setMousePos({
+      x: (clientX / innerWidth - 0.5) * 20,
+      y: (clientY / innerHeight - 0.5) * 20
     });
   };
 
+  // Quick Fare Calculator State
+  const [selectedPkgSlug, setSelectedPkgSlug] = useState('local-tour');
+  const [selectedVehicle, setSelectedVehicle] = useState<'Sedan' | 'SUV'>('Sedan');
+  const [travelDate, setTravelDate] = useState('');
+
+  const currentPkg = packages.find((p) => p.slug === selectedPkgSlug) || packages[0];
+  const priceObj = currentPkg.pricing[selectedVehicle.toLowerCase() as 'sedan' | 'suv'];
+  const activeFare =
+    pricingMode === 'SEASON' && priceObj.season !== null ? priceObj.season : priceObj.offSeason;
+
   return (
-    <section className="relative min-h-[90vh] flex items-center justify-center bg-slate-900 text-white pt-24 sm:pt-28 pb-16 overflow-hidden">
-      {/* 1. Cinematic Kodaikanal Mountain Background Image with Parallax / Atmospheric Depth */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2000&auto=format&fit=crop"
-          alt="Misty Kodaikanal Mountain Peaks"
-          className="w-full h-full object-cover object-center scale-105 transition-transform duration-1000 ease-out"
-        />
-        {/* Soft Contrast Gradient Overlays */}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/60 to-black/40" />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-black/30" />
+    <section
+      onMouseMove={handleMouseMove}
+      className="relative min-h-screen w-full flex items-center justify-center bg-slate-950 text-white overflow-hidden pt-24 pb-16"
+    >
+      {/* 1. Full-Bleed Edge-to-Edge Background Image Layers with Smooth Transition */}
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        {heroBackgrounds.map((bg, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0 }}
+            animate={{
+              opacity: activeBgIndex === idx ? 1 : 0,
+              scale: activeBgIndex === idx ? 1.05 : 1,
+              x: activeBgIndex === idx ? mousePos.x : 0,
+              y: activeBgIndex === idx ? mousePos.y : 0
+            }}
+            transition={{
+              opacity: { duration: 1.5 },
+              scale: { duration: 8, ease: 'linear' },
+              x: { duration: 0.8, ease: 'easeOut' },
+              y: { duration: 0.8, ease: 'easeOut' }
+            }}
+            className="absolute inset-0 w-full h-full"
+          >
+            <img
+              src={bg.url}
+              alt={bg.title}
+              className="w-full h-full object-cover object-center"
+            />
+          </motion.div>
+        ))}
+
+        {/* Cinematic Film Grading & Vignette (Zero White Gaps) */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/75" />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-black/60" />
       </div>
 
-      {/* Floating Animated Mist Particles Layer */}
-      <div className="absolute inset-0 pointer-events-none z-10 opacity-30 mix-blend-screen overflow-hidden">
-        <div className="absolute -inset-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.2)_0,_transparent_70%)] animate-mist" />
+      {/* Floating Animated Mist Drift Layer */}
+      <div className="absolute inset-0 pointer-events-none z-10 opacity-35 mix-blend-screen overflow-hidden">
+        <div className="absolute -inset-full bg-[radial-gradient(circle_at_center,_rgba(255,255,255,0.25)_0,_transparent_70%)] animate-mist" />
       </div>
 
-      {/* Main Container */}
-      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+      {/* Main Content Container */}
+      <div className="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-8">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
           
-          {/* LEFT: Premium Typography & Brand Value */}
+          {/* LEFT: Grand Cinematic Typography */}
           <div className="lg:col-span-7 space-y-6 text-left">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-emerald-500/20 backdrop-blur-md border border-emerald-400/30 text-emerald-300 text-xs font-black tracking-wide"
+              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-300 text-xs font-black tracking-wider uppercase shadow-xl"
             >
-              <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-              <span>#1 RATED KODAIKANAL CAB & HOLIDAYS SERVICE</span>
+              <Sparkles className="w-4 h-4 text-emerald-400" />
+              <span>MB CABS HOLIDAYS • KODAIKANAL</span>
             </motion.div>
 
             <motion.h1
               initial={{ opacity: 0, y: 15 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-4xl sm:text-6xl md:text-7xl font-black font-heading tracking-tight leading-[1.08] text-white drop-shadow-lg"
+              className="text-4xl sm:text-6xl md:text-7xl font-black font-heading tracking-tight leading-[1.08] text-white drop-shadow-2xl"
             >
               Your Journey <br />
-              <span className="text-emerald-400">Through Kodaikanal</span> <br />
+              <span className="text-emerald-400 drop-shadow">Through Kodaikanal</span> <br />
               Starts Here.
             </motion.h1>
 
@@ -79,19 +136,36 @@ export const HeroSection: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-xl drop-shadow"
             >
-              Explore misty peaks, ancient pine woods, roaring falls & terraced garlic valleys with seasoned local hill drivers.
+              Discover misty pine glades, ancient Shola roots, roaring waterfalls & terraced valleys with trusted local drivers who know every turn.
             </motion.p>
 
-            {/* Feature Pills */}
+            {/* Interactive View Selector Indicator */}
+            <div className="pt-2 flex items-center gap-2">
+              <span className="text-xs text-slate-300 font-medium mr-2">Explore Views:</span>
+              {heroBackgrounds.map((bg, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveBgIndex(idx)}
+                  className={`h-2 rounded-full transition-all ${
+                    activeBgIndex === idx
+                      ? 'w-8 bg-emerald-400'
+                      : 'w-2 bg-white/40 hover:bg-white/70'
+                  }`}
+                  title={bg.title}
+                />
+              ))}
+            </div>
+
+            {/* Key Trust Badges */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.3 }}
-              className="grid grid-cols-3 gap-3 pt-4 border-t border-white/15 text-slate-300 text-xs font-semibold"
+              className="grid grid-cols-3 gap-4 pt-6 border-t border-white/15 text-slate-300 text-xs font-semibold"
             >
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Zero Advance Hassle</span>
+                <span>15+ Yrs Local Experience</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
@@ -99,59 +173,42 @@ export const HeroSection: React.FC = () => {
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
-                <span>Clean & Sanitized Cabs</span>
+                <span>Sanitized Sedan & SUVs</span>
               </div>
             </motion.div>
-
-            {/* Quick Contact Line */}
-            <div className="flex items-center gap-4 pt-2 text-xs text-slate-300">
-              <span>Direct Driver Dispatch:</span>
-              <a href={`tel:${settings.phone1}`} className="text-emerald-400 font-bold hover:underline">
-                📞 {settings.phone1}
-              </a>
-              <span>•</span>
-              <a
-                href={generateWhatsAppBookingUrl({ phone: settings.phone1 })}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-[#25D366] font-bold hover:underline"
-              >
-                💬 WhatsApp Available 24x7
-              </a>
-            </div>
           </div>
 
-          {/* RIGHT: Best-In-Class Cab Booking Card (Uber/Ola Style Clean Card) */}
+          {/* RIGHT: Spacious, Elegant Floating Booking Card */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
             className="lg:col-span-5"
           >
-            <div className="bg-white rounded-3xl p-6 sm:p-7 text-slate-900 shadow-2xl border border-slate-100 relative">
-              {/* Top Card Header */}
+            <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl border border-white/40 relative">
+              {/* Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div>
-                  <h3 className="text-lg font-black font-heading text-[#064E3B]">
-                    Book Sightseeing Cab
+                  <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                    Instant Cab Booking
                   </h3>
-                  <p className="text-xs text-slate-500">Instant rate calculation & dispatch</p>
+                  <p className="text-xs text-slate-500 mt-0.5">Fixed official brochure rates</p>
                 </div>
-                <span className="text-[11px] font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-800">
+                <span className="text-xs font-black px-3 py-1 rounded-full bg-emerald-100 text-emerald-900">
                   {pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'}
                 </span>
               </div>
 
-              <form onSubmit={handleQuickBook} className="mt-5 space-y-4">
-                {/* 1. Select Tour Package */}
+              <div className="mt-5 space-y-4">
+                {/* Select Tour Package */}
                 <div>
-                  <label className="block text-[11px] font-black uppercase text-slate-600 mb-1">
-                    Select Tour Package
+                  <label className="block text-xs font-black uppercase text-slate-700 mb-1.5">
+                    1. Choose Sightseeing Circuit
                   </label>
                   <select
                     value={selectedPkgSlug}
                     onChange={(e) => setSelectedPkgSlug(e.target.value)}
-                    className="w-full px-3.5 py-3 rounded-xl border border-slate-300 bg-slate-50 text-xs font-bold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white focus:outline-none"
+                    className="w-full px-3.5 py-3 rounded-xl border border-slate-300 bg-white text-slate-900 text-xs sm:text-sm font-bold focus:ring-2 focus:ring-emerald-600 focus:outline-none shadow-sm"
                   >
                     {packages
                       .filter((p) => p.status !== 'HIDDEN')
@@ -163,95 +220,69 @@ export const HeroSection: React.FC = () => {
                   </select>
                 </div>
 
-                {/* 2. Select Vehicle Type */}
+                {/* Vehicle Selection */}
                 <div>
-                  <label className="block text-[11px] font-black uppercase text-slate-600 mb-1">
-                    Vehicle Type
+                  <label className="block text-xs font-black uppercase text-slate-700 mb-1.5">
+                    2. Select Vehicle Type
                   </label>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2.5">
                     <button
                       type="button"
                       onClick={() => setSelectedVehicle('Sedan')}
-                      className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      className={`py-3 px-3.5 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all ${
                         selectedVehicle === 'Sedan'
-                          ? 'bg-[#155E38] text-white border-[#155E38] shadow-sm'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                          ? 'border-[#155E38] bg-emerald-50 text-[#064E3B] shadow-sm'
+                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                       }`}
                     >
-                      <Car className="w-4 h-4" />
+                      <Car className="w-4 h-4 text-[#155E38]" />
                       <span>Sedan (4 Seats)</span>
                     </button>
                     <button
                       type="button"
                       onClick={() => setSelectedVehicle('SUV')}
-                      className={`py-2.5 px-3 rounded-xl border text-xs font-bold flex items-center justify-center gap-1.5 transition-all ${
+                      className={`py-3 px-3.5 rounded-xl border-2 text-xs font-black flex items-center justify-center gap-2 transition-all ${
                         selectedVehicle === 'SUV'
-                          ? 'bg-[#155E38] text-white border-[#155E38] shadow-sm'
-                          : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-slate-100'
+                          ? 'border-[#155E38] bg-emerald-50 text-[#064E3B] shadow-sm'
+                          : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                       }`}
                     >
-                      <Car className="w-4 h-4" />
+                      <Car className="w-4 h-4 text-[#155E38]" />
                       <span>SUV (7 Seats)</span>
                     </button>
                   </div>
                 </div>
 
-                {/* 3. Date & Passenger Count */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div>
-                    <label className="block text-[11px] font-black uppercase text-slate-600 mb-1">
-                      Travel Date
-                    </label>
-                    <input
-                      type="date"
-                      value={travelDate}
-                      onChange={(e) => setTravelDate(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white focus:outline-none"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-black uppercase text-slate-600 mb-1">
-                      Passengers
-                    </label>
-                    <select
-                      value={passengerCount}
-                      onChange={(e) => setPassengerCount(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl border border-slate-300 bg-slate-50 text-xs font-semibold text-slate-900 focus:ring-2 focus:ring-emerald-600 focus:bg-white focus:outline-none"
-                    >
-                      <option value="1">1 Passenger</option>
-                      <option value="2">2 Passengers</option>
-                      <option value="3">3 Passengers</option>
-                      <option value="4">4 Passengers</option>
-                      <option value="5">5 Passengers</option>
-                      <option value="6">6-7 Passengers (SUV)</option>
-                    </select>
-                  </div>
-                </div>
-
-                {/* 4. Dynamic Fare Box */}
-                <div className="bg-emerald-50 border border-emerald-200 p-3.5 rounded-2xl flex items-center justify-between">
+                {/* Dynamic Calculated Fare Strip */}
+                <div className="bg-emerald-50/80 border border-emerald-200 p-4 rounded-2xl flex items-center justify-between">
                   <div>
                     <span className="text-[10px] uppercase font-bold text-slate-500 block">
-                      Estimated Fare ({selectedVehicle})
+                      All-Inclusive Brochure Tariff
                     </span>
-                    <span className="text-2xl font-black text-[#064E3B]">
-                      {formatCurrency(calculatedFare)}
+                    <span className="text-2xl sm:text-3xl font-black text-[#064E3B]">
+                      {formatCurrency(activeFare)}
                     </span>
                   </div>
-                  <div className="text-right text-[10px] text-emerald-800 font-bold bg-white px-2.5 py-1 rounded-lg border border-emerald-100">
-                    Includes Fuel & Driver
+                  <div className="text-right">
+                    <span className="text-[10px] bg-[#155E38] text-white px-2.5 py-1 rounded-full font-bold">
+                      Fuel + Driver Included
+                    </span>
                   </div>
                 </div>
 
-                {/* 5. Booking Actions */}
-                <div className="pt-2 space-y-2">
+                {/* Action Buttons */}
+                <div className="pt-2 space-y-2.5">
                   <button
-                    type="submit"
-                    className="w-full bg-[#155E38] hover:bg-[#0B3B24] text-white font-extrabold py-3.5 px-4 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm active:scale-95"
+                    onClick={() =>
+                      openBookingModal({
+                        packageSlug: selectedPkgSlug,
+                        vehicleType: selectedVehicle
+                      })
+                    }
+                    className="w-full bg-[#155E38] hover:bg-[#0B3B24] text-white font-black py-4 px-4 rounded-2xl shadow-xl shadow-emerald-950/20 transition-all flex items-center justify-center gap-2 text-sm active:scale-95"
                   >
                     <Sparkles className="w-4 h-4 text-emerald-300" />
-                    <span>Book Trip Now</span>
+                    <span>Book {currentPkg.name} ({selectedVehicle})</span>
                     <ArrowRight className="w-4 h-4" />
                   </button>
 
@@ -259,19 +290,17 @@ export const HeroSection: React.FC = () => {
                     href={generateWhatsAppBookingUrl({
                       phone: settings.phone1,
                       packageName: currentPkg.name,
-                      vehicleType: selectedVehicle,
-                      travelDate: travelDate || 'Flexible',
-                      passengers: parseInt(passengerCount)
+                      vehicleType: selectedVehicle
                     })}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-2.5 px-4 rounded-xl shadow transition-all flex items-center justify-center gap-2 text-xs"
+                    className="w-full bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-3 px-4 rounded-2xl shadow transition-all flex items-center justify-center gap-2 text-xs"
                   >
                     <MessageCircle className="w-4 h-4" />
-                    <span>Instant WhatsApp Confirmation</span>
+                    <span>Instant WhatsApp Reservation</span>
                   </a>
                 </div>
-              </form>
+              </div>
             </div>
           </motion.div>
 

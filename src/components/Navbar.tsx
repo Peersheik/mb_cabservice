@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Phone, MessageCircle, Menu, X, Car, Sparkles, MapPin, ChevronDown, Compass } from 'lucide-react';
+import { Phone, MessageCircle, Menu, X, Car, Sparkles, MapPin, ShieldCheck, ArrowUpRight } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { generateWhatsAppBookingUrl } from '@/lib/utils';
 
@@ -17,7 +17,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 20) {
+      if (window.scrollY > 30) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
@@ -27,7 +27,6 @@ export const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent background scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -50,76 +49,47 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      {/* Sticky Header */}
       <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
-        {/* Top Info Strip */}
-        <div className="bg-[#064E3B] text-white text-[11px] font-semibold py-1.5 px-4 hidden sm:block border-b border-emerald-800">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1.5 text-emerald-200">
-                <MapPin className="w-3.5 h-3.5 text-emerald-400" /> Fern Hill Road, Kodaikanal
-              </span>
-              <span className="text-emerald-500">•</span>
-              <span className="text-emerald-100">Local Mountain Drivers with 15+ Yrs Experience</span>
-            </div>
-
-            <div className="flex items-center gap-4">
-              <div className="flex items-center gap-1 text-emerald-300">
-                <span className={`w-2 h-2 rounded-full ${pricingMode === 'SEASON' ? 'bg-amber-400 animate-pulse' : 'bg-emerald-400'}`} />
-                <span className="font-bold uppercase tracking-wider text-[10px]">
-                  {pricingMode === 'SEASON' ? 'Peak Season Rates Active' : 'Off-Season Rates Active'}
-                </span>
-              </div>
-              <a href={`tel:${settings.phone1}`} className="hover:text-emerald-300 transition-colors">
-                Call: {settings.phone1}
-              </a>
-            </div>
-          </div>
-        </div>
-
-        {/* Main Navbar Bar */}
+        {/* Sleek Glassmorphic Floating Header */}
         <div
           className={`transition-all duration-300 ${
             isScrolled
-              ? 'bg-white/95 backdrop-blur-md shadow-lg py-3 border-b border-slate-200'
-              : 'bg-white/90 backdrop-blur-md py-4 border-b border-emerald-100 shadow-sm'
+              ? 'bg-black/85 backdrop-blur-xl py-3 border-b border-white/10 shadow-2xl'
+              : 'bg-gradient-to-b from-black/80 via-black/40 to-transparent py-4'
           }`}
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
             {/* Logo */}
             <Link href="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl bg-gradient-to-br from-[#155E38] to-[#0B3B24] flex items-center justify-center text-white shadow-md shadow-emerald-950/20 group-hover:scale-105 transition-transform flex-shrink-0">
-                <Car className="w-5 h-5 text-emerald-200" />
+              <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-emerald-500 to-[#155E38] flex items-center justify-center text-white shadow-lg shadow-emerald-950/40 group-hover:scale-105 transition-transform flex-shrink-0">
+                <Car className="w-5 h-5 text-white" />
               </div>
               <div>
-                <div className="font-black text-lg sm:text-xl font-heading text-[#064E3B] leading-none flex items-center gap-1.5">
+                <div className="font-black text-lg sm:text-xl font-heading text-white leading-none flex items-center gap-1.5 drop-shadow">
                   <span>MB CABS</span>
-                  <span className="text-[#155E38] font-bold text-xs sm:text-sm tracking-wider uppercase">HOLIDAYS</span>
+                  <span className="text-emerald-400 font-bold text-xs sm:text-sm tracking-widest uppercase">HOLIDAYS</span>
                 </div>
-                <p className="text-[10px] sm:text-[11px] tracking-wider uppercase font-bold text-emerald-700 mt-0.5">
+                <p className="text-[10px] tracking-wider uppercase font-semibold text-emerald-300 mt-0.5">
                   MB Travels • Kodaikanal
                 </p>
               </div>
             </Link>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
+            <nav className="hidden lg:flex items-center gap-1 bg-white/10 backdrop-blur-md px-4 py-1.5 rounded-full border border-white/15 shadow-inner">
               {navLinks.map((link) => {
                 const isActive = pathname === link.href;
                 return (
                   <Link
                     key={link.label}
                     href={link.href}
-                    className={`text-sm font-bold tracking-tight transition-colors py-1 relative ${
+                    className={`text-xs xl:text-sm font-bold tracking-tight px-3.5 py-1.5 rounded-full transition-all ${
                       isActive
-                        ? 'text-[#155E38]'
-                        : 'text-slate-700 hover:text-[#155E38]'
+                        ? 'bg-emerald-500 text-slate-950 shadow-md font-black'
+                        : 'text-slate-200 hover:text-white hover:bg-white/10'
                     }`}
                   >
                     {link.label}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-[#155E38] rounded-full" />
-                    )}
                   </Link>
                 );
               })}
@@ -127,23 +97,31 @@ export const Navbar: React.FC = () => {
 
             {/* Right Action CTA Buttons */}
             <div className="hidden sm:flex items-center gap-3">
-              {/* WhatsApp Quick Link */}
+              {/* Season Pill */}
+              <div className={`text-[10px] uppercase tracking-wider font-extrabold px-3 py-1 rounded-full backdrop-blur-md border flex items-center gap-1.5 ${
+                pricingMode === 'SEASON'
+                  ? 'bg-amber-500/20 text-amber-300 border-amber-400/40'
+                  : 'bg-emerald-500/20 text-emerald-300 border-emerald-400/40'
+              }`}>
+                <span className={`w-1.5 h-1.5 rounded-full ${pricingMode === 'SEASON' ? 'bg-amber-400 animate-ping' : 'bg-emerald-400'}`} />
+                {pricingMode === 'SEASON' ? 'Season Rates' : 'Off-Season Rates'}
+              </div>
+
+              {/* Call Driver Button */}
               <a
-                href={generateWhatsAppBookingUrl({ phone: settings.phone1 })}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50 text-[#155E38] hover:bg-emerald-100 transition-colors flex items-center justify-center"
-                title="WhatsApp MB Cabs"
+                href={`tel:${settings.phone1}`}
+                className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white flex items-center justify-center transition-all"
+                title="Call MB Cabs"
               >
-                <MessageCircle className="w-4 h-4 text-[#25D366]" />
+                <Phone className="w-4 h-4 text-emerald-300" />
               </a>
 
-              {/* Book Trip Modal Button */}
+              {/* Book Cab Trigger */}
               <button
                 onClick={() => openBookingModal()}
-                className="bg-[#155E38] hover:bg-[#0B3B24] text-white text-xs sm:text-sm font-extrabold px-5 py-2.5 rounded-xl shadow-md shadow-emerald-950/20 hover:shadow-lg transition-all flex items-center gap-2 active:scale-95"
+                className="bg-emerald-500 hover:bg-emerald-400 text-slate-950 text-xs sm:text-sm font-black px-5 py-2.5 rounded-full shadow-lg shadow-emerald-950/50 hover:shadow-emerald-500/20 transition-all flex items-center gap-1.5 active:scale-95"
               >
-                <Sparkles className="w-4 h-4 text-emerald-300" />
+                <Sparkles className="w-4 h-4 text-slate-950" />
                 <span>Book Cab</span>
               </button>
             </div>
@@ -152,48 +130,51 @@ export const Navbar: React.FC = () => {
             <div className="flex items-center gap-2 lg:hidden">
               <button
                 onClick={() => openBookingModal()}
-                className="bg-[#155E38] text-white text-xs font-bold px-3 py-2 rounded-xl shadow active:scale-95"
+                className="bg-emerald-500 text-slate-950 text-xs font-black px-3.5 py-1.5 rounded-full shadow"
               >
-                Book Cab
+                Book
               </button>
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="p-2 rounded-xl border border-slate-200 text-slate-800 bg-white hover:bg-slate-50 transition-colors"
+                className="p-2 rounded-xl border border-white/20 text-white bg-black/40 backdrop-blur-md"
                 aria-label="Toggle Menu"
               >
-                {mobileMenuOpen ? <X className="w-6 h-6 text-slate-900" /> : <Menu className="w-6 h-6 text-slate-900" />}
+                {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
               </button>
             </div>
           </div>
         </div>
 
-        {/* Full-Screen Mobile Drawer */}
+        {/* Mobile Full Screen Menu */}
         {mobileMenuOpen && (
-          <div className="lg:hidden fixed inset-x-0 top-[60px] sm:top-[90px] bottom-0 bg-white z-50 flex flex-col justify-between p-6 shadow-2xl overflow-y-auto animate-in slide-in-from-top duration-300">
-            <div className="space-y-4">
-              <div className="p-3 bg-emerald-50 rounded-2xl border border-emerald-200 flex items-center justify-between">
-                <span className="text-xs font-bold text-slate-700">Active Rate Status:</span>
-                <span className="text-xs font-black text-[#064E3B] bg-white px-2.5 py-1 rounded-xl shadow-sm">
-                  {pricingMode === 'SEASON' ? '🔥 Season Pricing' : '🟢 Off-Season Rates'}
-                </span>
-              </div>
+          <div className="lg:hidden fixed inset-0 bg-slate-950/95 backdrop-blur-2xl z-50 flex flex-col justify-between p-6 text-white pt-20 animate-in fade-in duration-200">
+            <button
+              onClick={() => setMobileMenuOpen(false)}
+              className="absolute top-5 right-5 p-2 rounded-full bg-white/10 text-white"
+            >
+              <X className="w-6 h-6" />
+            </button>
 
-              <div className="divide-y divide-slate-100">
+            <div className="space-y-4">
+              <div className="text-xs uppercase font-bold text-emerald-400 tracking-widest pb-2 border-b border-white/10">
+                Menu Navigation
+              </div>
+              <div className="space-y-2">
                 {navLinks.map((link) => (
                   <Link
                     key={link.label}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className="py-3 text-base font-extrabold text-[#064E3B] flex items-center justify-between hover:text-[#155E38]"
+                    className="block py-2.5 text-lg font-black text-white hover:text-emerald-400 border-b border-white/5 flex items-center justify-between"
                   >
                     <span>{link.label}</span>
-                    <span className="text-xs text-emerald-600 font-bold">→</span>
+                    <ArrowUpRight className="w-4 h-4 text-emerald-400 opacity-60" />
                   </Link>
                 ))}
               </div>
             </div>
 
-            <div className="pt-6 border-t border-slate-200 space-y-3">
+            <div className="pt-6 border-t border-white/10 space-y-3">
               <a
                 href={generateWhatsAppBookingUrl({ phone: settings.phone1 })}
                 target="_blank"
@@ -202,50 +183,16 @@ export const Navbar: React.FC = () => {
               >
                 <MessageCircle className="w-5 h-5" /> Instant WhatsApp Booking
               </a>
-
               <a
                 href={`tel:${settings.phone1}`}
-                className="w-full bg-[#155E38] text-white py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow"
+                className="w-full bg-emerald-600 text-white py-3.5 rounded-2xl font-black text-sm flex items-center justify-center gap-2"
               >
-                <Phone className="w-5 h-5 text-emerald-300" /> Call {settings.phone1}
+                <Phone className="w-5 h-5" /> Call {settings.phone1}
               </a>
             </div>
           </div>
         )}
       </header>
-
-      {/* Mobile Bottom Quick Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-t border-slate-200 px-4 py-2.5 flex items-center justify-between shadow-2xl">
-        <a
-          href={`tel:${settings.phone1}`}
-          className="flex-1 flex flex-col items-center justify-center py-1 text-slate-800 hover:text-[#155E38]"
-        >
-          <Phone className="w-4 h-4 text-[#155E38] mb-0.5" />
-          <span className="text-[10px] font-black uppercase tracking-wider">Call Now</span>
-        </a>
-
-        <div className="w-[1px] h-6 bg-slate-200" />
-
-        <a
-          href={generateWhatsAppBookingUrl({ phone: settings.phone1 })}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex-1 flex flex-col items-center justify-center py-1 text-[#25D366]"
-        >
-          <MessageCircle className="w-4 h-4 mb-0.5" />
-          <span className="text-[10px] font-black uppercase tracking-wider">WhatsApp</span>
-        </a>
-
-        <div className="w-[1px] h-6 bg-slate-200" />
-
-        <button
-          onClick={() => openBookingModal()}
-          className="flex-1 bg-[#155E38] text-white py-2 px-3 rounded-xl text-xs font-black shadow-md uppercase tracking-wider flex items-center justify-center gap-1.5 ml-2 active:scale-95"
-        >
-          <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-          <span>Book Cab</span>
-        </button>
-      </div>
     </>
   );
 };

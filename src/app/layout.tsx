@@ -59,6 +59,14 @@ export const metadata: Metadata = {
   alternates: {
     canonical: 'https://www.kodaimbcabsholidays.com',
   },
+  icons: {
+    icon: [
+      { url: '/logo.png', sizes: 'any' },
+      { url: '/favicon.ico', sizes: 'any' }
+    ],
+    shortcut: '/logo.png',
+    apple: '/logo.png',
+  },
   openGraph: {
     title: 'Kodai MB Cabs | Top Kodai Call Taxi Service & Kodai Cab Service',
     description:

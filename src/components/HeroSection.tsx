@@ -188,11 +188,20 @@ export const HeroSection: React.FC = () => {
             <div className="bg-white/95 backdrop-blur-xl rounded-3xl p-6 sm:p-8 text-slate-900 shadow-2xl border border-white/40 relative">
               {/* Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
-                <div>
-                  <h3 className="text-xl font-black font-heading text-[#064E3B]">
-                    Instant Cab Booking
-                  </h3>
-                  <p className="text-xs text-slate-500 mt-0.5">Fixed official brochure rates</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-11 h-11 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden">
+                    <img
+                      src="/logo.png"
+                      alt="MB Travels Logo"
+                      className="w-full h-full object-contain rounded-full"
+                    />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                      Instant Cab Booking
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-0.5">Fixed official brochure rates</p>
+                  </div>
                 </div>
                 <span className="text-xs font-black px-3 py-1 rounded-full bg-emerald-100 text-emerald-900">
                   {pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'}

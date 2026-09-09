@@ -105,16 +105,25 @@ export const BookingModal: React.FC = () => {
 
         {!isSubmitted ? (
           <div className="p-6 sm:p-8">
-            <div className="mb-6">
-              <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#155E38] text-[11px] font-black tracking-wider uppercase px-3 py-1 rounded-full mb-2 border border-emerald-200">
-                MB CABS HOLIDAYS • DIRECT BOOKING
-              </span>
-              <h2 className="text-2xl sm:text-3xl font-black font-heading text-[#064E3B]">
-                Book Your Kodaikanal Trip
-              </h2>
-              <p className="text-slate-600 text-xs sm:text-sm mt-1">
-                Fixed brochure pricing with experienced local hill drivers.
-              </p>
+            <div className="mb-6 flex items-start gap-3.5">
+              <div className="w-12 h-12 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden mt-0.5">
+                <img
+                  src="/logo.png"
+                  alt="MB Travels Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
+              </div>
+              <div>
+                <span className="inline-flex items-center gap-1.5 bg-emerald-50 text-[#155E38] text-[11px] font-black tracking-wider uppercase px-3 py-0.5 rounded-full mb-1 border border-emerald-200">
+                  KODAI MB CABS • DIRECT DISPATCH
+                </span>
+                <h2 className="text-2xl sm:text-3xl font-black font-heading text-[#064E3B]">
+                  Book Your Kodaikanal Trip
+                </h2>
+                <p className="text-slate-600 text-xs sm:text-sm mt-0.5">
+                  Fixed brochure pricing with experienced local hill drivers.
+                </p>
+              </div>
             </div>
 
             {/* Price Banner */}

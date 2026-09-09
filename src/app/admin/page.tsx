@@ -120,8 +120,12 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-10 max-w-md w-full border border-slate-200">
           <div className="text-center mb-8">
-            <div className="w-14 h-14 rounded-2xl bg-[#155E38] text-white flex items-center justify-center mx-auto mb-3 shadow-md">
-              <Lock className="w-7 h-7" />
+            <div className="w-16 h-16 rounded-full bg-white p-1 flex items-center justify-center mx-auto mb-3 shadow-md border border-emerald-500/40 overflow-hidden">
+              <img
+                src="/logo.png"
+                alt="MB Travels Logo"
+                className="w-full h-full object-contain rounded-full"
+              />
             </div>
             <h1 className="text-2xl font-black font-heading text-[#064E3B]">
               MB Cabs Easy Admin
@@ -188,20 +192,29 @@ export default function AdminDashboardPage() {
     <div className="min-h-screen bg-slate-50 text-slate-900 pb-20">
       {/* Super Simple Top Header */}
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-black font-heading text-[#064E3B]">
-                MB CABS EASY CONTROL PANEL
-              </h1>
-              <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
-                {syncStatus}
-              </span>
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow border border-emerald-500/30 overflow-hidden flex-shrink-0">
+              <img
+                src="/logo.png"
+                alt="MB Travels Logo"
+                className="w-full h-full object-contain rounded-full"
+              />
             </div>
-            <p className="text-xs text-slate-500">
-              Simple 1-click pricing and booking manager with permanent cloud storage
-            </p>
+            <div>
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-black font-heading text-[#064E3B]">
+                  MB CABS EASY CONTROL PANEL
+                </h1>
+                <span className="text-[10px] bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded-full flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping" />
+                  {syncStatus}
+                </span>
+              </div>
+              <p className="text-xs text-slate-500">
+                Simple 1-click pricing and booking manager with permanent cloud storage
+              </p>
+            </div>
           </div>
 
           <div className="flex items-center gap-3">

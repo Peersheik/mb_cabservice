@@ -19,15 +19,19 @@ export const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-emerald-600 flex items-center justify-center text-white font-black text-xl shadow-lg">
-                MB
+              <div className="w-14 h-14 rounded-full bg-white p-1 flex items-center justify-center shadow-lg border border-emerald-500/40 flex-shrink-0">
+                <img
+                  src="/logo.png"
+                  alt="MB Travels & Kodai MB Cabs Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
               </div>
               <div>
                 <h3 className="font-extrabold text-xl font-heading tracking-tight text-white">
-                  KODAI MB CABS
+                  MB TRAVELS & KODAI CABS
                 </h3>
                 <p className="text-xs text-emerald-400 font-semibold tracking-widest uppercase">
-                  Kodai Call Taxi Service • Kodai Cab Service
+                  #1 Kodai Call Taxi Service • Kodai Cab Service
                 </p>
               </div>
             </div>

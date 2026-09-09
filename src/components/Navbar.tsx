@@ -86,16 +86,20 @@ export const Navbar: React.FC = () => {
             
             {/* 1. BRAND LOGO */}
             <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-              <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-gradient-to-br from-emerald-400 to-[#155E38] flex items-center justify-center text-slate-950 shadow group-hover:scale-105 transition-transform flex-shrink-0">
-                <Car className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white p-0.5 shadow-md group-hover:scale-105 transition-transform flex-shrink-0 overflow-hidden border border-emerald-400/40">
+                <img
+                  src="/logo.png"
+                  alt="MB Travels & Kodai MB Cabs Logo"
+                  className="w-full h-full object-contain rounded-full"
+                />
               </div>
               <div className="flex flex-col">
-                <div className="flex items-center gap-1 leading-tight">
-                  <span className="font-black text-base sm:text-lg font-heading text-white tracking-tight">MB CABS</span>
-                  <span className="text-emerald-400 font-bold text-[10px] sm:text-xs tracking-wider uppercase">HOLIDAYS</span>
+                <div className="flex items-center gap-1.5 leading-tight">
+                  <span className="font-black text-base sm:text-lg font-heading text-white tracking-tight">MB TRAVELS</span>
+                  <span className="bg-emerald-500/20 text-emerald-300 font-bold text-[9px] sm:text-[10px] px-1.5 py-0.5 rounded uppercase border border-emerald-400/30">CABS</span>
                 </div>
-                <span className="text-[9px] tracking-wider uppercase font-semibold text-slate-300 -mt-0.5 hidden xs:inline">
-                  Kodaikanal
+                <span className="text-[10px] tracking-wider font-semibold text-slate-300 -mt-0.5">
+                  Kodai Call Taxi Service
                 </span>
               </div>
             </Link>

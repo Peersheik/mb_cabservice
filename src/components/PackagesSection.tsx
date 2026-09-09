@@ -16,13 +16,13 @@ export const PackagesSection: React.FC = () => {
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
           <div>
             <span className="text-[#155E38] text-xs sm:text-sm font-black uppercase tracking-widest bg-emerald-50 px-4 py-1.5 rounded-full border border-emerald-200 inline-flex items-center gap-1.5 mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#155E38]" /> OFFICIAL 5 SIGHTSEEING PACKAGES
+              <Sparkles className="w-3.5 h-3.5 text-[#155E38]" /> #1 KODAI SIGHTSEEING TAXI PACKAGES
             </span>
             <h2 className="text-3xl sm:text-5xl font-black font-heading tracking-tight text-[#064E3B] mt-1">
-              CHOOSE YOUR KODAIKANAL CIRCUIT
+              Official Kodaikanal Sightseeing Tour Circuits
             </h2>
             <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl">
-              Official brochure circuits with exact real spots, clean vehicles, and transparent tariffs.
+              Compare fares and book the most popular <strong>Kodai cab service</strong> and <strong>Kodai call taxi service</strong> packages with verified local mountain drivers and 100% fixed official brochure rates.
             </p>
           </div>
 

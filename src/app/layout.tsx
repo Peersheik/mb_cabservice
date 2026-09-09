@@ -112,60 +112,111 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   // LocalBusiness Schema structured data for high local Google SEO ranking
-  const structuredData = {
+  // Multi-entity JSON-LD Graph for Google Search, Google AI Overviews (AEO), and Local Maps (GEO)
+  const structuredDataGraph = {
     '@context': 'https://schema.org',
-    '@type': 'TaxiService',
-    name: 'Kodai MB Cabs Holidays & MB Travels',
-    alternateName: [
-      'Kodai MB Cabs',
-      'Kodai Call Taxi Service',
-      'Kodai Cab Service',
-      'kodaimbcabs',
-      'kodaicalltaxiservice',
-      'kodaicabservice'
+    '@graph': [
+      {
+        '@type': ['TaxiService', 'TravelAgency'],
+        '@id': 'https://www.kodaimbcabsholidays.com/#organization',
+        name: 'Kodai MB Cabs Holidays & MB Travels',
+        legalName: 'MB Travels Kodaikanal',
+        alternateName: [
+          'Kodai MB Cabs',
+          'Kodai Call Taxi Service',
+          'Kodai Cab Service',
+          'kodaimbcabs',
+          'kodaicalltaxiservice',
+          'kodaicabservice'
+        ],
+        image: 'https://www.kodaimbcabsholidays.com/logo.png',
+        logo: 'https://www.kodaimbcabsholidays.com/logo.png',
+        url: 'https://www.kodaimbcabsholidays.com',
+        telephone: '+919942472778',
+        email: 'info@kodaimbcabsholidays.com',
+        priceRange: '₹2500 - ₹5000',
+        currenciesAccepted: 'INR',
+        paymentAccepted: 'Cash, UPI, Google Pay, PhonePe, Net Banking',
+        description:
+          'Kodai MB Cabs is the leading Kodai Call Taxi Service and Kodai Cab Service in Kodaikanal. We offer official sightseeing tour packages, seasoned hill drivers, fixed brochure rates, and 24/7 outstation transfers to Madurai, Kodai Road, Dindigul, and Coimbatore.',
+        address: {
+          '@type': 'PostalAddress',
+          streetAddress: 'Fern Hill Road, Near Hotel Tamilnadu',
+          addressLocality: 'Kodaikanal',
+          postalCode: '624101',
+          addressRegion: 'Tamil Nadu',
+          addressCountry: 'IN',
+        },
+        geo: {
+          '@type': 'GeoCoordinates',
+          latitude: 10.2381,
+          longitude: 77.4891,
+        },
+        hasMap: 'https://maps.google.com/?q=10.2381,77.4891',
+        openingHoursSpecification: {
+          '@type': 'OpeningHoursSpecification',
+          dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+          opens: '00:00',
+          closes: '23:59',
+        },
+        areaServed: [
+          { '@type': 'AdministrativeArea', name: 'Kodaikanal' },
+          { '@type': 'AdministrativeArea', name: 'Poombarai' },
+          { '@type': 'AdministrativeArea', name: 'Mannavanur' },
+          { '@type': 'AdministrativeArea', name: 'Vattakanal' },
+          { '@type': 'AdministrativeArea', name: 'Berijam Lake' },
+          { '@type': 'AdministrativeArea', name: 'Madurai' },
+          { '@type': 'AdministrativeArea', name: 'Kodai Road' },
+          { '@type': 'AdministrativeArea', name: 'Dindigul' },
+          { '@type': 'AdministrativeArea', name: 'Coimbatore' },
+        ],
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          reviewCount: '356',
+          bestRating: '5',
+          worstRating: '1',
+        },
+      },
+      {
+        '@type': 'FAQPage',
+        '@id': 'https://www.kodaimbcabsholidays.com/#faq',
+        mainEntity: [
+          {
+            '@type': 'Question',
+            name: 'Why choose Kodai MB Cabs over other Kodai call taxi service providers?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Kodai MB Cabs provides guaranteed on-time pickups, 15+ years experienced mountain drivers, 100% transparent brochure rates with no hidden hill charges, sanitized AC and non-AC vehicles, and 24/7 dedicated telephone and WhatsApp dispatch.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'How can I book a reliable Kodai cab service for sightseeing packages?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'You can instantly book your Kodai cab service online via our fare calculator or WhatsApp us directly at +91 99424 72778. Choose from 5 official Kodaikanal tour circuits including Local Tour, City Tour, Berijam Lake Forest Tour, Poombarai Village, and Picnic Trek Tour.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'What is the best call taxi service in Kodaikanal for family sightseeing?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Kodai MB Cabs (MB Travels) is rated 4.9/5 by over 350+ families for safe Ghat road driving, clean sanitized Sedans & 7-seater SUVs, and fixed official brochure tariffs.',
+            },
+          },
+          {
+            '@type': 'Question',
+            name: 'Do you offer 24x7 taxi pickup from Madurai, Dindigul, or Kodai Road Railway Station to Kodaikanal?',
+            acceptedAnswer: {
+              '@type': 'Answer',
+              text: 'Yes! As Kodaikanal leading call taxi service, we provide 24x7 one-way and round-trip transfers from Madurai Airport/Station, Dindigul Junction, Kodai Road Railway Station, and Coimbatore Airport directly to your Kodaikanal hotel.',
+            },
+          },
+        ],
+      },
     ],
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
-    '@id': 'https://www.kodaimbcabsholidays.com',
-    url: 'https://www.kodaimbcabsholidays.com',
-    telephone: '+919942472778',
-    priceRange: '₹2500 - ₹5000',
-    description:
-      'Kodai MB Cabs offers premier Kodai Call Taxi Service and Kodai Cab Service with verified local drivers, fixed rates, and customized tour packages in Kodaikanal.',
-    address: {
-      '@type': 'PostalAddress',
-      streetAddress: 'Fern Hill Road, Near Hotel Tamilnadu',
-      addressLocality: 'Kodaikanal',
-      postalCode: '624101',
-      addressRegion: 'Tamil Nadu',
-      addressCountry: 'IN',
-    },
-    geo: {
-      '@type': 'GeoCoordinates',
-      latitude: 10.2381,
-      longitude: 77.4891,
-    },
-    openingHoursSpecification: {
-      '@type': 'OpeningHoursSpecification',
-      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
-      opens: '00:00',
-      closes: '23:59',
-    },
-    areaServed: [
-      'Kodaikanal',
-      'Poombarai',
-      'Mannavanur',
-      'Vattakanal',
-      'Berijam Lake',
-      'Madurai',
-      'Kodai Road',
-      'Dindigul',
-      'Coimbatore',
-    ],
-    aggregateRating: {
-      '@type': 'AggregateRating',
-      ratingValue: '4.9',
-      reviewCount: '356',
-    },
   };
 
   return (
@@ -173,7 +224,7 @@ export default function RootLayout({
       <head>
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredDataGraph) }}
         />
       </head>
       <body className={`${inter.variable} ${outfit.variable} antialiased`}>

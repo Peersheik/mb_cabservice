@@ -10,7 +10,15 @@ export const ReviewsAndFaqSection: React.FC = () => {
 
   const faqs = [
     {
-      q: 'How does MB Cabs calculate sightseeing tour pricing?',
+      q: 'Why choose Kodai MB Cabs over other Kodai call taxi service providers?',
+      a: 'Kodai MB Cabs provides guaranteed on-time pickups, 15+ years experienced mountain drivers, 100% transparent brochure rates with no hidden hill charges, sanitized AC and non-AC vehicles, and 24/7 dedicated telephone and WhatsApp dispatch.'
+    },
+    {
+      q: 'How can I book a reliable Kodai cab service for sightseeing packages?',
+      a: 'You can instantly book your Kodai cab service online via our fare calculator or WhatsApp us directly at +91 99424 72778. Choose from 5 official Kodaikanal tour circuits including Local Tour, City Tour, Berijam Lake Forest Tour, Poombarai Village, and Picnic Trek Tour.'
+    },
+    {
+      q: 'How does Kodai MB Cabs calculate sightseeing tour pricing?',
       a: 'We offer straightforward, all-inclusive pricing per vehicle (Sedan up to 4 pax or SUV up to 7 pax). The fare covers fuel, driver allowances, parking, and all scheduled stops on your chosen package. There are no hidden driver fees.'
     },
     {
@@ -22,8 +30,8 @@ export const ReviewsAndFaqSection: React.FC = () => {
       a: 'Berijam Lake is a strictly protected biodiversity reserve with daily government entry quotas. When you book our Forest Tour, our experienced local drivers assist in coordinating the necessary Forest Department vehicle permit and entry paperwork.'
     },
     {
-      q: 'Do you offer pickup from Madurai, Dindigul, or Kodai Road Railway Station?',
-      a: 'Yes! We provide 24x7 one-way and round-trip transfers from Madurai Airport/Station, Dindigul Junction, Kodai Road Railway Station, and Coimbatore Airport directly to your Kodaikanal hotel.'
+      q: 'Do you offer 24x7 pickup from Madurai, Dindigul, or Kodai Road Railway Station?',
+      a: 'Yes! As Kodaikanal’s leading call taxi service, we provide 24x7 one-way and round-trip transfers from Madurai Airport/Station, Dindigul Junction, Kodai Road Railway Station, and Coimbatore Airport directly to your Kodaikanal hotel.'
     },
     {
       q: 'Can we customize the places we want to visit in a day?',

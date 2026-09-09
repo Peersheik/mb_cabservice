@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next';
 import { INITIAL_PACKAGES, INITIAL_TOURIST_PLACES } from '@/lib/data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://kodaimbcabsholidays.com';
+  const baseUrl = 'https://www.kodaimbcabsholidays.com';
 
   const staticRoutes: MetadataRoute.Sitemap = [
     {

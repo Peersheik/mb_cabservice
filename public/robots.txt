@@ -1,7 +1,11 @@
+# Robots.txt for Kodai MB Cabs Holidays - #1 Kodaikanal Taxi & Cab Service
+# Keywords: kodaicalltaxiservice, kodaicabservice, kodaimbcabs, kodai call taxi service, kodai cab service
+
 User-agent: *
 Allow: /
 Disallow: /admin
 Disallow: /api/
 
+# Sitemaps
+Sitemap: https://www.kodaimbcabsholidays.com/sitemap.xml
 Sitemap: https://kodaimbcabsholidays.com/sitemap.xml
-Sitemap: https://mbcabs.vercel.app/sitemap.xml

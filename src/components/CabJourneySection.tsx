@@ -32,13 +32,13 @@ export const CabJourneySection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <span className="text-[#155E38] text-xs font-black uppercase tracking-widest bg-emerald-100 px-3.5 py-1 rounded-full border border-emerald-300 inline-flex items-center gap-1.5 mb-2">
-            <Car className="w-3.5 h-3.5 text-[#155E38]" /> YOUR LOCAL TRAVEL PARTNER
+            <Car className="w-3.5 h-3.5 text-[#155E38]" /> #1 KODAI CALL TAXI & CAB SERVICE
           </span>
           <h2 className="text-3xl sm:text-5xl font-black font-heading text-[#064E3B] mt-2">
-            YOUR JOURNEY STARTS HERE.
+            Why Travellers Rate Kodai MB Cabs #1
           </h2>
           <p className="text-slate-600 text-sm sm:text-base mt-3 leading-relaxed">
-            You are not just booking a taxi. You are travelling with a reliable local friend who knows the best viewpoint timings, shortcut routes, and fresh hill tea spots.
+            When you need the best <strong>Kodai call taxi service</strong> or a dependable <strong>Kodai cab service</strong>, Kodai MB Cabs delivers unmatched hill safety, transparent fares, and local drivers with 15+ years of experience.
           </p>
         </div>
 
@@ -48,13 +48,13 @@ export const CabJourneySection: React.FC = () => {
             {/* Left Column: Details */}
             <div className="lg:col-span-6 space-y-6">
               <div className="inline-block bg-emerald-50 text-[#155E38] text-xs font-bold px-3 py-1 rounded-md border border-emerald-200">
-                MB Travels • Proprietor: P. Murugaboopathi
+                Kodai MB Cabs • MB Travels • Proprietor: P. Murugaboopathi
               </div>
               <h3 className="text-2xl sm:text-3xl font-extrabold text-[#064E3B] leading-snug">
-                Experience every curve of the Palani Hills in total peace and comfort.
+                The most recommended Kodai cab service for hill tours & outstation transfers.
               </h3>
               <p className="text-slate-600 text-sm leading-relaxed">
-                Whether arriving from Madurai, Kodai Road Railway Station, or Dindigul, our drivers meet you right on time with clean vehicles and friendly local assistance.
+                Whether arriving from Madurai Airport, Kodai Road Railway Station, Dindigul, or Coimbatore, our drivers meet you right on time with clean vehicles, clear tariffs, and genuine mountain hospitality.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-1">

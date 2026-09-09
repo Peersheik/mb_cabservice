@@ -24,16 +24,16 @@ export const Footer: React.FC = () => {
               </div>
               <div>
                 <h3 className="font-extrabold text-xl font-heading tracking-tight text-white">
-                  MB CABS HOLIDAYS
+                  KODAI MB CABS
                 </h3>
                 <p className="text-xs text-emerald-400 font-semibold tracking-widest uppercase">
-                  MB Travels • Kodaikanal
+                  Kodai Call Taxi Service • Kodai Cab Service
                 </p>
               </div>
             </div>
 
             <p className="text-slate-400 text-sm leading-relaxed max-w-sm">
-              Your trusted local travel partner in Kodaikanal. We provide clean, comfortable cabs, seasoned mountain drivers, scenic sightseeing circuits, and personalized hill-station holiday experiences.
+              Kodai MB Cabs is Kodaikanal&apos;s leading call taxi and cab service provider. We provide clean, comfortable cabs, seasoned mountain drivers, scenic sightseeing circuits, and personalized hill-station holiday experiences.
             </p>
 
             <div className="flex items-center gap-3 pt-2">

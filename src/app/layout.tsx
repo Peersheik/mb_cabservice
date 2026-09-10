@@ -18,35 +18,36 @@ const outfit = Outfit({
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.kodaimbcabsholidays.com'),
   title: {
-    default: 'Kodai MB Cabs | #1 Kodai Call Taxi Service & Kodai Cab Service Kodaikanal',
+    default: 'Kodaikanal Call Taxi & Cab Service | Kodai MB Cabs Holidays',
     template: '%s | Kodai MB Cabs Holidays'
   },
   description:
-    'Book Kodai MB Cabs - top rated Kodai Call Taxi Service & Kodai Cab Service in Kodaikanal. 5 official sightseeing packages, experienced local hill drivers, 24/7 airport & railway station pickup from Madurai, Kodai Road, Coimbatore.',
+    '#1 Kodaikanal Call Taxi Service & Kodai Cab Service. Book official Kodaikanal sightseeing packages, airport & Kodai Road railway pickup with experienced local hill drivers. Fixed brochure rates & 24x7 cab booking.',
   keywords: [
+    'kodaikanalcalltaxiservice',
     'kodaicalltaxiservice',
     'kodaicabservice',
-    'kodaimbcabs',
-    'kodai call taxi service',
-    'kodai cab service',
-    'kodai mb cabs',
     'kodaikanal call taxi service',
     'kodaikanal cab service',
-    'best call taxi service in kodai',
-    'kodaikanal cab booking',
+    'kodai call taxi',
+    'kodai cab service',
+    'kodaimbcabs',
+    'kodai mb cabs',
+    'kodaikanal call taxi',
     'kodaikanal taxi service',
+    'kodaikanal sightseeing cab',
+    'best call taxi service in kodaikanal',
+    'kodaikanal cab booking',
     'mb cabs holidays',
     'mb travels kodaikanal',
     'kodaikanal sightseeing packages',
-    'kodaikanal tour package with cab',
-    'kodaikanal local sightseeing taxi fare',
+    'madurai to kodaikanal taxi',
+    'kodai road to kodaikanal cab',
+    'coimbatore to kodaikanal taxi',
     'berijam lake forest tour cab',
     'poombarai village tour taxi',
     'mannavanur lake cab booking',
-    'madurai to kodaikanal taxi',
-    'kodai road to kodaikanal cab',
-    'kodaikanal outstation taxi service',
-    'kodaikanal car rental with driver'
+    'kodaikanal outstation taxi service'
   ],
   authors: [{ name: 'MB Cabs Holidays & MB Travels - P. Murugaboopathi' }],
   creator: 'MB Cabs Holidays (Kodai MB Cabs)',
@@ -117,14 +118,18 @@ export default function RootLayout({
     '@context': 'https://schema.org',
     '@graph': [
       {
-        '@type': ['TaxiService', 'TravelAgency'],
+        '@type': 'LocalBusiness',
         '@id': 'https://www.kodaimbcabsholidays.com/#organization',
         name: 'Kodai MB Cabs Holidays & MB Travels',
         legalName: 'MB Travels Kodaikanal',
+        additionalType: 'https://schema.org/TaxiService',
         alternateName: [
+          'Kodaikanal Call Taxi',
+          'Kodaikanal Call Taxi Service',
           'Kodai MB Cabs',
           'Kodai Call Taxi Service',
           'Kodai Cab Service',
+          'kodaikanalcalltaxiservice',
           'kodaimbcabs',
           'kodaicalltaxiservice',
           'kodaicabservice'
@@ -138,7 +143,7 @@ export default function RootLayout({
         currenciesAccepted: 'INR',
         paymentAccepted: 'Cash, UPI, Google Pay, PhonePe, Net Banking',
         description:
-          'Kodai MB Cabs is the leading Kodai Call Taxi Service and Kodai Cab Service in Kodaikanal. We offer official sightseeing tour packages, seasoned hill drivers, fixed brochure rates, and 24/7 outstation transfers to Madurai, Kodai Road, Dindigul, and Coimbatore.',
+          'Kodai MB Cabs is the leading Kodaikanal Call Taxi Service and Kodai Cab Service in Kodaikanal. We offer official sightseeing tour packages, seasoned hill drivers, fixed brochure rates, and 24/7 outstation transfers to Madurai, Kodai Road, Dindigul, and Coimbatore.',
         address: {
           '@type': 'PostalAddress',
           streetAddress: 'Fern Hill Road, Near Hotel Tamilnadu',
@@ -176,6 +181,21 @@ export default function RootLayout({
           reviewCount: '356',
           bestRating: '5',
           worstRating: '1',
+          itemReviewed: {
+            '@type': 'LocalBusiness',
+            name: 'Kodai MB Cabs Holidays & MB Travels',
+            image: 'https://www.kodaimbcabsholidays.com/logo.png',
+            telephone: '+919942472778',
+            priceRange: '₹2500 - ₹5000',
+            address: {
+              '@type': 'PostalAddress',
+              streetAddress: 'Fern Hill Road, Near Hotel Tamilnadu',
+              addressLocality: 'Kodaikanal',
+              postalCode: '624101',
+              addressRegion: 'Tamil Nadu',
+              addressCountry: 'IN',
+            }
+          }
         },
       },
       {

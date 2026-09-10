@@ -125,9 +125,8 @@ export const HeroSection: React.FC = () => {
               transition={{ delay: 0.1 }}
               className="text-4xl sm:text-6xl md:text-7xl font-black font-heading tracking-tight leading-[1.08] text-white drop-shadow-2xl"
             >
-              Kodai MB Cabs <br />
-              <span className="text-emerald-400 drop-shadow">Best Kodai Cab & Call Taxi</span> <br />
-              Starts Here.
+              Kodaikanal Call Taxi & Cab Service <br />
+              <span className="text-emerald-400 drop-shadow">Kodai MB Cabs Holidays</span>
             </motion.h1>
 
             <motion.p
@@ -136,7 +135,7 @@ export const HeroSection: React.FC = () => {
               transition={{ delay: 0.2 }}
               className="text-base sm:text-xl text-slate-200 font-normal leading-relaxed max-w-xl drop-shadow"
             >
-              Looking for reliable <strong>Kodai Call Taxi Service</strong> or <strong>Kodai Cab Service</strong>? Kodai MB Cabs brings you verified hill drivers, fixed brochure rates, and scenic Kodaikanal tour packages.
+              Book the #1 <strong>Kodaikanal Call Taxi Service</strong> and <strong>Kodai Cab Service</strong>. Experience 5 official sightseeing packages, experienced local hill drivers, 100% fixed transparent brochure rates, and 24x7 outstation pickups.
             </motion.p>
 
             {/* Interactive View Selector Indicator */}

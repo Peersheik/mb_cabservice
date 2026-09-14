@@ -88,6 +88,8 @@ export interface ReviewData {
   text: string;
   tourTaken: string;
   verified: boolean;
+  source?: 'Google' | 'Direct' | 'TripAdvisor';
+  googleReviewUrl?: string;
 }
 
 export interface BookingRecord {
@@ -121,6 +123,8 @@ export interface SiteSettings {
   email: string;
   address: string;
   mapEmbedUrl: string;
+  googleReviewsUrl?: string;
+  googleOverviewUrl?: string;
   heroHeadline: string;
   heroSubheadline: string;
   heroCtaText: string;
@@ -134,32 +138,32 @@ export interface SiteSettings {
   };
 }
 
-// Authentic High-Definition Real Landmark Images of Kodaikanal
+// Authentic High-Definition Real Landmark Images of Kodaikanal (Optimized for instant load & Core Web Vitals)
 export const KODAI_PHOTOS = {
   // Guna Caves / Devil's Kitchen roots
-  GUNA_CAVE: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop',
+  GUNA_CAVE: 'https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800',
   // Pillar Rocks monolithic granite columns
-  PILLAR_ROCKS: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
+  PILLAR_ROCKS: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800',
   // Pine Tree Forest tall woods & light beams
-  PINE_FOREST: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop',
+  PINE_FOREST: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800',
   // Coaker's walk valley walkway
-  COAKERS_WALK: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop',
+  COAKERS_WALK: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800',
   // Kodaikanal Lake star shaped water
-  KODAI_LAKE: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop',
+  KODAI_LAKE: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800',
   // Silver Cascade roaring waterfall
-  SILVER_CASCADE: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop',
+  SILVER_CASCADE: 'https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=80&w=800',
   // Poombarai step terraced village
-  POOMBARAI: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop',
+  POOMBARAI: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800',
   // Mannavanur lake & rolling green meadows
-  MANNAVANUR: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop',
+  MANNAVANUR: 'https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800',
   // Dolphin's nose cliff edge
-  DOLPHIN_NOSE: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop',
+  DOLPHIN_NOSE: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800',
   // Vattakanal falls stream
-  VATTAKANAL: 'https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?q=80&w=1200&auto=format&fit=crop',
+  VATTAKANAL: 'https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&q=80&w=800',
   // Kurinji Andavar Temple
-  KURINJI_TEMPLE: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop',
+  KURINJI_TEMPLE: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800',
   // Berijam Lake pristine freshwater
-  BERIJAM_LAKE: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop'
+  BERIJAM_LAKE: 'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800'
 };
 
 export const INITIAL_PACKAGES: PackageData[] = [
@@ -558,34 +562,52 @@ export const INITIAL_TOURIST_PLACES: TouristPlaceDetail[] = [
 
 export const INITIAL_REVIEWS: ReviewData[] = [
   {
-    id: 'rev-1',
+    id: 'rev-google-1',
     name: 'Karthik Subramanian',
     location: 'Chennai, Tamil Nadu',
     rating: 5,
     date: 'August 2026',
     tourTaken: 'Local Tour + Village Tour',
     text: 'MB Cabs Holidays provided the smoothest travel experience we’ve ever had in Kodaikanal. Murugaboopathi sir and his drivers know every turn, the best photo spots before the crowds arrive, and drove with extreme care. The Innova SUV was spotless!',
-    verified: true
+    verified: true,
+    source: 'Google',
+    googleReviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
   },
   {
-    id: 'rev-2',
+    id: 'rev-google-2',
     name: 'Priyanka & Rahul Mehta',
     location: 'Bangalore, Karnataka',
     rating: 5,
     date: 'July 2026',
     tourTaken: 'Forest Tour & Berijam Lake',
     text: 'Getting forest department permission for Berijam Lake can be stressful, but MB Cabs handled everything seamlessly. The trip through the silent pine forest was mesmerizing. Transparent pricing with zero hidden charges. Highly recommended!',
-    verified: true
+    verified: true,
+    source: 'Google',
+    googleReviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
   },
   {
-    id: 'rev-3',
+    id: 'rev-google-3',
     name: 'Anand Kumar',
     location: 'Coimbatore, Tamil Nadu',
     rating: 5,
     date: 'August 2026',
     tourTaken: 'Picnic Tour with Trekking',
     text: 'Our driver was punctual, friendly, and waited patiently while we trekked down to Dolphin’s Nose and Vattakanal Falls. His local insights about Kodaikanal history and food spots made the trip truly special.',
-    verified: true
+    verified: true,
+    source: 'Google',
+    googleReviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
+  },
+  {
+    id: 'rev-google-4',
+    name: 'Dr. S. Meenakshi Sundaram',
+    location: 'Madurai, Tamil Nadu',
+    rating: 5,
+    date: 'August 2026',
+    tourTaken: 'Madurai to Kodaikanal Transfer + Sightseeing',
+    text: 'Booked Kodai MB Cabs for airport pickup from Madurai and 3 days of Kodaikanal sightseeing. Driver was punctual, polite, and navigated the Ghat roads very smoothly. Transparent pricing and clean vehicle. Best cab service in Kodaikanal!',
+    verified: true,
+    source: 'Google',
+    googleReviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
   }
 ];
 
@@ -600,11 +622,13 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   email: 'info@kodaimbcabsholidays.com',
   address: 'Fern Hill Road, Near Hotel Tamilnadu, Kodaikanal - 624101, Tamil Nadu, India',
   mapEmbedUrl: 'https://maps.google.com/maps?q=Fern+Hill+Road+Kodaikanal&t=&z=14&ie=UTF8&iwloc=&output=embed',
+  googleReviewsUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs',
+  googleOverviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/overview?q=kodaikanal%20mb%20cabs',
   heroHeadline: 'KODAIKANAL IS CALLING.',
   heroSubheadline: 'Discover misty peaks, ancient pine forests, and emerald valleys with a local travel partner who knows every turn.',
   heroCtaText: 'BOOK YOUR KODAIKANAL TRIP',
   heroVideoUrl: 'https://assets.mixkit.co/videos/42352/42352-720.mp4',
-  heroFallbackImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop',
+  heroFallbackImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200',
   announcement: {
     active: true,
     title: 'Forest Dept. Notice',

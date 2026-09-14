@@ -8,89 +8,89 @@
       "category": "Most Popular Circuit",
       "placesCount": 12,
       "duration": "Full Day (8 - 9 Hours)",
-      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-      "bannerImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
+      "bannerImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
       ],
       "description": "The complete classic sightseeing circuit covering the most celebrated landmarks, misty pine woods, and panoramic mountain drops of Kodaikanal.",
       "places": [
         {
           "name": "Coaker's Walk",
           "description": "A 1km paved pedestrian path constructed on the cliff edge with panoramic valley views.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins"
         },
         {
           "name": "St. Mary's Church",
           "description": "Historic high-church architectural marvel with heritage stained glass windows.",
-          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Pambar Falls (Liril)",
           "description": "Cascading natural water rapids famously featured in classic cinema.",
-          "image": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Upper Lake View",
           "description": "Elevated viewpoint framing the star-shaped Kodai Lake amidst dense greenery.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Moir Point",
           "description": "Historic cliff monument erected with expansive canyon vistas.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Pine Tree Forest",
           "description": "Towering coniferous woods casting cinematic sunlight through mountain mist.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins",
           "highlight": "Photography Favorite"
         },
         {
           "name": "Guna Cave (Devil's Kitchen)",
           "description": "Famous cavernous roots and deep rock fissures immortalized in movies.",
-          "image": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins",
           "highlight": "Iconic Spot"
         },
         {
           "name": "Pillar Rocks",
           "description": "Three massive vertical granite boulders soaring 400 feet high into the clouds.",
-          "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins",
           "highlight": "Must Visit"
         },
         {
           "name": "Golf Course",
           "description": "Rolling emerald green fairways nestled in high mountain valley.",
-          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Green Valley View",
           "description": "Deep 5,000-foot sheer vertical drop offering endless horizon over Vaigai.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Bryant Park",
           "description": "20-acre botanical garden with rare hybrid roses and glasshouses.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins"
         },
         {
           "name": "Kodai Lake (Drop)",
           "description": "Drop off at the iconic star-shaped lake for cycling and boating.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "Drop"
         }
       ],
@@ -117,68 +117,68 @@
       "category": "Cultural Circuit",
       "placesCount": 9,
       "duration": "Half Day / 6 - 7 Hours",
-      "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
-      "bannerImage": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
+      "bannerImage": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800"
       ],
       "description": "A relaxed journey exploring Kodaikanal heritage, sacred Kurinji Temple, roaring Silver Cascade waterfalls, and high valley overlooks.",
       "places": [
         {
           "name": "Kurinji Andavar Temple",
           "description": "Sacred hilltop shrine dedicated to Lord Murugan and Kurinji flower lore.",
-          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
           "duration": "40 mins"
         },
         {
           "name": "Palani View",
           "description": "Panoramic overlook gazing down at the temple town of Palani.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Kodai Full City View",
           "description": "Elevated 360-degree viewpoint looking over the whole township.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Chettiar Park",
           "description": "Serene hillside park with manicured flowering lawns.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "35 mins"
         },
         {
           "name": "Museum",
           "description": "Sacred Heart College museum housing rare orchids and history.",
-          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins"
         },
         {
           "name": "Silver Cascade Falls",
           "description": "Majestic 180-foot natural waterfall rushing down steep rocks.",
-          "image": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins",
           "highlight": "Roaring Cascade"
         },
         {
           "name": "Vaigai Valley View",
           "description": "Dramatic overlook framing the winding silver waters of Vaigai basin.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Bryant Park (or)",
           "description": "Botanical flower garden stroll.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "40 mins"
         },
         {
           "name": "Kodai Lake (Drop)",
           "description": "Drop at central lake promenade.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "Drop"
         }
       ],
@@ -205,56 +205,56 @@
       "category": "Wildlife & Biosphere",
       "placesCount": 7,
       "duration": "Full Day (Forest Dept Permitted)",
-      "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
-      "bannerImage": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
+      "bannerImage": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800"
       ],
       "description": "An exclusive ecological expedition deep into the untouched Palani Hills wildlife sanctuary and pure freshwater Berijam Lake.",
       "places": [
         {
           "name": "Silent Valley View",
           "description": "Deep mountain abyss characterized by absolute silence and swirling clouds.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Mathikettan Forest",
           "description": "Dense evergreen jungle with rich bird species and tree cover.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Fire Watching Tower",
           "description": "Forest department observation lookout overlooking miles of canopy.",
-          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
           "duration": "25 mins"
         },
         {
           "name": "Berijam Lake View",
           "description": "High-altitude viewpoint gazing down upon the turquoise mirror waters.",
-          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Caps Fly View",
           "description": "Unique cliff where thrown light objects fly right back due to updrafts.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins",
           "highlight": "Updraft Phenomenon"
         },
         {
           "name": "Berijam Lake",
           "description": "Pristine, non-commercial water reservoir surrounded by acacia woods.",
-          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&q=80&w=800",
           "duration": "1.5 hours",
           "highlight": "Pure Serenity"
         },
         {
           "name": "Kodai Lake (or) City Drop",
           "description": "Return drop to your hotel after forest exploration.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "Drop"
         }
       ],
@@ -282,68 +282,68 @@
       "category": "Scenic Countryside",
       "placesCount": 9,
       "duration": "Full Day (7 - 8 Hours)",
-      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-      "bannerImage": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
+      "bannerImage": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800"
       ],
       "description": "Discover the postcard-perfect agrarian hamlets of Kodaikanal. 3,000-year-old terraced garlic farming valleys in Poombarai and rolling grasslands in Mannavanur.",
       "places": [
         {
           "name": "Palani Hill View",
           "description": "Sweeping view of ancient rolling peaks.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Mahalakshmi Temple",
           "description": "Picturesque countryside temple surrounded by mist-drenched potato farms.",
-          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Poombarai Village View",
           "description": "World-famous step-cultivation village panorama resembling Swiss alpine valleys.",
-          "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins",
           "highlight": "Terraced Village"
         },
         {
           "name": "Kulandai Velappar Temple",
           "description": "3,000-year-old historic temple built during the Chera dynasty.",
-          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1582510003544-4d00b7f74220?auto=format&fit=crop&q=80&w=800",
           "duration": "35 mins"
         },
         {
           "name": "Mannavanur Lake View",
           "description": "Spectacular first sight of the pristine oval lake amidst pine meadows.",
-          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
           "duration": "25 mins"
         },
         {
           "name": "Sheep Farm",
           "description": "Research farm situated across rolling grassy hills with grazing sheep.",
-          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
           "duration": "40 mins"
         },
         {
           "name": "Rabbit Farm",
           "description": "Charming eco-farm with Angora and commercial breeds.",
-          "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Mannavanur Lake Visit",
           "description": "Coracle boating, zip-lining, and peaceful strolling across green pastures.",
-          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
           "duration": "1.5 hours",
           "highlight": "Coracle Boating"
         },
         {
           "name": "Kodai Lake (or) City Drop",
           "description": "Scenic drive back with hotel or city center drop.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "Drop"
         }
       ],
@@ -370,56 +370,56 @@
       "category": "Adventure & Trekking",
       "placesCount": 7,
       "duration": "Full Day (Adventure Trek)",
-      "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-      "bannerImage": "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
+      "bannerImage": "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
+        "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&q=80&w=800"
       ],
       "description": "An exhilarating highland excursion through misty Israeli village cafes in Vattakanal, roaring jungle cascades, and the protruding cliff at Dolphin Nose.",
       "places": [
         {
           "name": "500 Old Tree",
           "description": "Ancient heritage root tree in Vattakanal forest with sprawling giant branches.",
-          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Vattakanal Falls",
           "description": "Multi-tiered natural waterfall tucked inside dense rainforest.",
-          "image": "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?auto=format&fit=crop&q=80&w=800",
           "duration": "45 mins",
           "highlight": "Fresh Stream"
         },
         {
           "name": "Mountain Beauty",
           "description": "Spectacular ridge trail viewpoint overlooking the Periyakulam valley.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "20 mins"
         },
         {
           "name": "Dolphin Nose",
           "description": "A flat, protruding rock ledge hovering over a 6,600-foot deep chasm.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "1 hour",
           "highlight": "Iconic Cliff Edge"
         },
         {
           "name": "Eco Rock",
           "description": "Natural acoustic rock projection famous for echoing voice calls.",
-          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Difference Rock",
           "description": "Striking geographical rock split showcasing unique Western Ghats rock forms.",
-          "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
           "duration": "30 mins"
         },
         {
           "name": "Kodai Lake (or) City Drop",
           "description": "Comfortable return drop to relax after the trek.",
-          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1200&auto=format&fit=crop",
+          "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&q=80&w=800",
           "duration": "Drop"
         }
       ],
@@ -549,9 +549,9 @@
       "bestTime": "10:00 AM - 4:00 PM",
       "visitDuration": "45 minutes",
       "entryFee": "₹20 per person",
-      "image": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Immortalized by Kamal Haasan’s classic movie \"Guna\" and blockbuster \"Manjummel Boys\", this enchanting trail features giant intertwined tree roots spanning across deep rock chasms.",
       "whatToExpect": [
@@ -579,9 +579,9 @@
       "bestTime": "Morning (9:00 AM - 11:30 AM)",
       "visitDuration": "45 minutes",
       "entryFee": "₹10 per person",
-      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Three massive vertical granite rocks rise dramatically 400 feet from the cliff floor, frequently draped in flowing white mountain fog.",
       "whatToExpect": [
@@ -609,9 +609,9 @@
       "bestTime": "All day (Golden hour 3 PM - 5 PM)",
       "visitDuration": "45 - 60 minutes",
       "entryFee": "Free",
-      "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Planted in 1906, this magnificent forest of tall pine trees has transformed into one of South India’s most photogenic movie filming destinations.",
       "whatToExpect": [
@@ -639,9 +639,9 @@
       "bestTime": "Early Morning (6:30 AM - 9:00 AM) or Sunset",
       "visitDuration": "45 - 60 minutes",
       "entryFee": "₹30 per person",
-      "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Constructed in 1872, this paved pedestrian path contours the steep mountain slope, offering a grand balcony view over clouds drifting towards the plains.",
       "whatToExpect": [
@@ -669,9 +669,9 @@
       "bestTime": "Morning to late afternoon",
       "visitDuration": "1.5 hours",
       "entryFee": "Free",
-      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Poombarai is a picturesque agrarian village nestled in the heart of the Palani Hills, renowned for its ancient temple and centuries-old step cultivation.",
       "whatToExpect": [
@@ -699,9 +699,9 @@
       "bestTime": "10:00 AM - 4:30 PM",
       "visitDuration": "2 hours",
       "entryFee": "₹20 per person",
-      "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop",
+      "image": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800",
       "gallery": [
-        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1200&auto=format&fit=crop"
+        "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=800"
       ],
       "shortStory": "Located 35 km away from Kodaikanal town, Mannavanur is a vast paradise of rolling green meadows, grazing sheep, and a peaceful lake.",
       "whatToExpect": [
@@ -724,34 +724,52 @@
   ],
   "reviews": [
     {
-      "id": "rev-1",
+      "id": "rev-google-1",
       "name": "Karthik Subramanian",
       "location": "Chennai, Tamil Nadu",
       "rating": 5,
       "date": "August 2026",
       "tourTaken": "Local Tour + Village Tour",
       "text": "MB Cabs Holidays provided the smoothest travel experience we’ve ever had in Kodaikanal. Murugaboopathi sir and his drivers know every turn, the best photo spots before the crowds arrive, and drove with extreme care. The Innova SUV was spotless!",
-      "verified": true
+      "verified": true,
+      "source": "Google",
+      "googleReviewUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
     },
     {
-      "id": "rev-2",
+      "id": "rev-google-2",
       "name": "Priyanka & Rahul Mehta",
       "location": "Bangalore, Karnataka",
       "rating": 5,
       "date": "July 2026",
       "tourTaken": "Forest Tour & Berijam Lake",
       "text": "Getting forest department permission for Berijam Lake can be stressful, but MB Cabs handled everything seamlessly. The trip through the silent pine forest was mesmerizing. Transparent pricing with zero hidden charges. Highly recommended!",
-      "verified": true
+      "verified": true,
+      "source": "Google",
+      "googleReviewUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
     },
     {
-      "id": "rev-3",
+      "id": "rev-google-3",
       "name": "Anand Kumar",
       "location": "Coimbatore, Tamil Nadu",
       "rating": 5,
       "date": "August 2026",
       "tourTaken": "Picnic Tour with Trekking",
       "text": "Our driver was punctual, friendly, and waited patiently while we trekked down to Dolphin’s Nose and Vattakanal Falls. His local insights about Kodaikanal history and food spots made the trip truly special.",
-      "verified": true
+      "verified": true,
+      "source": "Google",
+      "googleReviewUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
+    },
+    {
+      "id": "rev-google-4",
+      "name": "Dr. S. Meenakshi Sundaram",
+      "location": "Madurai, Tamil Nadu",
+      "rating": 5,
+      "date": "August 2026",
+      "tourTaken": "Madurai to Kodaikanal Transfer + Sightseeing",
+      "text": "Booked Kodai MB Cabs for airport pickup from Madurai and 3 days of Kodaikanal sightseeing. Driver was punctual, polite, and navigated the Ghat roads very smoothly. Transparent pricing and clean vehicle. Best cab service in Kodaikanal!",
+      "verified": true,
+      "source": "Google",
+      "googleReviewUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
     }
   ],
   "settings": {
@@ -765,11 +783,13 @@
     "email": "info@kodaimbcabsholidays.com",
     "address": "Fern Hill Road, Near Hotel Tamilnadu, Kodaikanal - 624101, Tamil Nadu, India",
     "mapEmbedUrl": "https://maps.google.com/maps?q=Fern+Hill+Road+Kodaikanal&t=&z=14&ie=UTF8&iwloc=&output=embed",
+    "googleReviewsUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs",
+    "googleOverviewUrl": "https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/overview?q=kodaikanal%20mb%20cabs",
     "heroHeadline": "KODAIKANAL IS CALLING.",
     "heroSubheadline": "Discover misty peaks, ancient pine forests, and emerald valleys with a local travel partner who knows every turn.",
     "heroCtaText": "BOOK YOUR KODAIKANAL TRIP",
     "heroVideoUrl": "https://assets.mixkit.co/videos/42352/42352-720.mp4",
-    "heroFallbackImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop",
+    "heroFallbackImage": "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1200",
     "announcement": {
       "active": true,
       "title": "Forest Dept. Notice",

@@ -44,30 +44,71 @@ export const ReviewsAndFaqSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
         {/* Reviews Sub-section */}
         <div>
-          <div className="text-center max-w-2xl mx-auto mb-16">
-            <span className="text-emerald-700 text-xs font-bold uppercase tracking-widest bg-emerald-100 px-3.5 py-1 rounded-full border border-emerald-300 inline-flex items-center gap-1.5 mb-2">
-              <Star className="w-3.5 h-3.5 text-amber-500 fill-amber-500" /> REAL EXPERIENCES
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-black font-heading text-[#0B3B24] mt-2">
+          <div className="text-center max-w-3xl mx-auto mb-14">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-bold uppercase tracking-wider mb-3">
+              <span className="w-2 h-2 rounded-full bg-emerald-600 animate-ping" />
+              <span>VERIFIED GOOGLE REVIEWS & RATINGS</span>
+            </div>
+
+            <h2 className="text-3xl sm:text-5xl font-black font-heading text-[#0B3B24] mt-1">
               LOVED BY TRAVELLERS ACROSS INDIA
             </h2>
-            <p className="text-slate-600 text-sm mt-2">
-              Read real feedback from families, couples, and solo explorers who trusted MB Cabs Holidays.
+            <p className="text-slate-600 text-sm sm:text-base mt-2 max-w-xl mx-auto">
+              Real 5-star experiences from families, honeymooners, and corporate groups who chose <strong>Kodai MB Cabs Holidays</strong>.
             </p>
+
+            {/* Official Google Reviews Badge Bar */}
+            <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4 bg-slate-50 border border-slate-200 p-4 rounded-2xl shadow-sm">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-full bg-white flex items-center justify-center shadow-sm border border-slate-200 text-sm font-black text-blue-600">
+                  G
+                </div>
+                <div className="text-left">
+                  <div className="flex items-center gap-1.5">
+                    <span className="font-black text-lg text-slate-900 leading-none">4.9</span>
+                    <div className="flex text-amber-400">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
+                      ))}
+                    </div>
+                  </div>
+                  <span className="text-[11px] text-slate-500 font-semibold block">Google Verified Traveler Rating</span>
+                </div>
+              </div>
+
+              <div className="h-6 w-px bg-slate-200 hidden sm:block" />
+
+              <a
+                href="https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold px-4 py-2 rounded-xl transition-all shadow flex items-center gap-1.5"
+              >
+                <span>Read & Post on Google</span>
+                <span className="text-xs">↗</span>
+              </a>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {reviews.map((rev) => (
               <div
                 key={rev.id}
-                className="bg-slate-50 border border-slate-200/90 p-6 rounded-3xl flex flex-col justify-between hover:shadow-lg transition-shadow relative"
+                className="bg-slate-50 border border-slate-200/90 p-6 rounded-3xl flex flex-col justify-between hover:shadow-lg transition-shadow relative group"
               >
                 <Quote className="w-8 h-8 text-emerald-800/10 absolute top-4 right-4" />
                 <div className="space-y-3">
-                  <div className="flex items-center gap-1 text-amber-400">
-                    {[...Array(rev.rating)].map((_, i) => (
-                      <Star key={i} className="w-4 h-4 fill-amber-400" />
-                    ))}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-1 text-amber-400">
+                      {[...Array(rev.rating)].map((_, i) => (
+                        <Star key={i} className="w-4 h-4 fill-amber-400" />
+                      ))}
+                    </div>
+                    {rev.source === 'Google' && (
+                      <span className="text-[10px] bg-blue-50 text-blue-700 font-extrabold px-2 py-0.5 rounded-full border border-blue-200 flex items-center gap-1">
+                        <span className="font-bold">G</span> Google Review
+                      </span>
+                    )}
                   </div>
                   <p className="text-xs text-slate-700 italic leading-relaxed">
                     "{rev.text}"
@@ -85,6 +126,11 @@ export const ReviewsAndFaqSection: React.FC = () => {
                     <span>{rev.location}</span>
                     <span>{rev.date}</span>
                   </div>
+                  {rev.tourTaken && (
+                    <div className="mt-2 text-[10px] text-emerald-800 font-medium bg-emerald-50 px-2 py-1 rounded-lg border border-emerald-100 truncate">
+                      Tour: {rev.tourTaken}
+                    </div>
+                  )}
                 </div>
               </div>
             ))}

@@ -158,6 +158,10 @@ export default function RootLayout({
           longitude: 77.4891,
         },
         hasMap: 'https://maps.google.com/?q=10.2381,77.4891',
+        sameAs: [
+          'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/overview?q=kodaikanal%20mb%20cabs',
+          'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
+        ],
         openingHoursSpecification: {
           '@type': 'OpeningHoursSpecification',
           dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],

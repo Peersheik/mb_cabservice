@@ -42,6 +42,8 @@ interface AppContextType {
   ) => void;
   addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => BookingRecord;
   updateBookingStatus: (id: string, status: BookingRecord['status']) => void;
+  addReview: (review: Omit<ReviewData, 'id'>) => ReviewData;
+  deleteReview: (id: string) => void;
   updateSettings: (newSettings: Partial<SiteSettings>) => void;
   isAdminAuthenticated: boolean;
   loginAdmin: (username: string, pass: string) => boolean;
@@ -117,6 +119,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         if (data.packages && Array.isArray(data.packages)) setPackages(data.packages);
         if (data.bookings && Array.isArray(data.bookings)) setBookings(data.bookings);
         if (data.stays && Array.isArray(data.stays)) setStays(data.stays);
+        if (data.reviews && Array.isArray(data.reviews)) setReviews(data.reviews);
       })
       .catch((err) => {
         console.warn('Sync fallback', err);
@@ -145,6 +148,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     packages?: PackageData[];
     settings?: SiteSettings;
     bookings?: BookingRecord[];
+    reviews?: ReviewData[];
   }) => {
     setSyncStatus('Updating...');
     if (payload.settings) {
@@ -156,6 +160,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     }
     if (payload.packages) setPackages(payload.packages);
     if (payload.bookings) setBookings(payload.bookings);
+    if (payload.reviews) setReviews(payload.reviews);
 
     try {
       await fetch('/api/db', {
@@ -249,6 +254,23 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     updateAndBroadcast({ bookings: updated });
   };
 
+  const addReview = (reviewData: Omit<ReviewData, 'id'>) => {
+    const newReview: ReviewData = {
+      ...reviewData,
+      id: 'rev-' + Date.now().toString(36)
+    };
+    const updated = [newReview, ...reviews];
+    setReviews(updated);
+    updateAndBroadcast({ reviews: updated });
+    return newReview;
+  };
+
+  const deleteReview = (id: string) => {
+    const updated = reviews.filter((r) => r.id !== id);
+    setReviews(updated);
+    updateAndBroadcast({ reviews: updated });
+  };
+
   const updateSettings = (newSettings: Partial<SiteSettings>) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
@@ -307,6 +329,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         quickUpdatePackagePrices,
         addBooking,
         updateBookingStatus,
+        addReview,
+        deleteReview,
         updateSettings,
         isAdminAuthenticated,
         loginAdmin,

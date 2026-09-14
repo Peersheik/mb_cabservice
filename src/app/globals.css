@@ -29,20 +29,21 @@
 }
 
 /* =========================================
-   SITE-WIDE DARK THEME SPECIFICATIONS
+   SITE-WIDE HIGH-PERFORMANCE DARK THEME SPECIFICATIONS
    ========================================= */
 html[data-theme="dark"],
 html.dark {
-  background-color: #08110D;
+  background-color: #07100B;
   color-scheme: dark;
 }
 
 html[data-theme="dark"] body,
 html.dark body {
-  background-color: #08110D;
+  background-color: #07100B;
   color: #E2E8F0;
 }
 
+/* Headings in Dark Mode */
 html[data-theme="dark"] h1,
 html[data-theme="dark"] h2,
 html[data-theme="dark"] h3,
@@ -55,61 +56,87 @@ html.dark h3,
 html.dark h4,
 html.dark h5,
 html.dark h6 {
-  color: #ECFDF5;
+  color: #F0FDF4 !important;
 }
 
 /* Sections & Page backgrounds */
 html[data-theme="dark"] .bg-white,
 html[data-theme="dark"] .bg-\[\#FAFCFA\],
+html[data-theme="dark"] .bg-\[\#F9FBFA\],
 html.dark .bg-white,
-html.dark .bg-\[\#FAFCFA\] {
+html.dark .bg-\[\#FAFCFA\],
+html.dark .bg-\[\#F9FBFA\] {
   background-color: #0C1A14 !important;
   color: #E2E8F0;
 }
 
 html[data-theme="dark"] .bg-slate-50,
 html[data-theme="dark"] .bg-slate-50\/70,
+html[data-theme="dark"] .bg-slate-50\/60,
 html[data-theme="dark"] .bg-emerald-50,
+html[data-theme="dark"] .bg-emerald-50\/60,
 html[data-theme="dark"] .bg-emerald-50\/80,
 html.dark .bg-slate-50,
 html.dark .bg-slate-50\/70,
+html.dark .bg-slate-50\/60,
 html.dark .bg-emerald-50,
+html.dark .bg-emerald-50\/60,
 html.dark .bg-emerald-50\/80 {
   background-color: #12241C !important;
   color: #D1FAE5;
 }
 
-/* Cards & Surfaces */
+/* Cards & Surfaces Borders */
 html[data-theme="dark"] .border-slate-200,
 html[data-theme="dark"] .border-slate-300,
 html[data-theme="dark"] .border-slate-100,
+html[data-theme="dark"] .border-emerald-100,
 html[data-theme="dark"] .border-emerald-200,
+html[data-theme="dark"] .border-emerald-300,
 html.dark .border-slate-200,
 html.dark .border-slate-300,
 html.dark .border-slate-100,
-html.dark .border-emerald-200 {
+html.dark .border-emerald-100,
+html.dark .border-emerald-200,
+html.dark .border-emerald-300 {
   border-color: #1B382B !important;
 }
 
+/* Primary text accents in Dark Mode */
 html[data-theme="dark"] .text-slate-900,
 html[data-theme="dark"] .text-\[\#064E3B\],
 html[data-theme="dark"] .text-\[\#0B3B24\],
+html[data-theme="dark"] .text-\[\#155E38\],
 html.dark .text-slate-900,
 html.dark .text-\[\#064E3B\],
-html.dark .text-\[\#0B3B24\] {
+html.dark .text-\[\#0B3B24\],
+html.dark .text-\[\#155E38\] {
   color: #34D399 !important;
 }
 
-html[data-theme="dark"] .text-slate-600,
+html[data-theme="dark"] .text-slate-800,
 html[data-theme="dark"] .text-slate-700,
+html.dark .text-slate-800,
+html.dark .text-slate-700 {
+  color: #CBD5E1 !important;
+}
+
+html[data-theme="dark"] .text-slate-600,
 html[data-theme="dark"] .text-slate-500,
 html.dark .text-slate-600,
-html.dark .text-slate-700,
 html.dark .text-slate-500 {
   color: #94A3B8 !important;
 }
 
-/* Inputs & Selects in Dark Mode */
+/* Badges and pills in Dark Mode */
+html[data-theme="dark"] .bg-emerald-100,
+html.dark .bg-emerald-100 {
+  background-color: #133324 !important;
+  color: #A7F3D0 !important;
+  border-color: #059669 !important;
+}
+
+/* Inputs, Selects & Modals in Dark Mode */
 html[data-theme="dark"] input,
 html[data-theme="dark"] select,
 html[data-theme="dark"] textarea,
@@ -121,7 +148,14 @@ html.dark textarea {
   border-color: #234737 !important;
 }
 
-/* Buttons in Dark Mode */
+html[data-theme="dark"] input::placeholder,
+html[data-theme="dark"] textarea::placeholder,
+html.dark input::placeholder,
+html.dark textarea::placeholder {
+  color: #64748B !important;
+}
+
+/* Buttons and secondary tags in Dark Mode */
 html[data-theme="dark"] .bg-slate-100,
 html.dark .bg-slate-100 {
   background-color: #162E23 !important;

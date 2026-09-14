@@ -32,6 +32,9 @@ export default function AdminDashboardPage() {
     quickUpdatePackagePrices,
     bookings,
     updateBookingStatus,
+    reviews,
+    addReview,
+    deleteReview,
     settings,
     updateSettings,
     syncStatus
@@ -40,8 +43,16 @@ export default function AdminDashboardPage() {
   const [usernameInput, setUsernameInput] = useState('');
   const [passwordInput, setPasswordInput] = useState('');
   const [authError, setAuthError] = useState('');
-  const [activeTab, setActiveTab] = useState<'prices' | 'bookings' | 'forest' | 'phone'>('prices');
+  const [activeTab, setActiveTab] = useState<'prices' | 'bookings' | 'forest' | 'phone' | 'reviews'>('prices');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
+
+  // New Google Review Form State
+  const [newReviewName, setNewReviewName] = useState('');
+  const [newReviewLocation, setNewReviewLocation] = useState('');
+  const [newReviewRating, setNewReviewRating] = useState<number>(5);
+  const [newReviewDate, setNewReviewDate] = useState('September 2026');
+  const [newReviewTour, setNewReviewTour] = useState('Local Tour');
+  const [newReviewText, setNewReviewText] = useState('');
 
   const [phone1Input, setPhone1Input] = useState(settings.phone1 || '');
   const [phone2Input, setPhone2Input] = useState(settings.phone2 || '');
@@ -295,6 +306,18 @@ export default function AdminDashboardPage() {
           >
             <Phone className="w-4 h-4" />
             <span>4. Phone & WhatsApp Number</span>
+          </button>
+
+          <button
+            onClick={() => setActiveTab('reviews')}
+            className={`px-4 py-2 rounded-xl text-xs font-black transition-all flex items-center gap-1.5 whitespace-nowrap ${
+              activeTab === 'reviews'
+                ? 'bg-[#155E38] text-white shadow-md'
+                : 'text-slate-700 hover:bg-slate-100'
+            }`}
+          >
+            <Sparkles className="w-4 h-4" />
+            <span>5. Google Reviews ({reviews.length})</span>
           </button>
         </div>
       </header>
@@ -668,6 +691,212 @@ export default function AdminDashboardPage() {
                   <Save className="w-3.5 h-3.5" />
                   <span>Save Phone Settings</span>
                 </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* TAB 5: GOOGLE REVIEWS MANAGER */}
+        {activeTab === 'reviews' && (
+          <div className="space-y-8 max-w-4xl">
+            {/* Google Reviews Header & Live Links */}
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="w-3 h-3 rounded-full bg-blue-600" />
+                  <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                    Google Reviews & Rating Sync
+                  </h3>
+                </div>
+                <p className="text-xs text-slate-500">
+                  Official Google Listing: <strong>4.9 ★ Rating</strong> • Connected to Upstash Redis Cloud Database.
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href="https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 transition-all shadow"
+                >
+                  <span>Open Google Listing</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </a>
+              </div>
+            </div>
+
+            {/* Add New Review Card */}
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
+              <h4 className="text-base font-black text-[#064E3B] flex items-center gap-2">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Add Customer Review (Auto-Syncs to Live Site)</span>
+              </h4>
+
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!newReviewName.trim() || !newReviewText.trim()) {
+                    alert('Please enter reviewer name and feedback text.');
+                    return;
+                  }
+                  addReview({
+                    name: newReviewName.trim(),
+                    location: newReviewLocation.trim() || 'Verified Traveler',
+                    rating: newReviewRating,
+                    date: newReviewDate.trim() || 'September 2026',
+                    tourTaken: newReviewTour.trim() || 'Kodaikanal Sightseeing Tour',
+                    text: newReviewText.trim(),
+                    verified: true,
+                    source: 'Google',
+                    googleReviewUrl: 'https://www.google.com/travel/hotels/entity/CgoIsuv5l_n6maokEAE/reviews?q=kodaikanal%20mb%20cabs'
+                  });
+                  setNewReviewName('');
+                  setNewReviewLocation('');
+                  setNewReviewText('');
+                  setSaveSuccessMsg('New Google Review published live to site & stored in Redis!');
+                  setTimeout(() => setSaveSuccessMsg(null), 3000);
+                }}
+                className="space-y-4 pt-2"
+              >
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                      Customer Name *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      placeholder="e.g. Anand Kumar"
+                      value={newReviewName}
+                      onChange={(e) => setNewReviewName(e.target.value)}
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-semibold"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                      City / Location
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Bangalore, Karnataka"
+                      value={newReviewLocation}
+                      onChange={(e) => setNewReviewLocation(e.target.value)}
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                      Star Rating
+                    </label>
+                    <select
+                      value={newReviewRating}
+                      onChange={(e) => setNewReviewRating(Number(e.target.value))}
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs font-bold"
+                    >
+                      <option value={5}>★★★★★ (5 Stars)</option>
+                      <option value={4}>★★★★☆ (4 Stars)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                      Tour Package Taken
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. Local Tour + Berijam Lake"
+                      value={newReviewTour}
+                      onChange={(e) => setNewReviewTour(e.target.value)}
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                      Review Date
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. September 2026"
+                      value={newReviewDate}
+                      onChange={(e) => setNewReviewDate(e.target.value)}
+                      className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                    Customer Review Feedback *
+                  </label>
+                  <textarea
+                    rows={3}
+                    required
+                    placeholder="Type or paste the client feedback review here..."
+                    value={newReviewText}
+                    onChange={(e) => setNewReviewText(e.target.value)}
+                    className="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs leading-relaxed"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow transition-all flex items-center gap-1.5"
+                >
+                  <Save className="w-3.5 h-3.5" />
+                  <span>Publish Review to Live Site</span>
+                </button>
+              </form>
+            </div>
+
+            {/* List of Active Reviews */}
+            <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-4">
+              <h4 className="text-base font-black text-[#064E3B]">
+                Active Reviews on Website ({reviews.length})
+              </h4>
+
+              <div className="space-y-3">
+                {reviews.map((r) => (
+                  <div
+                    key={r.id}
+                    className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
+                  >
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <strong className="text-sm text-slate-900">{r.name}</strong>
+                        <span className="text-[10px] text-blue-700 font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                          {r.source || 'Google'}
+                        </span>
+                        <span className="text-xs text-amber-500 font-bold">
+                          {'★'.repeat(r.rating)}
+                        </span>
+                      </div>
+                      <p className="text-xs text-slate-600 italic">"{r.text}"</p>
+                      <span className="text-[10px] text-slate-400 block">
+                        {r.location} • {r.date} • {r.tourTaken}
+                      </span>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (confirm(`Remove review from ${r.name}?`)) {
+                          deleteReview(r.id);
+                          setSaveSuccessMsg(`Review deleted and synced with Redis!`);
+                          setTimeout(() => setSaveSuccessMsg(null), 2500);
+                        }
+                      }}
+                      className="text-xs text-rose-600 hover:text-rose-800 font-bold bg-rose-50 hover:bg-rose-100 px-3 py-1.5 rounded-lg transition-colors self-start sm:self-auto"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
               </div>
             </div>
           </div>

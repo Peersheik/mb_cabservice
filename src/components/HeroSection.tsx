@@ -13,23 +13,23 @@ export const HeroSection: React.FC = () => {
   const [activeBgIndex, setActiveBgIndex] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // 4 Panoramic Kodaikanal Natural Views
+  // 4 Panoramic Kodaikanal Natural Views (Optimized for instant mobile/desktop load)
   const heroBackgrounds = [
     {
       title: "Pillar Rocks & Mist Valleys",
-      url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=2200&auto=format&fit=crop"
+      url: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&q=80&w=1400"
     },
     {
       title: "Ancient Shola Woods & Guna Cave",
-      url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=2200&auto=format&fit=crop"
+      url: "https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&q=80&w=1400"
     },
     {
       title: "Poombarai Terraced Step Farms",
-      url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=2200&auto=format&fit=crop"
+      url: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&q=80&w=1400"
     },
     {
       title: "Mannavanur Lake & Pine Grasslands",
-      url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=2200&auto=format&fit=crop"
+      url: "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&q=80&w=1400"
     }
   ];
 
@@ -89,6 +89,9 @@ export const HeroSection: React.FC = () => {
             <img
               src={bg.url}
               alt={bg.title}
+              loading={idx === 0 ? 'eager' : 'lazy'}
+              fetchPriority={idx === 0 ? 'high' : 'auto'}
+              decoding={idx === 0 ? 'sync' : 'async'}
               className="w-full h-full object-cover object-center"
             />
           </motion.div>

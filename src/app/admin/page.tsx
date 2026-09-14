@@ -43,6 +43,16 @@ export default function AdminDashboardPage() {
   const [activeTab, setActiveTab] = useState<'prices' | 'bookings' | 'forest' | 'phone'>('prices');
   const [saveSuccessMsg, setSaveSuccessMsg] = useState<string | null>(null);
 
+  const [phone1Input, setPhone1Input] = useState(settings.phone1 || '');
+  const [phone2Input, setPhone2Input] = useState(settings.phone2 || '');
+  const [addressInput, setAddressInput] = useState(settings.address || '');
+
+  useEffect(() => {
+    if (settings.phone1) setPhone1Input(settings.phone1);
+    if (settings.phone2) setPhone2Input(settings.phone2);
+    if (settings.address) setAddressInput(settings.address);
+  }, [settings.phone1, settings.phone2, settings.address]);
+
   // Simple state for updating package prices easily
   const [priceForm, setPriceForm] = useState<{
     [pkgId: string]: {
@@ -610,8 +620,8 @@ export default function AdminDashboardPage() {
                 </label>
                 <input
                   type="text"
-                  value={settings.phone1}
-                  onChange={(e) => updateSettings({ phone1: e.target.value })}
+                  value={phone1Input}
+                  onChange={(e) => setPhone1Input(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-[#064E3B]"
                 />
               </div>
@@ -622,8 +632,8 @@ export default function AdminDashboardPage() {
                 </label>
                 <input
                   type="text"
-                  value={settings.phone2}
-                  onChange={(e) => updateSettings({ phone2: e.target.value })}
+                  value={phone2Input}
+                  onChange={(e) => setPhone2Input(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm font-black text-[#064E3B]"
                 />
               </div>
@@ -634,8 +644,8 @@ export default function AdminDashboardPage() {
                 </label>
                 <textarea
                   rows={2}
-                  value={settings.address}
-                  onChange={(e) => updateSettings({ address: e.target.value })}
+                  value={addressInput}
+                  onChange={(e) => setAddressInput(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-xs"
                 />
               </div>
@@ -644,7 +654,13 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={() => {
-                    setSaveSuccessMsg('Phone and office settings saved permanently!');
+                    updateSettings({
+                      phone1: phone1Input,
+                      phone2: phone2Input,
+                      whatsappNumber: phone1Input.replace(/[^0-9+]/g, ''),
+                      address: addressInput
+                    });
+                    setSaveSuccessMsg('Phone and office settings saved permanently to Cloud Redis!');
                     setTimeout(() => setSaveSuccessMsg(null), 3000);
                   }}
                   className="bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow flex items-center gap-1.5"

@@ -124,6 +124,18 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   }, []);
 
   useEffect(() => {
+    try {
+      const savedAuth = localStorage.getItem(LS_KEY_AUTH);
+      if (savedAuth === 'true') {
+        setIsAdminAuthenticated(true);
+      }
+      const savedTheme = localStorage.getItem(LS_KEY_THEME);
+      if (savedTheme === 'dark' || savedTheme === 'light') {
+        setColorTheme(savedTheme);
+        applyThemeToDOM(savedTheme);
+      }
+    } catch (e) {}
+
     fetchLatestState();
     const interval = setInterval(fetchLatestState, 10000);
     return () => clearInterval(interval);

@@ -141,7 +141,7 @@ export const KODAI_PHOTOS = {
   // Pillar Rocks monolithic granite columns
   PILLAR_ROCKS: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1200&auto=format&fit=crop',
   // Pine Tree Forest tall woods & light beams
-  PINE_FOREST: 'https://images.unsplash.com/photo-1511497584788-87676104235f?q=80&w=1200&auto=format&fit=crop',
+  PINE_FOREST: 'https://images.unsplash.com/photo-1542273917363-3b1817f69a2d?q=80&w=1200&auto=format&fit=crop',
   // Coaker's walk valley walkway
   COAKERS_WALK: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=1200&auto=format&fit=crop',
   // Kodaikanal Lake star shaped water
@@ -157,7 +157,7 @@ export const KODAI_PHOTOS = {
   // Vattakanal falls stream
   VATTAKANAL: 'https://images.unsplash.com/photo-1518457607834-6e8d80c183c5?q=80&w=1200&auto=format&fit=crop',
   // Kurinji Andavar Temple
-  KURINJI_TEMPLE: 'https://images.unsplash.com/photo-1548625361-19597284f676?q=80&w=1200&auto=format&fit=crop',
+  KURINJI_TEMPLE: 'https://images.unsplash.com/photo-1582510003544-4d00b7f74220?q=80&w=1200&auto=format&fit=crop',
   // Berijam Lake pristine freshwater
   BERIJAM_LAKE: 'https://images.unsplash.com/photo-1448375240586-882707db888b?q=80&w=1200&auto=format&fit=crop'
 };
@@ -599,11 +599,11 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   whatsappNumber: '+919942472778',
   email: 'info@kodaimbcabsholidays.com',
   address: 'Fern Hill Road, Near Hotel Tamilnadu, Kodaikanal - 624101, Tamil Nadu, India',
-  mapEmbedUrl: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926.2415178651817!2d77.4891!3d10.2381!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMTDCsDE0JzE3LjIiTiA3N8KwMjknMjAuOCJF!5e0!3m2!1sen!2sin!4v1600000000000',
+  mapEmbedUrl: 'https://maps.google.com/maps?q=Fern+Hill+Road+Kodaikanal&t=&z=14&ie=UTF8&iwloc=&output=embed',
   heroHeadline: 'KODAIKANAL IS CALLING.',
   heroSubheadline: 'Discover misty peaks, ancient pine forests, and emerald valleys with a local travel partner who knows every turn.',
   heroCtaText: 'BOOK YOUR KODAIKANAL TRIP',
-  heroVideoUrl: 'https://assets.mixkit.co/videos/preview/mixkit-aerial-view-of-misty-mountains-and-forests-42352-large.mp4',
+  heroVideoUrl: 'https://assets.mixkit.co/videos/42352/42352-720.mp4',
   heroFallbackImage: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=1600&auto=format&fit=crop',
   announcement: {
     active: true,

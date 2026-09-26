@@ -118,6 +118,17 @@ export function CustomTourView() {
 
         {!isSuccess ? (
           <form onSubmit={handleCustomSubmit} className="bg-white p-6 sm:p-10 rounded-3xl border border-slate-200 shadow-xl space-y-8">
+            {/* Highlighted Price Disclaimer */}
+            <div className="bg-amber-50 border border-amber-300 rounded-2xl p-4 flex items-start gap-2.5 shadow-sm">
+              <span className="text-amber-600 text-base mt-0.5">🏷️</span>
+              <div>
+                <strong className="text-xs font-black text-amber-900 uppercase tracking-wide block">Direct Owner Special Pricing</strong>
+                <p className="text-xs font-bold text-amber-900 mt-0.5">
+                  Prices are not fixed! Kindly contact the owner to know the original discounted price for your customized circuit.
+                </p>
+              </div>
+            </div>
+
             {/* Step 1: Trip Scope */}
             <div className="space-y-4">
               <h2 className="text-lg font-bold font-heading text-[#0B3B24] flex items-center gap-2 border-b pb-2 border-slate-100">

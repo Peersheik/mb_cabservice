@@ -40,7 +40,7 @@ interface AppContextType {
     suvOff: number,
     suvSeason: number
   ) => void;
-  addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => Promise<BookingRecord>;
+  addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => Promise<BookingRecord & { ownerAlertUrl?: string }>;
   updateBookingStatus: (id: string, status: BookingRecord['status']) => Promise<void>;
   addReview: (review: Omit<ReviewData, 'id'>) => Promise<ReviewData>;
   deleteReview: (id: string) => Promise<void>;
@@ -232,7 +232,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   };
 
   // Typed Scoped Booking Creation
-  const addBooking = async (bookingData: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>): Promise<BookingRecord> => {
+  const addBooking = async (bookingData: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>): Promise<BookingRecord & { ownerAlertUrl?: string }> => {
     const res = await fetch('/api/bookings', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -244,7 +244,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       throw new Error(data.error || 'Failed to create booking');
     }
 
-    const createdBooking = data.booking as BookingRecord;
+    const createdBooking = {
+      ...(data.booking as BookingRecord),
+      ownerAlertUrl: data.ownerAlertUrl
+    };
     setBookings((prev) => [createdBooking, ...prev]);
     return createdBooking;
   };

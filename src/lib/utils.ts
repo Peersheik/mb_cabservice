@@ -35,3 +35,40 @@ Please share driver availability and confirm booking details. Thank you!`;
 
   return `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(message)}`;
 };
+
+export const generateOwnerBookingAlertMessage = (booking: {
+  id?: string;
+  customerName: string;
+  phone: string;
+  travelDate: string;
+  passengers?: number;
+  packageName: string;
+  vehicleType: string;
+  pickupLocation: string;
+  dropLocation: string;
+  calculatedPrice?: number;
+  stayRequired?: boolean;
+  specialRequests?: string;
+}): string => {
+  return `🚨 *NEW WEBSITE CAB BOOKING ALERT!* 🚨
+━━━━━━━━━━━━━━━━━━━━
+👤 *Customer Name:* ${booking.customerName}
+📞 *Customer Phone:* ${booking.phone}
+🗓️ *Travel Date:* ${booking.travelDate}
+👥 *Passengers:* ${booking.passengers || 2} Pax
+🚗 *Vehicle:* ${booking.vehicleType}
+🗺️ *Circuit / Package:* ${booking.packageName}
+📍 *Pickup:* ${booking.pickupLocation}
+🏁 *Drop:* ${booking.dropLocation}
+💵 *Estimated Fare:* ${booking.calculatedPrice ? `₹${booking.calculatedPrice}` : 'Discuss with Owner'}
+🏨 *Stay Assistance:* ${booking.stayRequired ? 'YES (Cottage / Resort requested)' : 'No'}
+${booking.specialRequests ? `📝 *Notes:* ${booking.specialRequests}\n` : ''}🆔 *Ref ID:* ${booking.id || 'NEW'}
+━━━━━━━━━━━━━━━━━━━━
+👉 *Murugan Sir*, please call the customer or tap their number above to confirm the trip & discounted price!`;
+};
+
+export const generateOwnerWhatsAppAlertUrl = (ownerPhone: string, booking: Parameters<typeof generateOwnerBookingAlertMessage>[0]): string => {
+  const cleanOwnerPhone = ownerPhone.replace(/[^0-9]/g, '');
+  const msg = generateOwnerBookingAlertMessage(booking);
+  return `https://api.whatsapp.com/send?phone=${cleanOwnerPhone}&text=${encodeURIComponent(msg)}`;
+};

@@ -203,6 +203,14 @@ export function PackageDetailView({ pkg }: { pkg: PackageData }) {
               <div className="text-[10px] text-emerald-700 pt-1 border-t border-emerald-200/60">
                 Rate includes vehicle, fuel, driver allowances & parking charges.
               </div>
+
+              {/* Requirement #1: Highlighted discount note */}
+              <div className="mt-2 bg-amber-50 border border-amber-300 rounded-xl p-2.5 flex items-start gap-1.5 shadow-xs">
+                <Sparkles className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] font-bold text-amber-900 leading-snug">
+                  🏷️ Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                </p>
+              </div>
             </div>
 
             <div className="space-y-2 text-xs text-slate-600">

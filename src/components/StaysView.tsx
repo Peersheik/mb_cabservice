@@ -82,38 +82,48 @@ export function StaysView({ initialStays }: { initialStays: StayData[] }) {
                 </div>
 
                 {/* Bottom Bar: Pricing & Booking */}
-                <div className="pt-6 border-t border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                  <div>
-                    <span className="text-[11px] text-slate-400 uppercase font-bold block">Starting From</span>
-                    <div className="flex items-baseline gap-1">
-                      <strong className="text-2xl font-black text-[#0B3B24]">
-                        {formatCurrency(stay.priceStarting)}
-                      </strong>
-                      <span className="text-xs text-slate-500 font-medium">/ night</span>
+                <div className="pt-6 border-t border-slate-100 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                      <span className="text-[11px] text-slate-400 uppercase font-bold block">Starting From</span>
+                      <div className="flex items-baseline gap-1">
+                        <strong className="text-2xl font-black text-[#0B3B24]">
+                          {formatCurrency(stay.priceStarting)}
+                        </strong>
+                        <span className="text-xs text-slate-500 font-medium">/ night</span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap items-center gap-2.5">
+                      <button
+                        onClick={() => openBookingModal({ stayId: stay.id })}
+                        className="bg-[#0B3B24] hover:bg-[#1E5128] text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition-all flex items-center gap-1.5"
+                      >
+                        <Sparkles className="w-4 h-4 text-emerald-300" />
+                        <span>Book Stay + Cab</span>
+                      </button>
+
+                      <a
+                        href={generateWhatsAppBookingUrl({
+                          phone: settings.phone1,
+                          packageName: `Stay Enquiry: ${stay.name}`
+                        })}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition-all flex items-center gap-1.5"
+                      >
+                        <MessageCircle className="w-4 h-4" />
+                        <span>WhatsApp</span>
+                      </a>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center gap-2.5">
-                    <button
-                      onClick={() => openBookingModal({ stayId: stay.id })}
-                      className="bg-[#0B3B24] hover:bg-[#1E5128] text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition-all flex items-center gap-1.5"
-                    >
-                      <Sparkles className="w-4 h-4 text-emerald-300" />
-                      <span>Book Stay + Cab</span>
-                    </button>
-
-                    <a
-                      href={generateWhatsAppBookingUrl({
-                        phone: settings.phone1,
-                        packageName: `Stay Enquiry: ${stay.name}`
-                      })}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-[#25D366] hover:bg-[#1EBE5D] text-white font-bold py-2.5 px-4 rounded-xl text-xs sm:text-sm shadow transition-all flex items-center gap-1.5"
-                    >
-                      <MessageCircle className="w-4 h-4" />
-                      <span>WhatsApp</span>
-                    </a>
+                  {/* Highlighted Price Disclaimer */}
+                  <div className="bg-amber-50 border border-amber-200/90 rounded-xl p-2.5 flex items-start gap-1.5 shadow-xs">
+                    <span className="text-amber-600 text-xs mt-0.5">🏷️</span>
+                    <p className="text-[11px] font-bold text-amber-900 leading-snug">
+                      Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                    </p>
                   </div>
                 </div>
               </div>

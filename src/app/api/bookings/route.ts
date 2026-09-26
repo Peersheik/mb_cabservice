@@ -5,10 +5,12 @@ import {
   insertBooking,
   updateBookingStatusInDb,
   checkBookingAvailability,
-  rateLimitIp
+  rateLimitIp,
+  getSettings
 } from '@/lib/serverDb';
 import { requireAdmin, getClientIp } from '@/lib/auth';
 import { BookingRecord } from '@/lib/data';
+import { generateOwnerWhatsAppAlertUrl } from '@/lib/utils';
 
 // Zod schema for server-side booking validation
 const BookingSchema = z.object({
@@ -113,16 +115,23 @@ export async function POST(req: NextRequest) {
 
     await insertBooking(newBooking);
 
-    // Send confirmation asynchronously (email/mock webhook notification)
+    // Retrieve settings to find Murugan's phone number
+    const settings = await getSettings();
+    const ownerPhone = settings.phone1 || '+919942472778';
+    const ownerAlertUrl = generateOwnerWhatsAppAlertUrl(ownerPhone, newBooking);
+
+    // Send confirmation log and alert payload
     try {
       console.log(`[BOOKING CREATED] ID: ${bookingId}, Customer: ${newBooking.customerName}, Phone: ${newBooking.phone}, Date: ${newBooking.travelDate}`);
+      console.log(`[MURUGAN WHATSAPP ALERT]: ${ownerAlertUrl}`);
     } catch (e) {
       // Do not block response on notification error
     }
 
     return NextResponse.json({
       success: true,
-      booking: newBooking
+      booking: newBooking,
+      ownerAlertUrl
     });
   } catch (err: any) {
     return NextResponse.json({ error: err.message || 'Failed to process booking' }, { status: 500 });

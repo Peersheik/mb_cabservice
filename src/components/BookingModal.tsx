@@ -28,6 +28,7 @@ export const BookingModal: React.FC = () => {
   const [stayRequired, setStayRequired] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedBookingId, setSubmittedBookingId] = useState('');
+  const [ownerAlertUrl, setOwnerAlertUrl] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [paymentChoice, setPaymentChoice] = useState<'PAY_DRIVER' | 'PREPAY_DEPOSIT'>('PAY_DRIVER');
@@ -43,6 +44,7 @@ export const BookingModal: React.FC = () => {
     if (activeBookingModal.isOpen) {
       setIsSubmitted(false);
       setErrorMessage('');
+      setOwnerAlertUrl('');
     }
   }, [activeBookingModal]);
 
@@ -86,6 +88,13 @@ export const BookingModal: React.FC = () => {
       } as any);
 
       setSubmittedBookingId(booking.id);
+      if (booking.ownerAlertUrl) {
+        setOwnerAlertUrl(booking.ownerAlertUrl);
+        // Automatically attempt to notify owner WhatsApp or open chat in background/new window
+        try {
+          window.open(booking.ownerAlertUrl, '_blank');
+        } catch (e) {}
+      }
       setIsSubmitted(true);
 
       try {
@@ -145,21 +154,51 @@ export const BookingModal: React.FC = () => {
               </div>
             </div>
 
-            {/* Price Banner */}
-            <div className="bg-[#155E38] text-white p-4 rounded-2xl mb-6 flex items-center justify-between shadow-md">
-              <div>
-                <span className="text-[11px] uppercase tracking-wider text-emerald-200 font-bold block">
-                  {currentPkg.name} ({currentPkg.placesCount} Scenic Places)
-                </span>
-                <div className="text-2xl font-black mt-0.5 flex items-baseline gap-2">
-                  <span>{formatCurrency(activePrice)}</span>
-                  <span className="text-xs font-normal text-emerald-200">
-                    / {vehicleType} ({pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'})
+            {/* BookMyShow-style Step Progress Bar */}
+            <div className="flex items-center justify-between mb-5 px-1">
+              <div className="flex items-center gap-1.5 text-xs font-bold text-[#155E38]">
+                <span className="w-5 h-5 rounded-full bg-[#155E38] text-white flex items-center justify-center text-[10px]">1</span>
+                <span>Select Tour</span>
+              </div>
+              <div className="h-0.5 flex-1 mx-2 bg-emerald-200"></div>
+              <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+                <span className="w-5 h-5 rounded-full bg-emerald-100 text-[#155E38] flex items-center justify-center text-[10px]">2</span>
+                <span>Vehicle & Date</span>
+              </div>
+              <div className="h-0.5 flex-1 mx-2 bg-slate-200"></div>
+              <div className="flex items-center gap-1.5 text-xs font-medium text-slate-400">
+                <span className="w-5 h-5 rounded-full bg-slate-100 text-slate-500 flex items-center justify-center text-[10px]">3</span>
+                <span>Instant Ticket</span>
+              </div>
+            </div>
+
+            {/* Price Banner with Highlighted Discount Note */}
+            <div className="bg-[#155E38] text-white p-4 rounded-2xl mb-4 shadow-md">
+              <div className="flex items-center justify-between">
+                <div>
+                  <span className="text-[11px] uppercase tracking-wider text-emerald-200 font-bold block">
+                    {currentPkg.name} ({currentPkg.placesCount} Scenic Places)
+                  </span>
+                  <div className="text-2xl font-black mt-0.5 flex items-baseline gap-2">
+                    <span>{formatCurrency(activePrice)}</span>
+                    <span className="text-xs font-normal text-emerald-200">
+                      / {vehicleType} ({pricingMode === 'SEASON' ? 'Peak Season' : 'Off-Season'})
+                    </span>
+                  </div>
+                </div>
+                <div className="text-right text-xs text-emerald-200">
+                  <span className="bg-emerald-800/90 px-2.5 py-1 rounded-lg font-bold border border-emerald-600/40">
+                    Fuel + Driver Included
                   </span>
                 </div>
               </div>
-              <div className="text-right text-xs text-emerald-200">
-                <span className="bg-emerald-800/80 px-2.5 py-1 rounded-lg">Fuel & Driver Included</span>
+
+              {/* Requirement #1: Highlighted owner discount disclaimer banner */}
+              <div className="mt-3 pt-2.5 border-t border-emerald-600/50 flex items-start gap-2 bg-emerald-950/40 p-2.5 rounded-xl">
+                <Sparkles className="w-4 h-4 text-amber-300 flex-shrink-0 mt-0.5" />
+                <p className="text-[11px] text-amber-200 leading-snug font-bold">
+                  🏷️ Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                </p>
               </div>
             </div>
 
@@ -393,12 +432,33 @@ export const BookingModal: React.FC = () => {
               Thank you, <strong>{name}</strong>. Reference ID: <span className="font-bold text-[#155E38] bg-emerald-50 px-2 py-0.5 rounded">{submittedBookingId}</span>. MB Cabs driver coordination team will call/WhatsApp you shortly.
             </p>
 
-            <div className="pt-3 flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 max-w-md mx-auto text-left space-y-2">
+              <div className="flex items-center gap-2 text-xs font-bold text-[#155E38]">
+                <Sparkles className="w-4 h-4 text-emerald-600" />
+                <span>Trip Dispatch Notification Sent</span>
+              </div>
+              <p className="text-[11px] text-slate-600">
+                Owner Murugan & the MB Cabs team received your booking details (Trip Date: <strong>{travelDate}</strong>, Vehicle: <strong>{vehicleType}</strong>).
+              </p>
+              {ownerAlertUrl && (
+                <a
+                  href={ownerAlertUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-2 inline-flex items-center gap-1.5 text-xs font-black text-[#155E38] bg-white border border-emerald-300 px-3 py-1.5 rounded-lg shadow-sm hover:bg-emerald-100 transition-colors"
+                >
+                  <MessageCircle className="w-3.5 h-3.5 text-emerald-600" />
+                  <span>Notify Murugan Directly on WhatsApp</span>
+                </a>
+              )}
+            </div>
+
+            <div className="pt-2 flex flex-col sm:flex-row gap-3 justify-center max-w-md mx-auto">
               <a
                 href={whatsappUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex-1 bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow"
+                className="flex-1 bg-[#25D366] text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 text-sm shadow hover:bg-[#1EBE5D] transition-colors"
               >
                 <MessageCircle className="w-4 h-4" /> Chat on WhatsApp
               </a>

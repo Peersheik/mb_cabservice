@@ -153,6 +153,14 @@ export const PackagesSection: React.FC = () => {
                         </div>
                       </div>
 
+                      {/* Requirement #1: Highlighted discount note */}
+                      <div className="bg-amber-50 border border-amber-200/80 rounded-xl p-2.5 flex items-start gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+                        <p className="text-[10.5px] font-bold text-amber-900 leading-tight">
+                          🏷️ Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                        </p>
+                      </div>
+
                       <div className="grid grid-cols-2 gap-2">
                         <Link
                           href={`/packages/${pkg.slug}`}

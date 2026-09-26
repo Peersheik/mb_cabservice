@@ -284,6 +284,14 @@ export const HeroSection: React.FC = () => {
                   </div>
                 </div>
 
+                {/* Requirement #1: Highlighted discount note */}
+                <div className="bg-amber-50 border border-amber-200/90 rounded-xl p-2.5 flex items-start gap-2 shadow-sm">
+                  <Sparkles className="w-3.5 h-3.5 text-amber-600 flex-shrink-0 mt-0.5" />
+                  <p className="text-[11px] font-bold text-amber-900 leading-snug">
+                    🏷️ Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                  </p>
+                </div>
+
                 {/* Action Buttons */}
                 <div className="pt-2 space-y-2.5">
                   <button

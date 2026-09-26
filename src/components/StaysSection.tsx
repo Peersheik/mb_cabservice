@@ -89,30 +89,40 @@ export const StaysSection: React.FC = () => {
                 </div>
 
                 {/* Price & Action */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block">
-                      Starting From
-                    </span>
-                    <span className="text-xl font-black text-[#064E3B]">
-                      {formatCurrency(stay.priceStarting)}
-                      <span className="text-xs font-normal text-slate-500"> / night</span>
-                    </span>
+                <div className="pt-4 border-t border-slate-100 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-400 block">
+                        Starting From
+                      </span>
+                      <span className="text-xl font-black text-[#064E3B]">
+                        {formatCurrency(stay.priceStarting)}
+                        <span className="text-xs font-normal text-slate-500"> / night</span>
+                      </span>
+                    </div>
+
+                    <a
+                      href={generateWhatsAppBookingUrl({
+                        phone: settings.phone1,
+                        packageName: `Stay Enquiry: ${stay.name}`,
+                        stayRequired: true
+                      })}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow flex items-center gap-1.5 transition-colors"
+                    >
+                      <MessageCircle className="w-3.5 h-3.5" />
+                      <span>Enquire</span>
+                    </a>
                   </div>
 
-                  <a
-                    href={generateWhatsAppBookingUrl({
-                      phone: settings.phone1,
-                      packageName: `Stay Enquiry: ${stay.name}`,
-                      stayRequired: true
-                    })}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow flex items-center gap-1.5 transition-colors"
-                  >
-                    <MessageCircle className="w-3.5 h-3.5" />
-                    <span>Enquire</span>
-                  </a>
+                  {/* Highlighted Price Disclaimer */}
+                  <div className="bg-amber-50 border border-amber-200/90 rounded-xl p-2.5 flex items-start gap-1.5 shadow-xs">
+                    <span className="text-amber-600 text-xs mt-0.5">🏷️</span>
+                    <p className="text-[10.5px] font-bold text-amber-900 leading-snug">
+                      Prices are not fixed! Kindly contact the owner to know the original discounted price.
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -122,6 +122,10 @@ export interface SiteSettings {
   phone1: string;
   phone2: string;
   whatsappNumber: string;
+  extraWhatsappNumbers?: string[];
+  instagramUrl?: string;
+  facebookUrl?: string;
+  youtubeUrl?: string;
   email: string;
   address: string;
   mapEmbedUrl: string;
@@ -621,6 +625,10 @@ export const INITIAL_SITE_SETTINGS: SiteSettings = {
   phone1: '+91 9942472778',
   phone2: '+91 9486953927',
   whatsappNumber: '+919942472778',
+  extraWhatsappNumbers: ['+919486953927'],
+  instagramUrl: 'https://instagram.com/mbcabsholidays',
+  facebookUrl: 'https://facebook.com/mbcabsholidays',
+  youtubeUrl: '',
   email: 'info@kodaimbcabsholidays.com',
   address: 'Fern Hill Road, Near Hotel Tamilnadu, Kodaikanal - 624101, Tamil Nadu, India',
   mapEmbedUrl: 'https://maps.google.com/maps?q=Fern+Hill+Road+Kodaikanal&t=&z=14&ie=UTF8&iwloc=&output=embed',

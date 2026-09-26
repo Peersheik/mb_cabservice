@@ -58,12 +58,20 @@ export default function AdminDashboardPage() {
   const [phone1Input, setPhone1Input] = useState(settings.phone1 || '');
   const [phone2Input, setPhone2Input] = useState(settings.phone2 || '');
   const [addressInput, setAddressInput] = useState(settings.address || '');
+  const [extraWhatsappInput, setExtraWhatsappInput] = useState(settings.extraWhatsappNumbers?.join(', ') || '');
+  const [instagramInput, setInstagramInput] = useState(settings.instagramUrl || '');
+  const [facebookInput, setFacebookInput] = useState(settings.facebookUrl || '');
+  const [youtubeInput, setYoutubeInput] = useState(settings.youtubeUrl || '');
 
   useEffect(() => {
     if (settings.phone1) setPhone1Input(settings.phone1);
     if (settings.phone2) setPhone2Input(settings.phone2);
     if (settings.address) setAddressInput(settings.address);
-  }, [settings.phone1, settings.phone2, settings.address]);
+    if (settings.extraWhatsappNumbers) setExtraWhatsappInput(settings.extraWhatsappNumbers.join(', '));
+    if (settings.instagramUrl) setInstagramInput(settings.instagramUrl);
+    if (settings.facebookUrl) setFacebookInput(settings.facebookUrl);
+    if (settings.youtubeUrl) setYoutubeInput(settings.youtubeUrl);
+  }, [settings]);
 
   // Simple state for updating package prices easily
   const [priceForm, setPriceForm] = useState<{
@@ -522,66 +530,140 @@ export default function AdminDashboardPage() {
         {/* TAB 2: CUSTOMER BOOKINGS & LEADS */}
         {activeTab === 'bookings' && (
           <div className="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-md space-y-6">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
               <div>
-                <h3 className="text-xl font-black font-heading text-[#064E3B]">
-                  Customer Enquiries & Trips
-                </h3>
-                <p className="text-xs text-slate-500">
-                  Every request submitted from the website is stored permanently here.
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xl font-black font-heading text-[#064E3B]">
+                    Customer Trips & Bookings Manager
+                  </h3>
+                  <span className="bg-emerald-100 text-[#155E38] text-xs font-black px-2.5 py-0.5 rounded-full">
+                    {bookings.length} Total
+                  </span>
+                </div>
+                <p className="text-xs text-slate-500 mt-0.5">
+                  Real-time database records with one-tap WhatsApp driver dispatch & customer calling.
                 </p>
               </div>
             </div>
 
             {bookings.length === 0 ? (
-              <div className="text-center py-12 text-slate-400 text-xs">
+              <div className="text-center py-16 text-slate-400 text-xs">
                 No customer bookings submitted yet. Test by clicking "Book Cab" on the website.
               </div>
             ) : (
               <div className="space-y-4">
-                {bookings.map((b) => (
-                  <div
-                    key={b.id}
-                    className="p-5 rounded-2xl border border-slate-200 bg-slate-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4"
-                  >
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <span className="font-mono text-xs font-bold text-[#155E38] bg-emerald-100 px-2 py-0.5 rounded">
-                          {b.id}
-                        </span>
-                        <strong className="text-sm font-bold text-slate-900">{b.customerName}</strong>
-                        <a href={`tel:${b.phone}`} className="text-xs font-bold text-emerald-700 hover:underline">
-                          📞 {b.phone}
-                        </a>
-                      </div>
-                      <p className="text-xs text-slate-700">
-                        <strong>{b.packageName}</strong> • {b.vehicleType} • Travel Date: <strong>{b.travelDate}</strong> ({b.passengers} Pax)
-                      </p>
-                      {b.pickupLocation && (
-                        <p className="text-[11px] text-slate-500">
-                          Pickup: {b.pickupLocation} | Drop: {b.dropLocation}
-                        </p>
-                      )}
-                      {b.specialRequests && (
-                        <p className="text-[11px] text-slate-600 italic">Notes: {b.specialRequests}</p>
-                      )}
-                    </div>
+                {bookings.map((b) => {
+                  const statusColors: Record<string, string> = {
+                    NEW: 'bg-emerald-100 text-emerald-800 border-emerald-300',
+                    CONTACTED: 'bg-blue-100 text-blue-800 border-blue-300',
+                    CONFIRMED: 'bg-purple-100 text-purple-800 border-purple-300',
+                    COMPLETED: 'bg-slate-100 text-slate-700 border-slate-300',
+                    CANCELLED: 'bg-rose-100 text-rose-700 border-rose-300'
+                  };
 
-                    <div className="flex items-center gap-3">
-                      <select
-                        value={b.status}
-                        onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
-                        className="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-bold text-slate-800 focus:ring-2 focus:ring-emerald-600"
-                      >
-                        <option value="NEW">🟢 NEW</option>
-                        <option value="CONTACTED">📞 CONTACTED</option>
-                        <option value="CONFIRMED">✓ CONFIRMED</option>
-                        <option value="COMPLETED">COMPLETED</option>
-                        <option value="CANCELLED">CANCELLED</option>
-                      </select>
+                  const cleanPhone = b.phone.replace(/[^0-9]/g, '');
+                  const customerWhatsAppMsg = `Hi ${b.customerName}, this is Murugan from Kodai MB Cabs Holidays. We received your booking request (${b.id}) for ${b.packageName} on ${b.travelDate}. We have reserved your ${b.vehicleType} cab. May I confirm the pickup time?`;
+
+                  return (
+                    <div
+                      key={b.id}
+                      className="p-5 sm:p-6 rounded-2xl border border-slate-200 bg-white hover:border-emerald-300 hover:shadow-md transition-all flex flex-col lg:flex-row lg:items-center justify-between gap-5"
+                    >
+                      <div className="space-y-2 flex-1">
+                        <div className="flex flex-wrap items-center gap-2">
+                          <span className="font-mono text-xs font-black text-[#155E38] bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md">
+                            {b.id}
+                          </span>
+                          <span
+                            className={`text-[10px] font-black uppercase px-2.5 py-0.5 rounded-full border ${
+                              statusColors[b.status] || 'bg-slate-100 text-slate-700 border-slate-200'
+                            }`}
+                          >
+                            {b.status}
+                          </span>
+                          <strong className="text-base font-black text-slate-900 ml-1">
+                            {b.customerName}
+                          </strong>
+                        </div>
+
+                        {/* Trip specs banner */}
+                        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-150">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase text-slate-400 block">Package / Tour</span>
+                            <span className="font-bold text-[#064E3B]">{b.packageName}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase text-slate-400 block">Travel Date</span>
+                            <span className="font-bold text-slate-900">📅 {b.travelDate}</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase text-slate-400 block">Cab & Guests</span>
+                            <span className="font-bold text-slate-900">🚗 {b.vehicleType} ({b.passengers} Pax)</span>
+                          </div>
+                          <div>
+                            <span className="text-[10px] font-bold uppercase text-slate-400 block">Estimated Fare</span>
+                            <span className="font-bold text-[#155E38]">{formatCurrency(b.calculatedPrice)}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-slate-600">
+                          {b.pickupLocation && (
+                            <span>📍 <strong>Pickup:</strong> {b.pickupLocation}</span>
+                          )}
+                          {b.dropLocation && (
+                            <span>🏁 <strong>Drop:</strong> {b.dropLocation}</span>
+                          )}
+                          {b.stayRequired && (
+                            <span className="text-emerald-700 font-bold bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
+                              🏨 Stay Assistance Requested
+                            </span>
+                          )}
+                        </div>
+
+                        {b.specialRequests && (
+                          <p className="text-xs text-slate-500 italic bg-amber-50/60 p-2 rounded-lg border border-amber-200/60">
+                            Notes: {b.specialRequests}
+                          </p>
+                        )}
+                      </div>
+
+                      {/* Quick Action Controls */}
+                      <div className="flex flex-row lg:flex-col items-center lg:items-end gap-2.5 pt-3 lg:pt-0 border-t lg:border-t-0 border-slate-100 flex-shrink-0">
+                        <select
+                          value={b.status}
+                          onChange={(e) => updateBookingStatus(b.id, e.target.value as any)}
+                          className="px-3 py-2 rounded-xl border border-slate-300 bg-white text-xs font-black text-slate-800 focus:ring-2 focus:ring-emerald-600 shadow-xs"
+                        >
+                          <option value="NEW">🟢 NEW</option>
+                          <option value="CONTACTED">📞 CONTACTED</option>
+                          <option value="CONFIRMED">✓ CONFIRMED</option>
+                          <option value="COMPLETED">🏁 COMPLETED</option>
+                          <option value="CANCELLED">❌ CANCELLED</option>
+                        </select>
+
+                        <div className="flex items-center gap-2">
+                          <a
+                            href={`https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encodeURIComponent(customerWhatsAppMsg)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-bold px-3 py-2 rounded-xl shadow-xs transition-all flex items-center gap-1.5"
+                            title="Chat with customer on WhatsApp"
+                          >
+                            <span>WhatsApp</span>
+                          </a>
+
+                          <a
+                            href={`tel:${b.phone}`}
+                            className="bg-emerald-50 hover:bg-emerald-100 text-[#064E3B] border border-emerald-300 text-xs font-bold px-3 py-2 rounded-xl transition-all flex items-center gap-1"
+                            title="Call customer directly"
+                          >
+                            <span>Call</span>
+                          </a>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -669,6 +751,67 @@ export default function AdminDashboardPage() {
 
               <div>
                 <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
+                  Additional WhatsApp Numbers (Optional, comma-separated)
+                </label>
+                <input
+                  type="text"
+                  placeholder="+919486953927, +919876543210"
+                  value={extraWhatsappInput}
+                  onChange={(e) => setExtraWhatsappInput(e.target.value)}
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm text-slate-800"
+                />
+                <span className="text-[10px] text-slate-400 mt-0.5 block">
+                  Add multiple driver/coordination WhatsApp lines. They will appear as additional chat options.
+                </span>
+              </div>
+
+              <div className="pt-2 border-t border-slate-200">
+                <h4 className="text-xs font-black uppercase text-[#064E3B] mb-2">Social Media Profiles (Optional)</h4>
+                <div className="space-y-3">
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-0.5">
+                      YouTube Channel / Video Link
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://youtube.com/@mbcabs"
+                      value={youtubeInput}
+                      onChange={(e) => setYoutubeInput(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800"
+                    />
+                    <span className="text-[10px] text-slate-400 block mt-0.5">When added, the YouTube icon shows automatically across footer and contact points.</span>
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-0.5">
+                      Instagram Profile URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://instagram.com/mbcabsholidays"
+                      value={instagramInput}
+                      onChange={(e) => setInstagramInput(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-[11px] font-bold text-slate-700 mb-0.5">
+                      Facebook Page URL
+                    </label>
+                    <input
+                      type="url"
+                      placeholder="https://facebook.com/mbcabsholidays"
+                      value={facebookInput}
+                      onChange={(e) => setFacebookInput(e.target.value)}
+                      className="w-full px-3 py-2 rounded-xl border border-slate-300 text-xs text-slate-800"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1">
                   Office Address in Kodaikanal
                 </label>
                 <textarea
@@ -683,19 +826,28 @@ export default function AdminDashboardPage() {
                 <button
                   type="button"
                   onClick={() => {
+                    const extraArr = extraWhatsappInput
+                      .split(',')
+                      .map((s) => s.trim())
+                      .filter((s) => s.length > 5);
+
                     updateSettings({
                       phone1: phone1Input,
                       phone2: phone2Input,
                       whatsappNumber: phone1Input.replace(/[^0-9+]/g, ''),
+                      extraWhatsappNumbers: extraArr,
+                      youtubeUrl: youtubeInput.trim(),
+                      instagramUrl: instagramInput.trim(),
+                      facebookUrl: facebookInput.trim(),
                       address: addressInput
                     });
-                    setSaveSuccessMsg('Phone and office settings saved permanently to Cloud Redis!');
+                    setSaveSuccessMsg('Phone, WhatsApp & Social Links saved permanently to Cloud Redis!');
                     setTimeout(() => setSaveSuccessMsg(null), 3000);
                   }}
                   className="bg-[#155E38] hover:bg-[#0B3B24] text-white font-bold px-6 py-2.5 rounded-xl text-xs shadow flex items-center gap-1.5"
                 >
                   <Save className="w-3.5 h-3.5" />
-                  <span>Save Phone Settings</span>
+                  <span>Save Phone & Social Settings</span>
                 </button>
               </div>
             </div>

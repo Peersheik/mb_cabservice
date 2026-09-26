@@ -78,7 +78,7 @@ export default async function PlaceDetailPage({ params }: Props) {
     '@context': 'https://schema.org',
     '@type': 'TouristAttraction',
     name: place.name,
-    description: place.description,
+    description: place.shortStory || place.subtitle,
     image: place.image,
     touristType: ['Family', 'Couples', 'Solo Travellers', 'Tourists'],
     isAccessibleForFree: !place.entryFee || place.entryFee === 'Free',

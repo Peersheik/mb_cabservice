@@ -73,5 +73,47 @@ export default async function PackageDetailPage({ params }: Props) {
     notFound();
   }
 
-  return <PackageDetailView pkg={pkg} />;
+  const packageJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristTrip',
+    name: `${pkg.name} — Kodaikanal Cab Sightseeing Tour`,
+    description: pkg.description,
+    touristType: ['Family', 'Couples', 'Solo Travellers', 'Tourists'],
+    offers: {
+      '@type': 'Offer',
+      price: pkg.pricing.sedan.offSeason,
+      priceCurrency: 'INR',
+      availability: 'https://schema.org/InStock',
+      url: `https://www.kodaimbcabsholidays.com/packages/${pkg.slug}`
+    },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Kodai MB Cabs Holidays & MB Travels',
+      telephone: '+919942472778',
+      url: 'https://www.kodaimbcabsholidays.com'
+    },
+    itinerary: {
+      '@type': 'ItemList',
+      numberOfItems: pkg.places.length,
+      itemListElement: pkg.places.map((place, idx) => ({
+        '@type': 'ListItem',
+        position: idx + 1,
+        item: {
+          '@type': 'TouristAttraction',
+          name: place.name,
+          description: place.description
+        }
+      }))
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(packageJsonLd) }}
+      />
+      <PackageDetailView pkg={pkg} />
+    </>
+  );
 }

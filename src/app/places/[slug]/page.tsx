@@ -74,5 +74,41 @@ export default async function PlaceDetailPage({ params }: Props) {
 
   const relatedPkg = INITIAL_PACKAGES.find((p) => p.slug === place.relatedPackageSlug);
 
-  return <PlaceDetailView place={place} relatedPkg={relatedPkg} />;
+  const placeJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'TouristAttraction',
+    name: place.name,
+    description: place.description,
+    image: place.image,
+    touristType: ['Family', 'Couples', 'Solo Travellers', 'Tourists'],
+    isAccessibleForFree: !place.entryFee || place.entryFee === 'Free',
+    publicAccess: true,
+    geo: {
+      '@type': 'GeoCoordinates',
+      latitude: 10.2381,
+      longitude: 77.4891
+    },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Kodaikanal',
+      addressRegion: 'Tamil Nadu',
+      addressCountry: 'IN'
+    },
+    provider: {
+      '@type': 'LocalBusiness',
+      name: 'Kodai MB Cabs Holidays & MB Travels',
+      telephone: '+919942472778',
+      url: 'https://www.kodaimbcabsholidays.com'
+    }
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(placeJsonLd) }}
+      />
+      <PlaceDetailView place={place} relatedPkg={relatedPkg} />
+    </>
+  );
 }

@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { Phone, MessageCircle, Menu, X, Car, Sparkles, Sun, Moon } from 'lucide-react';
 import { useApp } from '@/lib/context';
@@ -86,10 +87,12 @@ export const Navbar: React.FC = () => {
             
             {/* 1. BRAND LOGO */}
             <Link href="/" className="flex items-center gap-2.5 flex-shrink-0 group">
-              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white p-0.5 shadow-md group-hover:scale-105 transition-transform flex-shrink-0 overflow-hidden border border-emerald-400/40">
-                <img
+              <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white p-0.5 shadow-md group-hover:scale-105 transition-transform flex-shrink-0 overflow-hidden border border-emerald-400/40 relative">
+                <Image
                   src="/logo.png"
                   alt="MB Travels & Kodai MB Cabs Logo"
+                  width={44}
+                  height={44}
                   className="w-full h-full object-contain rounded-full"
                 />
               </div>

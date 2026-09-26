@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Home, Star, MapPin, Check, ArrowRight, MessageCircle } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { formatCurrency, generateWhatsAppBookingUrl } from '@/lib/utils';
@@ -43,9 +44,11 @@ export const StaysSection: React.FC = () => {
             >
               {/* Property Image */}
               <div className="relative h-64 w-full overflow-hidden bg-slate-900">
-                <img
+                <Image
                   src={stay.image}
                   alt={stay.name}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/20" />

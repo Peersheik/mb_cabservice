@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import {
   DollarSign,
   Package,
@@ -129,11 +130,12 @@ export default function AdminDashboardPage() {
 
   // Simple Login screen
   if (!isAdminAuthenticated) {
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
       e.preventDefault();
-      const success = loginAdmin(usernameInput, passwordInput);
+      setAuthError('');
+      const success = await loginAdmin(usernameInput, passwordInput);
       if (!success) {
-        setAuthError('Incorrect username or password. (Username: mbcabservice)');
+        setAuthError('Incorrect username or password. Please verify credentials.');
       }
     };
 
@@ -141,10 +143,12 @@ export default function AdminDashboardPage() {
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
         <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-10 max-w-md w-full border border-slate-200">
           <div className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-white p-1 flex items-center justify-center mx-auto mb-3 shadow-md border border-emerald-500/40 overflow-hidden">
-              <img
+            <div className="w-16 h-16 rounded-full bg-white p-1 flex items-center justify-center mx-auto mb-3 shadow-md border border-emerald-500/40 overflow-hidden relative">
+              <Image
                 src="/logo.png"
                 alt="MB Travels Logo"
+                width={64}
+                height={64}
                 className="w-full h-full object-contain rounded-full"
               />
             </div>
@@ -215,10 +219,12 @@ export default function AdminDashboardPage() {
       <header className="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow border border-emerald-500/30 overflow-hidden flex-shrink-0">
-              <img
+            <div className="w-10 h-10 rounded-full bg-white p-0.5 shadow border border-emerald-500/30 overflow-hidden flex-shrink-0 relative">
+              <Image
                 src="/logo.png"
                 alt="MB Travels Logo"
+                width={40}
+                height={40}
                 className="w-full h-full object-contain rounded-full"
               />
             </div>

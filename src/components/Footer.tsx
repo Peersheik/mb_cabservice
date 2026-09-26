@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Phone, Mail, MapPin, MessageCircle, ShieldCheck, Compass, Heart, ArrowUpRight } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { generateWhatsAppBookingUrl } from '@/lib/utils';
@@ -19,10 +20,12 @@ export const Footer: React.FC = () => {
           {/* Brand Info */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-14 h-14 rounded-full bg-white p-1 flex items-center justify-center shadow-lg border border-emerald-500/40 flex-shrink-0">
-                <img
+              <div className="w-14 h-14 rounded-full bg-white p-1 flex items-center justify-center shadow-lg border border-emerald-500/40 flex-shrink-0 relative overflow-hidden">
+                <Image
                   src="/logo.png"
                   alt="MB Travels & Kodai MB Cabs Logo"
+                  width={56}
+                  height={56}
                   className="w-full h-full object-contain rounded-full"
                 />
               </div>

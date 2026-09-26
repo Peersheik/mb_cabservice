@@ -181,8 +181,8 @@ export default function RootLayout({
         ],
         aggregateRating: {
           '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          reviewCount: '356',
+          ratingValue: '5.0',
+          reviewCount: '4',
           bestRating: '5',
           worstRating: '1',
           itemReviewed: {
@@ -201,6 +201,36 @@ export default function RootLayout({
             }
           }
         },
+        review: [
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Karthik Subramanian' },
+            datePublished: '2026-08-15',
+            reviewBody: 'MB Cabs Holidays provided the smoothest travel experience we’ve ever had in Kodaikanal. Murugaboopathi sir and his drivers know every turn, the best photo spots before the crowds arrive, and drove with extreme care. The Innova SUV was spotless!',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5', worstRating: '1' }
+          },
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Priyanka & Rahul Mehta' },
+            datePublished: '2026-07-20',
+            reviewBody: 'Getting forest department permission for Berijam Lake can be stressful, but MB Cabs handled everything seamlessly. The trip through the silent pine forest was mesmerizing. Transparent pricing with zero hidden charges. Highly recommended!',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5', worstRating: '1' }
+          },
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Anand Kumar' },
+            datePublished: '2026-08-10',
+            reviewBody: 'Our driver was punctual, friendly, and waited patiently while we trekked down to Dolphin’s Nose and Vattakanal Falls. His local insights about Kodaikanal history and food spots made the trip truly special.',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5', worstRating: '1' }
+          },
+          {
+            '@type': 'Review',
+            author: { '@type': 'Person', name: 'Dr. S. Meenakshi Sundaram' },
+            datePublished: '2026-08-25',
+            reviewBody: 'Booked Kodai MB Cabs for airport pickup from Madurai and 3 days of Kodaikanal sightseeing. Driver was punctual, polite, and navigated the Ghat roads very smoothly. Transparent pricing and clean vehicle. Best cab service in Kodaikanal!',
+            reviewRating: { '@type': 'Rating', ratingValue: '5', bestRating: '5', worstRating: '1' }
+          }
+        ],
       },
       {
         '@type': 'FAQPage',

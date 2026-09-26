@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { Sparkles, Phone, MessageCircle, ArrowRight } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { generateWhatsAppBookingUrl } from '@/lib/utils';
@@ -12,9 +13,11 @@ export const FinalCtaSection: React.FC = () => {
     <section className="py-24 bg-[#071710] text-white relative overflow-hidden">
       {/* Background Graphic */}
       <div className="absolute inset-0 z-0">
-        <img
+        <Image
           src="https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?q=80&w=1600&auto=format&fit=crop"
           alt="Sunset over Kodaikanal Hills"
+          fill
+          sizes="100vw"
           className="w-full h-full object-cover object-center opacity-30"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#071710] via-[#071710]/80 to-transparent" />

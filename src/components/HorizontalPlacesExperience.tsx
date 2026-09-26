@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Compass, ArrowRight, Sparkles } from 'lucide-react';
 import { useApp } from '@/lib/context';
 
@@ -43,9 +44,11 @@ export const HorizontalPlacesExperience: React.FC = () => {
           >
             {/* Real Landmark Photo */}
             <div className="relative h-56 w-full overflow-hidden bg-slate-900">
-              <img
+              <Image
                 src={place.image}
                 alt={place.name}
+                fill
+                sizes="(max-width: 640px) 320px, 384px"
                 className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20" />

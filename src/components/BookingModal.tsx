@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { X, Car, MessageCircle, CheckCircle2, ShieldAlert, Sparkles } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { formatCurrency, generateWhatsAppBookingUrl } from '@/lib/utils';
@@ -27,6 +28,10 @@ export const BookingModal: React.FC = () => {
   const [stayRequired, setStayRequired] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [submittedBookingId, setSubmittedBookingId] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [paymentChoice, setPaymentChoice] = useState<'PAY_DRIVER' | 'PREPAY_DEPOSIT'>('PAY_DRIVER');
+  const [honeypot, setHoneypot] = useState('');
 
   useEffect(() => {
     if (activeBookingModal.packageSlug) {
@@ -37,6 +42,7 @@ export const BookingModal: React.FC = () => {
     }
     if (activeBookingModal.isOpen) {
       setIsSubmitted(false);
+      setErrorMessage('');
     }
   }, [activeBookingModal]);
 
@@ -48,37 +54,48 @@ export const BookingModal: React.FC = () => {
   const priceObj = currentPkg.pricing[vehicleType.toLowerCase() as 'sedan' | 'suv'];
   const activePrice = pricingMode === 'SEASON' && priceObj.season !== null ? priceObj.season : priceObj.offSeason;
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage('');
+
     if (!name || !phone || !travelDate) {
-      alert('Please enter your name, contact number, and travel date.');
+      setErrorMessage('Please enter your name, contact number, and travel date.');
       return;
     }
 
     const finalPassengers = typeof passengers === 'number' && passengers > 0 ? passengers : 2;
-
-    const booking = addBooking({
-      customerName: name,
-      phone,
-      email: '',
-      travelDate,
-      passengers: finalPassengers,
-      packageSlug: currentPkg.slug,
-      packageName: currentPkg.name,
-      vehicleType,
-      pickupLocation: pickup,
-      dropLocation: drop,
-      stayRequired,
-      calculatedPrice: activePrice,
-      pricingMode
-    });
-
-    setSubmittedBookingId(booking.id);
-    setIsSubmitted(true);
+    setIsSubmitting(true);
 
     try {
-      confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
-    } catch (e) {}
+      const booking = await addBooking({
+        customerName: name,
+        phone,
+        email: '',
+        travelDate,
+        passengers: finalPassengers,
+        packageSlug: currentPkg.slug,
+        packageName: currentPkg.name,
+        vehicleType,
+        pickupLocation: pickup,
+        dropLocation: drop,
+        stayRequired,
+        specialRequests: paymentChoice === 'PREPAY_DEPOSIT' ? 'Deposit Prepayment Requested (Razorpay)' : 'Pay Driver Directly upon trip completion',
+        calculatedPrice: activePrice,
+        pricingMode,
+        honeypot
+      } as any);
+
+      setSubmittedBookingId(booking.id);
+      setIsSubmitted(true);
+
+      try {
+        confetti({ particleCount: 70, spread: 60, origin: { y: 0.6 } });
+      } catch (e) {}
+    } catch (err: any) {
+      setErrorMessage(err.message || 'Could not process booking. Please try again or WhatsApp us.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const whatsappUrl = generateWhatsAppBookingUrl({
@@ -106,10 +123,12 @@ export const BookingModal: React.FC = () => {
         {!isSubmitted ? (
           <div className="p-6 sm:p-8">
             <div className="mb-6 flex items-start gap-3.5">
-              <div className="w-12 h-12 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden mt-0.5">
-                <img
+              <div className="w-12 h-12 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden mt-0.5 relative">
+                <Image
                   src="/logo.png"
                   alt="MB Travels Logo"
+                  width={48}
+                  height={48}
                   className="w-full h-full object-contain rounded-full"
                 />
               </div>
@@ -268,6 +287,25 @@ export const BookingModal: React.FC = () => {
                 </div>
               </div>
 
+              {/* Error Alert */}
+              {errorMessage && (
+                <div className="bg-rose-50 border border-rose-200 text-rose-700 text-xs p-3 rounded-xl font-medium">
+                  {errorMessage}
+                </div>
+              )}
+
+              {/* Honeypot field (hidden for spam bot protection) */}
+              <input
+                type="text"
+                name="honeypot"
+                value={honeypot}
+                onChange={(e) => setHoneypot(e.target.value)}
+                tabIndex={-1}
+                autoComplete="off"
+                style={{ display: 'none' }}
+                aria-hidden="true"
+              />
+
               <div className="bg-emerald-50 border border-emerald-200 p-3 rounded-xl flex items-center gap-3">
                 <input
                   type="checkbox"
@@ -281,14 +319,54 @@ export const BookingModal: React.FC = () => {
                 </label>
               </div>
 
+              {/* Payment Method Selector */}
+              <div>
+                <label className="block text-xs font-bold uppercase text-slate-700 mb-1.5">
+                  Payment Preference
+                </label>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    type="button"
+                    onClick={() => setPaymentChoice('PAY_DRIVER')}
+                    className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${
+                      paymentChoice === 'PAY_DRIVER'
+                        ? 'bg-[#155E38] text-white border-[#155E38] shadow'
+                        : 'bg-slate-50 text-slate-700 border-slate-200'
+                    }`}
+                  >
+                    <span>💵 Pay Driver Directly</span>
+                    <span className="block text-[10px] opacity-80 font-normal mt-0.5">Pay cash or UPI after trip</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setPaymentChoice('PREPAY_DEPOSIT')}
+                    className={`p-2.5 rounded-xl border text-xs font-bold text-left transition-all ${
+                      paymentChoice === 'PREPAY_DEPOSIT'
+                        ? 'bg-[#155E38] text-white border-[#155E38] shadow'
+                        : 'bg-slate-50 text-slate-700 border-slate-200'
+                    }`}
+                  >
+                    <span>💳 Prepay / Deposit</span>
+                    <span className="block text-[10px] opacity-80 font-normal mt-0.5">Razorpay Online Prepayment</span>
+                  </button>
+                </div>
+              </div>
+
               <div className="pt-3 flex flex-col sm:flex-row gap-3">
                 <button
                   type="submit"
-                  disabled={isForestTourUnavailable}
+                  disabled={isForestTourUnavailable || isSubmitting}
                   className="flex-1 bg-[#155E38] hover:bg-[#0B3B24] disabled:bg-slate-400 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 text-sm"
                 >
                   <CheckCircle2 className="w-4 h-4 text-emerald-200" />
-                  <span>{isForestTourUnavailable ? 'Currently Unavailable' : 'Request Booking'}</span>
+                  <span>
+                    {isForestTourUnavailable
+                      ? 'Currently Unavailable'
+                      : isSubmitting
+                      ? 'Confirming Booking...'
+                      : 'Request Booking'}
+                  </span>
                 </button>
 
                 <a

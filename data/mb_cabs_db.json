@@ -268,7 +268,7 @@
           "season": 4500
         }
       },
-      "status": "PERMISSION_REQUIRED",
+      "status": "TEMPORARILY_UNAVAILABLE",
       "permissionNotice": "Forest Dept. Permission Must. MB Cabs drivers coordinate pass in advance.",
       "isFeatured": true,
       "bookingEnabled": true,
@@ -799,6 +799,44 @@
   },
   "bookings": [
     {
+      "id": "BK-MUIQL5GELY7V",
+      "customerName": "Peer Sheik Mydeen",
+      "phone": "65466551351",
+      "email": "",
+      "travelDate": "2026-09-30",
+      "passengers": 2,
+      "packageSlug": "forest-tour",
+      "packageName": "FOREST TOUR",
+      "vehicleType": "SUV",
+      "pickupLocation": "Kodaikanal Bus Stand / Hotel",
+      "dropLocation": "Kodaikanal Lake / Hotel",
+      "stayRequired": false,
+      "specialRequests": "Pay Driver Directly upon trip completion",
+      "calculatedPrice": 4000,
+      "pricingMode": "OFF_SEASON",
+      "status": "NEW",
+      "createdAt": "2026-09-26T18:42:08.222Z"
+    },
+    {
+      "id": "BK-MUIQ96ILIC2R",
+      "customerName": "Karthik Raja",
+      "phone": "9842145678",
+      "email": "karthik@example.com",
+      "travelDate": "2026-10-15",
+      "passengers": 4,
+      "packageSlug": "local-tour",
+      "packageName": "LOCAL TOUR",
+      "vehicleType": "Sedan",
+      "pickupLocation": "Kodaikanal Bus Stand",
+      "dropLocation": "Fern Hill Hotel",
+      "stayRequired": false,
+      "specialRequests": "",
+      "calculatedPrice": 2500,
+      "pricingMode": "OFF_SEASON",
+      "status": "NEW",
+      "createdAt": "2026-09-26T18:32:49.725Z"
+    },
+    {
       "customerName": "sheik",
       "phone": "6534235477",
       "email": "",
@@ -816,5 +854,6 @@
       "status": "CANCELLED",
       "createdAt": "2026-08-29T10:21:53.226Z"
     }
-  ]
+  ],
+  "lastUpdated": "2026-09-26T21:23:02.679Z"
 }

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Sparkles, MapPin, Clock, ArrowRight, ShieldAlert } from 'lucide-react';
 import { useApp } from '@/lib/context';
 import { formatCurrency } from '@/lib/utils';
@@ -57,9 +58,11 @@ export const PackagesSection: React.FC = () => {
                 >
                   {/* Real Landmark Photo */}
                   <div className="relative h-60 w-full overflow-hidden bg-slate-900">
-                    <img
+                    <Image
                       src={pkg.image}
                       alt={pkg.name}
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />

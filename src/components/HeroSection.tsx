@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Sparkles, ArrowRight, Car, MapPin, Calendar, CheckCircle2, Phone, MessageCircle, ShieldCheck, Compass } from 'lucide-react';
 import { useApp } from '@/lib/context';
@@ -86,12 +87,12 @@ export const HeroSection: React.FC = () => {
             }}
             className="absolute inset-0 w-full h-full"
           >
-            <img
+            <Image
               src={bg.url}
               alt={bg.title}
-              loading={idx === 0 ? 'eager' : 'lazy'}
-              fetchPriority={idx === 0 ? 'high' : 'auto'}
-              decoding={idx === 0 ? 'sync' : 'async'}
+              fill
+              priority={idx === 0}
+              sizes="100vw"
               className="w-full h-full object-cover object-center"
             />
           </motion.div>
@@ -191,10 +192,12 @@ export const HeroSection: React.FC = () => {
               {/* Header */}
               <div className="flex items-center justify-between pb-4 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden">
-                    <img
+                  <div className="w-11 h-11 rounded-full bg-white p-0.5 shadow border border-slate-200 flex-shrink-0 overflow-hidden relative">
+                    <Image
                       src="/logo.png"
                       alt="MB Travels Logo"
+                      width={44}
+                      height={44}
                       className="w-full h-full object-contain rounded-full"
                     />
                   </div>

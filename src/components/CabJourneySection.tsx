@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { Car, CheckCircle2, Phone, ShieldCheck, MapPin, Sparkles } from 'lucide-react';
 import { useApp } from '@/lib/context';
@@ -82,13 +83,15 @@ export const CabJourneySection: React.FC = () => {
 
             {/* Right Column: Road and Vehicle Photo */}
             <div className="lg:col-span-6">
-              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 group">
-                <img
+              <div className="relative rounded-2xl overflow-hidden shadow-lg border border-slate-200 group h-80 sm:h-96">
+                <Image
                   src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?q=80&w=1000&auto=format&fit=crop"
                   alt="Scenic Kodaikanal Mountain Road"
-                  className="w-full h-80 sm:h-96 object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
-                <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 shadow-md flex items-center justify-between">
+                <div className="absolute bottom-4 left-4 right-4 bg-white/95 backdrop-blur-md p-4 rounded-xl border border-slate-200 shadow-md flex items-center justify-between z-10">
                   <div>
                     <strong className="block text-sm text-[#064E3B] font-black">MB Travels Kodaikanal</strong>
                     <span className="text-xs text-slate-500">Fern Hill Road • +91 9942472778</span>

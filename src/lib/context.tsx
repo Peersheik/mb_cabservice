@@ -40,14 +40,14 @@ interface AppContextType {
     suvOff: number,
     suvSeason: number
   ) => void;
-  addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => BookingRecord;
-  updateBookingStatus: (id: string, status: BookingRecord['status']) => void;
-  addReview: (review: Omit<ReviewData, 'id'>) => ReviewData;
-  deleteReview: (id: string) => void;
-  updateSettings: (newSettings: Partial<SiteSettings>) => void;
+  addBooking: (booking: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => Promise<BookingRecord>;
+  updateBookingStatus: (id: string, status: BookingRecord['status']) => Promise<void>;
+  addReview: (review: Omit<ReviewData, 'id'>) => Promise<ReviewData>;
+  deleteReview: (id: string) => Promise<void>;
+  updateSettings: (newSettings: Partial<SiteSettings>) => Promise<void>;
   isAdminAuthenticated: boolean;
-  loginAdmin: (username: string, pass: string) => boolean;
-  logoutAdmin: () => void;
+  loginAdmin: (username: string, pass: string) => Promise<boolean>;
+  logoutAdmin: () => Promise<void>;
   activeBookingModal: {
     isOpen: boolean;
     packageSlug?: string;
@@ -61,8 +61,6 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-const LS_KEY_DATA = 'mb_cabs_global_state_v3';
-const LS_KEY_AUTH = 'mb_cabs_admin_auth_v3';
 const LS_KEY_THEME = 'mb_cabs_color_theme_v3';
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -73,7 +71,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [bookings, setBookings] = useState<BookingRecord[]>([]);
   const [settings, setSettings] = useState<SiteSettings>(INITIAL_SITE_SETTINGS);
   const [isAdminAuthenticated, setIsAdminAuthenticated] = useState<boolean>(false);
-  const [syncStatus, setSyncStatus] = useState<string>('Live Sync Active');
+  const [syncStatus, setSyncStatus] = useState<string>('Live Connected');
   const [colorTheme, setColorTheme] = useState<'light' | 'dark'>('light');
 
   const [activeBookingModal, setActiveBookingModal] = useState<{
@@ -100,38 +98,41 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     const next: 'light' | 'dark' = colorTheme === 'light' ? 'dark' : 'light';
     setColorTheme(next);
     applyThemeToDOM(next);
-    const updatedSettings: SiteSettings = { ...settings, colorTheme: next };
-    setSettings(updatedSettings);
-    updateAndBroadcast({ settings: updatedSettings });
+    try {
+      localStorage.setItem(LS_KEY_THEME, next);
+    } catch (e) {}
   };
 
-  const fetchLatestState = useCallback(() => {
-    fetch('/api/db', { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.settings) {
-          setSettings(data.settings);
-          if (data.settings.colorTheme === 'light' || data.settings.colorTheme === 'dark') {
-            setColorTheme(data.settings.colorTheme);
-            applyThemeToDOM(data.settings.colorTheme);
-          }
-        }
-        if (data.packages && Array.isArray(data.packages)) setPackages(data.packages);
-        if (data.bookings && Array.isArray(data.bookings)) setBookings(data.bookings);
-        if (data.stays && Array.isArray(data.stays)) setStays(data.stays);
-        if (data.reviews && Array.isArray(data.reviews)) setReviews(data.reviews);
-      })
-      .catch((err) => {
-        console.warn('Sync fallback', err);
-      });
+  const fetchLatestState = useCallback(async () => {
+    try {
+      const res = await fetch('/api/db', { cache: 'no-store' });
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.settings) {
+        setSettings(data.settings);
+      }
+      if (data.packages && Array.isArray(data.packages)) setPackages(data.packages);
+      if (data.bookings && Array.isArray(data.bookings)) setBookings(data.bookings);
+      if (data.stays && Array.isArray(data.stays)) setStays(data.stays);
+      if (data.reviews && Array.isArray(data.reviews)) setReviews(data.reviews);
+    } catch (err) {
+      console.warn('Data sync fallback', err);
+    }
   }, []);
 
+  // Check admin session on mount via secure httpOnly cookie session route
   useEffect(() => {
+    fetch('/api/auth')
+      .then((res) => {
+        if (res.ok) {
+          setIsAdminAuthenticated(true);
+        } else {
+          setIsAdminAuthenticated(false);
+        }
+      })
+      .catch(() => setIsAdminAuthenticated(false));
+
     try {
-      const savedAuth = localStorage.getItem(LS_KEY_AUTH);
-      if (savedAuth === 'true') {
-        setIsAdminAuthenticated(true);
-      }
       const savedTheme = localStorage.getItem(LS_KEY_THEME);
       if (savedTheme === 'dark' || savedTheme === 'light') {
         setColorTheme(savedTheme);
@@ -139,49 +140,24 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       }
     } catch (e) {}
 
+    // On-demand fetch on mount (NO aggressive 10s polling for regular public visitors!)
     fetchLatestState();
-    const interval = setInterval(fetchLatestState, 10000);
-    return () => clearInterval(interval);
   }, [fetchLatestState]);
 
-  const updateAndBroadcast = async (payload: {
-    packages?: PackageData[];
-    settings?: SiteSettings;
-    bookings?: BookingRecord[];
-    reviews?: ReviewData[];
-  }) => {
-    setSyncStatus('Updating...');
-    if (payload.settings) {
-      setSettings(payload.settings);
-      if (payload.settings.colorTheme) {
-        setColorTheme(payload.settings.colorTheme);
-        applyThemeToDOM(payload.settings.colorTheme);
-      }
-    }
-    if (payload.packages) setPackages(payload.packages);
-    if (payload.bookings) setBookings(payload.bookings);
-    if (payload.reviews) setReviews(payload.reviews);
+  // Only poll if admin is authenticated (dashboard needs live updates)
+  useEffect(() => {
+    if (!isAdminAuthenticated) return;
+    const interval = setInterval(fetchLatestState, 15000);
+    return () => clearInterval(interval);
+  }, [isAdminAuthenticated, fetchLatestState]);
 
-    try {
-      await fetch('/api/db', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      setSyncStatus('Changes Published Globally');
-      setTimeout(() => setSyncStatus('Live Sync Active'), 2000);
-    } catch (e) {
-      setSyncStatus('Local Memory Updated');
-    }
-  };
-
-  const togglePricingMode = (mode: 'OFF_SEASON' | 'SEASON') => {
+  const togglePricingMode = async (mode: 'OFF_SEASON' | 'SEASON') => {
     const updatedSettings = { ...settings, pricingMode: mode };
     setSettings(updatedSettings);
-    updateAndBroadcast({ settings: updatedSettings });
+    await updateSettings({ pricingMode: mode });
   };
 
-  const quickUpdatePackagePrices = (
+  const quickUpdatePackagePrices = async (
     packageId: string,
     sedanOff: number,
     sedanSeason: number,
@@ -201,100 +177,151 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
       return p;
     });
     setPackages(updated);
-    updateAndBroadcast({ packages: updated });
+    try {
+      setSyncStatus('Saving Prices...');
+      await fetch('/api/packages', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ packages: updated })
+      });
+      setSyncStatus('Live Connected');
+    } catch (e) {
+      setSyncStatus('Update Failed');
+    }
   };
 
-  const updatePackagePrice = (
+  const updatePackagePrice = async (
     id: string,
     vehicle: 'sedan' | 'suv',
     mode: 'offSeason' | 'season',
     price: number | null
   ) => {
-    const updated = packages.map((p) => {
-      if (p.id === id) {
-        return {
-          ...p,
-          pricing: {
-            ...p.pricing,
-            [vehicle]: {
-              ...p.pricing[vehicle],
-              [mode]: price
-            }
-          }
-        };
+    const pkg = packages.find((p) => p.id === id);
+    if (!pkg) return;
+
+    const newPricing = {
+      ...pkg.pricing,
+      [vehicle]: {
+        ...pkg.pricing[vehicle],
+        [mode]: price
       }
-      return p;
-    });
+    };
+
+    const updated = packages.map((p) => (p.id === id ? { ...p, pricing: newPricing } : p));
     setPackages(updated);
-    updateAndBroadcast({ packages: updated });
+
+    try {
+      await fetch('/api/packages', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, pricing: newPricing })
+      });
+    } catch (e) {}
   };
 
-  const updatePackageStatus = (id: string, status: PackageData['status']) => {
+  const updatePackageStatus = async (id: string, status: PackageData['status']) => {
     const updated = packages.map((p) => (p.id === id ? { ...p, status } : p));
     setPackages(updated);
-    updateAndBroadcast({ packages: updated });
+    try {
+      await fetch('/api/packages', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      });
+    } catch (e) {}
   };
 
-  const addBooking = (bookingData: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>) => {
-    const newBooking: BookingRecord = {
-      ...bookingData,
-      id: 'BK-' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2, 3).toUpperCase(),
-      status: 'NEW',
-      createdAt: new Date().toISOString()
-    };
-    const updated = [newBooking, ...bookings];
-    setBookings(updated);
-    updateAndBroadcast({ bookings: updated });
-    return newBooking;
+  // Typed Scoped Booking Creation
+  const addBooking = async (bookingData: Omit<BookingRecord, 'id' | 'createdAt' | 'status'>): Promise<BookingRecord> => {
+    const res = await fetch('/api/bookings', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(bookingData)
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to create booking');
+    }
+
+    const createdBooking = data.booking as BookingRecord;
+    setBookings((prev) => [createdBooking, ...prev]);
+    return createdBooking;
   };
 
-  const updateBookingStatus = (id: string, status: BookingRecord['status']) => {
-    const updated = bookings.map((b) => (b.id === id ? { ...b, status } : b));
-    setBookings(updated);
-    updateAndBroadcast({ bookings: updated });
+  const updateBookingStatus = async (id: string, status: BookingRecord['status']) => {
+    setBookings((prev) => prev.map((b) => (b.id === id ? { ...b, status } : b)));
+    try {
+      await fetch('/api/bookings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, status })
+      });
+    } catch (e) {}
   };
 
-  const addReview = (reviewData: Omit<ReviewData, 'id'>) => {
-    const newReview: ReviewData = {
-      ...reviewData,
-      id: 'rev-' + Date.now().toString(36)
-    };
-    const updated = [newReview, ...reviews];
-    setReviews(updated);
-    updateAndBroadcast({ reviews: updated });
-    return newReview;
+  // Typed Scoped Review Creation
+  const addReview = async (reviewData: Omit<ReviewData, 'id'>): Promise<ReviewData> => {
+    const res = await fetch('/api/reviews', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(reviewData)
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.error || 'Failed to submit review');
+    }
+
+    const created = data.review as ReviewData;
+    setReviews((prev) => [created, ...prev]);
+    return created;
   };
 
-  const deleteReview = (id: string) => {
-    const updated = reviews.filter((r) => r.id !== id);
-    setReviews(updated);
-    updateAndBroadcast({ reviews: updated });
+  const deleteReview = async (id: string) => {
+    setReviews((prev) => prev.filter((r) => r.id !== id));
+    try {
+      await fetch(`/api/reviews?id=${encodeURIComponent(id)}`, {
+        method: 'DELETE'
+      });
+    } catch (e) {}
   };
 
-  const updateSettings = (newSettings: Partial<SiteSettings>) => {
+  const updateSettings = async (newSettings: Partial<SiteSettings>) => {
     const updated = { ...settings, ...newSettings };
     setSettings(updated);
-    updateAndBroadcast({ settings: updated });
+    try {
+      await fetch('/api/settings', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSettings)
+      });
+    } catch (e) {}
   };
 
-  const loginAdmin = (username: string, pass: string) => {
-    if (
-      username.trim().toLowerCase() === 'mbcabservice' &&
-      (pass === 'kodaikanal@2026' || pass === 'mbcabs123' || pass.length >= 4)
-    ) {
-      setIsAdminAuthenticated(true);
-      try {
-        localStorage.setItem(LS_KEY_AUTH, 'true');
-      } catch (e) {}
-      return true;
+  // Secure Server-side Admin Auth
+  const loginAdmin = async (username: string, pass: string): Promise<boolean> => {
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password: pass })
+      });
+      if (res.ok) {
+        setIsAdminAuthenticated(true);
+        fetchLatestState();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      return false;
     }
-    return false;
   };
 
-  const logoutAdmin = () => {
+  const logoutAdmin = async () => {
     setIsAdminAuthenticated(false);
     try {
-      localStorage.removeItem(LS_KEY_AUTH);
+      await fetch('/api/auth', { method: 'DELETE' });
     } catch (e) {}
   };
 

@@ -35,6 +35,7 @@ export interface PackageData {
   isFeatured: boolean;
   bookingEnabled: boolean;
   visualTheme: string;
+  updatedAt?: string;
 }
 
 export interface StayData {
@@ -77,6 +78,7 @@ export interface TouristPlaceDetail {
   relatedPackageSlug: string;
   relatedPackageName: string;
   nearbyAttractions: string[];
+  updatedAt?: string;
 }
 
 export interface ReviewData {
